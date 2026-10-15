@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { callRpc } from "./backend/client";
+import { deviceId } from "./device";
 import { IS_DEMO } from "./env";
 import { lsGet, lsSet } from "./idb";
 
@@ -12,7 +13,9 @@ export function useRegisterVisit() {
     const day = new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Makassar" });
     if (lsGet<string>(KEY, "") === day) return;
     const id = setTimeout(() => {
-      callRpc("register_visit", {})
+      callRpc("register_visit", { p_device: deviceId() })
+        // Database lama (migrasi 0008 belum dijalankan) tidak punya parameter ini: coba cara lama
+        .catch(() => callRpc("register_visit", {}))
         .then(() => lsSet(KEY, day))
         .catch(() => {});
     }, 4000);

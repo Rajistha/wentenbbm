@@ -23,7 +23,7 @@ export interface CastVoteArgs {
 export interface RpcMap {
   submit_report: { args: SubmitReportArgs; result: RpcResult<{ report_id: string }> };
   cast_vote: { args: CastVoteArgs; result: RpcResult<{ confirms: number; disputes: number }> };
-  register_visit: { args: Record<string, never>; result: { ok: boolean } };
+  register_visit: { args: { p_device?: string }; result: { ok: boolean } };
   station_recent_reports: { args: { p_station_id: string; p_limit?: number }; result: RawRecentReport[] };
 }
 
