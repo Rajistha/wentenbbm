@@ -11,6 +11,7 @@ import { RelativeTime, useNow } from "../common/RelativeTime";
 import { StatusGlyph } from "../common/StatusGlyph";
 import { NavigateButton } from "./NavigateButton";
 import { StationPhoto } from "./StationPhoto";
+import { TrafficRow } from "./TrafficRow";
 import { RecentReports } from "./RecentReports";
 import { useGeofence, useShare, useStationStatus } from "./hooks";
 
@@ -135,6 +136,8 @@ export function StationDetail() {
           ? t("detail.waitEstimate", { low: status.waitLow, high: Math.max(status.waitHigh, status.waitLow + 5) })
           : t("detail.waitNotEnough")}
       </p>
+
+      {place.kind !== "terminal" && <TrafficRow slug={place.slug} />}
 
       <div className="action-row">
         <NavigateButton place={place} highlight={highlight} withMenu />

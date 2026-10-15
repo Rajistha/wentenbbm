@@ -42,13 +42,17 @@
     "reports": "{n} laporan",
     "seeData": "Lihat data",
     "demo": "Mode demo",
-    "visitors": "{n} pengunjung"
+    "visitors": "{n} pengunjung",
+    "justLaunched": "Baru dibuka · ayo mulai melapor"
   },
   "strip": {
     "summary": "{a} dari {total} SPBU dilaporkan ada {fuel}",
     "summaryAll": "{a} dari {total} SPBU dilaporkan ada BBM",
     "filterHint": "Ketuk untuk hanya menampilkan {status}",
-    "clear": "Tampilkan semua status"
+    "clear": "Tampilkan semua status",
+    "emptyTitle": "Belum ada laporan hari ini",
+    "emptyBody": "{n} SPBU sudah terpetakan. Jadilah yang pertama melapor: buka SPBU terdekat lalu pilih Ada BBM atau Tidak ada.",
+    "emptyCta": "Lihat SPBU terdekat"
   },
   "dock": {
     "nearest": "Terdekat yang ada BBM",
@@ -358,5 +362,14 @@
     "openMap": "Buka peta",
     "retail": "Pertashop dan pengecer",
     "otherRegions": "Wilayah lain"
+  },
+  "traffic": {
+    "title": "Lalu lintas di depan SPBU",
+    "free": "Lancar",
+    "moderate": "Cukup padat",
+    "heavy": "Padat",
+    "closed": "Jalan ditutup",
+    "speed": "Sekarang {c} km/jam, biasanya {f} km/jam",
+    "note": "Ini kondisi jalan, belum tentu antrean BBM."
   }
 }

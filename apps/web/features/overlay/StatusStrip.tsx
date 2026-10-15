@@ -17,10 +17,26 @@ export function StatusStrip() {
   const fuelTypes = useApp((s) => s.fuelTypes);
   const active = useApp((s) => s.statusFilter);
   const setStatusFilter = useApp((s) => s.setStatusFilter);
+  const openPanel = useApp((s) => s.openPanel);
 
   const counts = useMemo(() => countStatuses(places, statuses, fuelFilter), [places, statuses, fuelFilter]);
   const total = counts.reduce((a, b) => a + b, 0);
   if (!total) return <div className="float-card strip" style={{ minHeight: 76 }} aria-busy="true" />;
+
+  // Belum ada satu pun laporan: ajak melapor, jangan pajang angka nol
+  if (counts[0] + counts[1] + counts[2] === 0) {
+    return (
+      <div className="float-card strip strip-empty">
+        <div className="strip-empty-title">{t("strip.emptyTitle")}</div>
+        <div className="strip-summary" style={{ display: "block" }}>
+          {t("strip.emptyBody", { n: formatNumber(total, locale) })}
+        </div>
+        <button type="button" className="btn btn-primary" onClick={() => openPanel("list")}>
+          {t("strip.emptyCta")}
+        </button>
+      </div>
+    );
+  }
 
   const fuelName = fuelFilter === "all" ? null : fuelTypes.find((f) => f.id === fuelFilter)?.name;
   const summary = fuelName

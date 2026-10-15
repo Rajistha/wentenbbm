@@ -42,13 +42,17 @@
     "reports": "{n} reports",
     "seeData": "See data",
     "demo": "Demo mode",
-    "visitors": "{n} visitors"
+    "visitors": "{n} visitors",
+    "justLaunched": "Just launched · start reporting"
   },
   "strip": {
     "summary": "{a} of {total} stations reported to have {fuel}",
     "summaryAll": "{a} of {total} stations reported to have fuel",
     "filterHint": "Tap to show only {status}",
-    "clear": "Show all statuses"
+    "clear": "Show all statuses",
+    "emptyTitle": "No reports yet today",
+    "emptyBody": "{n} stations are mapped. Be the first to report: open the nearest station and tap Fuel here or No fuel.",
+    "emptyCta": "See nearest stations"
   },
   "dock": {
     "nearest": "Nearest with fuel",
@@ -358,5 +362,14 @@
     "openMap": "Open map",
     "retail": "Pertashop and retailers",
     "otherRegions": "Other regions"
+  },
+  "traffic": {
+    "title": "Traffic outside the station",
+    "free": "Flowing",
+    "moderate": "Moderately busy",
+    "heavy": "Heavy",
+    "closed": "Road closed",
+    "speed": "Now {c} km/h, usually {f} km/h",
+    "note": "This is road traffic, not necessarily a fuel queue."
   }
 }

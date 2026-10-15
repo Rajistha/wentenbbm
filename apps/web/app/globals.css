@@ -2337,3 +2337,43 @@ html {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+.strip-empty {
+  gap: 10px;
+  padding: 14px 16px;
+}
+.strip-empty-title {
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 700;
+}
+.strip-empty .btn {
+  align-self: flex-start;
+}
+
+/* ───────── Lalu lintas di depan SPBU ───────── */
+.traffic-row {
+  margin: 4px 0 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  display: grid;
+  gap: 4px;
+}
+.traffic-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.traffic-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.traffic-credit a {
+  color: inherit;
+}
