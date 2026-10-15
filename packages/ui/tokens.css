@@ -1,0 +1,66 @@
+/* Token desain Wenten BBM, sumber: DESIGN.md bagian 2, 4, 5, 10. */
+
+:root {
+  --teal-50: #eef7f6;
+  --teal-100: #d4ece9;
+  --teal-200: #a9d8d3;
+  --teal-300: #74bdb5;
+  --teal-400: #439f96;
+  --teal-500: #23827a;
+  --teal-600: #176861;
+  --teal-700: #12524d;
+  --teal-800: #0e3f3b;
+  --teal-900: #0a2d2a;
+  --ink-0: #ffffff;
+  --ink-50: #f5f8f8;
+  --ink-100: #e6eceb;
+  --ink-300: #b4c0be;
+  --ink-500: #6b7b79;
+  --ink-700: #3a4847;
+
+  --bg: var(--ink-50);
+  --surface: var(--ink-0);
+  --surface-glass: rgb(255 255 255 / 0.96);
+  --surface-raised: var(--ink-0);
+  --surface-tint: var(--teal-50);
+  --border: var(--ink-100);
+  --text: var(--teal-900);
+  --text-muted: var(--ink-500);
+  --text-accent: #1d4ed8;
+  --accent: #2563eb;
+  --accent-text: var(--ink-0);
+  --focus: #3b82f6;
+
+  --status-available: #16a34a;
+  --status-limited: #f59e0b;
+  --status-empty: #e11d48;
+  --status-unknown: #94a3b8;
+  --marker-fill: var(--ink-0);
+  --confirm-ring: #1e3a8a;
+
+  --chart-available: #16a34a;
+  --chart-limited: #f59e0b;
+  --chart-empty: #e11d48;
+
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 20px;
+  --r-full: 999px;
+
+  --shadow-1: 0 1px 2px rgb(10 45 42 / 0.08), 0 4px 16px rgb(10 45 42 / 0.1);
+  --shadow-2: 0 -2px 8px rgb(10 45 42 / 0.06), 0 -8px 32px rgb(10 45 42 / 0.14);
+
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --dur: 200ms;
+  --dur-sheet: 280ms;
+
+  --font: "Plus Jakarta Sans", system-ui, sans-serif;
+  color-scheme: light;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur: 0ms;
+    --dur-sheet: 0ms;
+  }
+}

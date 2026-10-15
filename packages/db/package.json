@@ -1,0 +1,26 @@
+{
+  "name": "@wenten/db",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./data/stations.json": "./data/stations.json",
+    "./rpc": "./src/rpc.ts",
+    "./data/gazetteer.json": "./data/gazetteer.json"
+  },
+  "scripts": {
+    "import-osm": "node scripts/import-osm.ts",
+    "gen-types": "npx supabase gen types typescript --local > src/types.gen.ts",
+    "db:start": "npx supabase start",
+    "db:reset": "npx supabase db reset",
+    "db:test": "npx supabase test db",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@wenten/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@wenten/config": "workspace:*",
+    "typescript": "^5.9.3"
+  }
+}

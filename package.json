@@ -1,0 +1,19 @@
+{
+  "name": "wentenbbm",
+  "private": true,
+  "packageManager": "pnpm@10.34.7",
+  "scripts": {
+    "dev": "turbo run dev --filter=@wenten/web",
+    "dev:admin": "turbo run dev --filter=@wenten/admin",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "db:import-osm": "pnpm --filter @wenten/db import-osm",
+    "db:types": "pnpm --filter @wenten/db gen-types"
+  },
+  "devDependencies": {
+    "turbo": "^2.11.8",
+    "typescript": "^5.9.3"
+  }
+}

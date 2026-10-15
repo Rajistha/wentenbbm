@@ -1,0 +1,27 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "NEXT_PUBLIC_SUPABASE_URL",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    "NEXT_PUBLIC_TURNSTILE_SITE_KEY",
+    "NEXT_PUBLIC_MAP_STYLE_URL",
+    "NEXT_PUBLIC_MAP_STYLE_DARK_URL",
+    "NEXT_PUBLIC_SNAPSHOT_FALLBACK_URL",
+    "NEXT_PUBLIC_SITE_URL",
+    "STATUS_CACHE_SECONDS",
+    "GOOGLE_PLACES_API_KEY",
+    "MAPILLARY_ACCESS_TOKEN",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "ADMIN_ALLOWED_EMAILS"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "dev": { "cache": false, "persistent": true },
+    "lint": {},
+    "typecheck": { "dependsOn": ["^typecheck"] },
+    "test": {}
+  }
+}

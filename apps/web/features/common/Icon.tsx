@@ -1,0 +1,66 @@
+import {
+  ArrowLeft,
+  ArrowRight,
+  Box,
+  Car,
+  Check,
+  Clock,
+  Copy,
+  Crosshair,
+  Ellipsis,
+  Fuel,
+  History,
+  Info,
+  Layers,
+  List,
+  LocateFixed,
+  MapPin,
+  Megaphone,
+  Minus,
+  Navigation,
+  Pencil,
+  Plus,
+  RefreshCw,
+  Search,
+  Share2,
+  ShieldCheck,
+  X,
+  type LucideProps,
+} from "lucide-react";
+
+const ICONS = {
+  back: ArrowLeft,
+  next: ArrowRight,
+  car: Car,
+  box: Box,
+  check: Check,
+  clock: Clock,
+  copy: Copy,
+  crosshair: Crosshair,
+  more: Ellipsis,
+  fuel: Fuel,
+  history: History,
+  pin: MapPin,
+  info: Info,
+  layers: Layers,
+  list: List,
+  locate: LocateFixed,
+  announce: Megaphone,
+  minus: Minus,
+  navigate: Navigation,
+  edit: Pencil,
+  plus: Plus,
+  refresh: RefreshCw,
+  search: Search,
+  share: Share2,
+  verified: ShieldCheck,
+  close: X,
+} as const;
+
+export type IconName = keyof typeof ICONS;
+
+/** Ikon SVG garis (lucide). Dekoratif secara bawaan; tombol ikon wajib punya aria-label. */
+export function Icon({ name, size = 18, ...rest }: { name: IconName; size?: number } & Omit<LucideProps, "size">) {
+  const C = ICONS[name];
+  return <C size={size} strokeWidth={2} aria-hidden="true" focusable="false" style={{ flexShrink: 0 }} {...rest} />;
+}

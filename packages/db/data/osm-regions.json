@@ -1,0 +1,1737 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.4 2390de5a",
+  "osm3s": {
+    "timestamp_osm_base": "2026-10-15T12:48:31Z",
+    "timestamp_areas_base": "2026-10-15T11:03:58Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "area",
+  "id": 3603250691,
+  "tags": {
+    "admin_level": "5",
+    "boundary": "administrative",
+    "check_date": "2026-04-13",
+    "description": "Klungkung adalah salah satu kabupaten di Provinsi Bali",
+    "name": "Klungkung",
+    "name:ar": "كلونغكونغ",
+    "name:arz": "كلونغكونغ",
+    "name:ban": "ᬓ᭄ᬮᬸᬗ᭄ᬓᬸᬂ",
+    "name:bn": "ক্লুংকুং",
+    "name:el": "Κλουνγκκούνγκ",
+    "name:en": "Klungkung Regency",
+    "name:fa": "کلونگ‌کونگ",
+    "name:he": "קלונגקונג",
+    "name:hi": "क्लुंगकुंग",
+    "name:hy": "Կլունգկունգ",
+    "name:id": "Kabupaten Klungkung",
+    "name:ja": "クルンクン",
+    "name:ka": "კლუნგკუნგი",
+    "name:kk": "Клунгкунг",
+    "name:km": "ក្លុងគុង",
+    "name:kn": "ಕ್ಲುಂಗ್‌ಕುಂಗ್",
+    "name:ko": "클룽쿵",
+    "name:ky": "Клунгкунг",
+    "name:lo": "ກລຸງກຸງ",
+    "name:mk": "Клунгкунг",
+    "name:ml": "ക്ലുങ്‌കുങ്",
+    "name:mn": "Клунгкунг",
+    "name:mr": "क्लुंगकुंग",
+    "name:my": "ကလွန်ကွန်",
+    "name:or": "କ୍ଲଙ୍ଗକୁଙ୍ଗ",
+    "name:ru": "Клунгкунг",
+    "name:si": "ක්ලුන්ග්කුන්ග්",
+    "name:sr": "Клунгкунг",
+    "name:te": "క్లుంగ్‌కుంగ్",
+    "name:th": "คลางกุง",
+    "name:yi": "קלונגקונג",
+    "name:zh": "克隆孔",
+    "name:zh-Hant": "複製孔",
+    "official_name": "Kabupaten Klungkung",
+    "ref:kemendagri": "51.05",
+    "type": "boundary",
+    "wikidata": "Q11503",
+    "wikipedia": "id:Klungkung"
+  }
+},
+{
+  "type": "node",
+  "id": 3785230436
+},
+{
+  "type": "node",
+  "id": 4706094090
+},
+{
+  "type": "node",
+  "id": 4710004789
+},
+{
+  "type": "node",
+  "id": 5257494824
+},
+{
+  "type": "node",
+  "id": 5624314821
+},
+{
+  "type": "node",
+  "id": 5753254022
+},
+{
+  "type": "node",
+  "id": 6229193250
+},
+{
+  "type": "node",
+  "id": 6332684386
+},
+{
+  "type": "node",
+  "id": 6336822986
+},
+{
+  "type": "node",
+  "id": 11203013135
+},
+{
+  "type": "node",
+  "id": 11957676499
+},
+{
+  "type": "node",
+  "id": 12277145588
+},
+{
+  "type": "node",
+  "id": 12277198682
+},
+{
+  "type": "way",
+  "id": 541037284
+},
+{
+  "type": "way",
+  "id": 550979020
+},
+{
+  "type": "way",
+  "id": 763376973
+},
+{
+  "type": "way",
+  "id": 1109033923
+},
+{
+  "type": "way",
+  "id": 1111172220
+},
+{
+  "type": "area",
+  "id": 3614613953,
+  "tags": {
+    "admin_level": "5",
+    "boundary": "administrative",
+    "check_date": "2026-04-13",
+    "description": "Badung adalah salah satu kabupaten di Provinsi Bali",
+    "name": "Badung",
+    "name:ar": "بادونغ",
+    "name:arz": "بادونغ",
+    "name:ban": "ᬩᬤᬸᬂ",
+    "name:bn": "বাদুং",
+    "name:el": "Μπαντούνγκ",
+    "name:fa": "بادونگ",
+    "name:he": "באדונג",
+    "name:hi": "बडुंग",
+    "name:hy": "Բադունգ",
+    "name:ja": "バドゥン",
+    "name:ka": "ბადუნგი",
+    "name:kk": "Бадунг",
+    "name:km": "បាដុង",
+    "name:kn": "ಬದುಂಗ್",
+    "name:ko": "바둥",
+    "name:ky": "Бадунг",
+    "name:lo": "ບາດຸງ",
+    "name:mk": "Бадунг",
+    "name:ml": "ബദുങ്ങ്",
+    "name:mn": "Бадунг",
+    "name:mr": "बडुंग",
+    "name:my": "ဘာဒွန်း",
+    "name:or": "ବାଡୁଙ୍ଗ",
+    "name:ru": "Бадунг",
+    "name:si": "බදුං",
+    "name:sr": "Бадунг",
+    "name:te": "బడుంగ్",
+    "name:th": "บาดุง",
+    "name:yi": "באַדונג",
+    "name:zh": "巴东",
+    "name:zh-Hant": "巴東",
+    "official_name": "Kabupaten Badung",
+    "ref:kemendagri": "51.03",
+    "type": "boundary",
+    "wikidata": "Q11482",
+    "wikipedia": "id:Badung"
+  }
+},
+{
+  "type": "node",
+  "id": 941307526
+},
+{
+  "type": "node",
+  "id": 945648527
+},
+{
+  "type": "node",
+  "id": 963276323
+},
+{
+  "type": "node",
+  "id": 1292872676
+},
+{
+  "type": "node",
+  "id": 1456289125
+},
+{
+  "type": "node",
+  "id": 1502919830
+},
+{
+  "type": "node",
+  "id": 1830362205
+},
+{
+  "type": "node",
+  "id": 1963415557
+},
+{
+  "type": "node",
+  "id": 2000869724
+},
+{
+  "type": "node",
+  "id": 2276389503
+},
+{
+  "type": "node",
+  "id": 2279259061
+},
+{
+  "type": "node",
+  "id": 2487421377
+},
+{
+  "type": "node",
+  "id": 2487544914
+},
+{
+  "type": "node",
+  "id": 2849702811
+},
+{
+  "type": "node",
+  "id": 2872212679
+},
+{
+  "type": "node",
+  "id": 3217531312
+},
+{
+  "type": "node",
+  "id": 3791477572
+},
+{
+  "type": "node",
+  "id": 3915627035
+},
+{
+  "type": "node",
+  "id": 4630425094
+},
+{
+  "type": "node",
+  "id": 4954534046
+},
+{
+  "type": "node",
+  "id": 4954534047
+},
+{
+  "type": "node",
+  "id": 4954534052
+},
+{
+  "type": "node",
+  "id": 5015970023
+},
+{
+  "type": "node",
+  "id": 5317781709
+},
+{
+  "type": "node",
+  "id": 5539012614
+},
+{
+  "type": "node",
+  "id": 5546845704
+},
+{
+  "type": "node",
+  "id": 5936396585
+},
+{
+  "type": "node",
+  "id": 6316044085
+},
+{
+  "type": "node",
+  "id": 6400253085
+},
+{
+  "type": "node",
+  "id": 6460723863
+},
+{
+  "type": "node",
+  "id": 6875260470
+},
+{
+  "type": "node",
+  "id": 7622285885
+},
+{
+  "type": "node",
+  "id": 9768297246
+},
+{
+  "type": "node",
+  "id": 9969087618
+},
+{
+  "type": "node",
+  "id": 10997051997
+},
+{
+  "type": "node",
+  "id": 11002446837
+},
+{
+  "type": "node",
+  "id": 11002450532
+},
+{
+  "type": "node",
+  "id": 11934705251
+},
+{
+  "type": "node",
+  "id": 12287905177
+},
+{
+  "type": "node",
+  "id": 12287923856
+},
+{
+  "type": "node",
+  "id": 13122086601
+},
+{
+  "type": "node",
+  "id": 13948488673
+},
+{
+  "type": "way",
+  "id": 311216627
+},
+{
+  "type": "way",
+  "id": 419467852
+},
+{
+  "type": "way",
+  "id": 464475021
+},
+{
+  "type": "way",
+  "id": 512629948
+},
+{
+  "type": "way",
+  "id": 512629994
+},
+{
+  "type": "way",
+  "id": 596231848
+},
+{
+  "type": "way",
+  "id": 603585689
+},
+{
+  "type": "way",
+  "id": 714724146
+},
+{
+  "type": "way",
+  "id": 714724147
+},
+{
+  "type": "way",
+  "id": 753245598
+},
+{
+  "type": "way",
+  "id": 1090665871
+},
+{
+  "type": "way",
+  "id": 1091987493
+},
+{
+  "type": "way",
+  "id": 1093717433
+},
+{
+  "type": "area",
+  "id": 3614322005,
+  "tags": {
+    "admin_level": "5",
+    "boundary": "administrative",
+    "check_date": "2026-04-13",
+    "description": "Tabanan adalah salah satu kabupaten di Provinsi Bali",
+    "name": "Tabanan",
+    "name:ar": "تابانان",
+    "name:arz": "تابانان",
+    "name:ban": "ᬢᬩᬦᬦ᭄",
+    "name:bn": "তাবানান",
+    "name:el": "Ταμπανάν",
+    "name:fa": "تابانان",
+    "name:he": "טבנן",
+    "name:hi": "तबानन",
+    "name:hy": "Տաբանան",
+    "name:ja": "タバナン",
+    "name:ka": "ტაბანანი",
+    "name:kk": "Табанан",
+    "name:km": "តាបាណាន",
+    "name:kn": "ತಬಾನನ್",
+    "name:ko": "타바난",
+    "name:ky": "Табанан",
+    "name:lo": "ທາບານັນ",
+    "name:mk": "Табанан",
+    "name:ml": "തബാനൻ",
+    "name:mn": "Табанан",
+    "name:mr": "तबनान",
+    "name:my": "တာဘာနန်",
+    "name:or": "ତାବାନାନ୍",
+    "name:ru": "Табанан",
+    "name:si": "ටැබනන්",
+    "name:sr": "Табанан",
+    "name:te": "తబానన్",
+    "name:th": "ทาบานัน",
+    "name:yi": "טאַבאַנאַן",
+    "name:zh": "塔巴南",
+    "name:zh-Hant": "塔巴南",
+    "official_name": "Kabupaten Tabanan",
+    "ref:kemendagri": "51.02",
+    "source": "Badan Informasi Geospasial",
+    "type": "boundary",
+    "wikidata": "Q11505",
+    "wikipedia": "id:Tabanan"
+  }
+},
+{
+  "type": "node",
+  "id": 274853846
+},
+{
+  "type": "node",
+  "id": 641643890
+},
+{
+  "type": "node",
+  "id": 1963414951
+},
+{
+  "type": "node",
+  "id": 1963414988
+},
+{
+  "type": "node",
+  "id": 2487421311
+},
+{
+  "type": "node",
+  "id": 2487421443
+},
+{
+  "type": "node",
+  "id": 2487422443
+},
+{
+  "type": "node",
+  "id": 3788508644
+},
+{
+  "type": "node",
+  "id": 3800945890
+},
+{
+  "type": "node",
+  "id": 5317781710
+},
+{
+  "type": "node",
+  "id": 10779108513
+},
+{
+  "type": "node",
+  "id": 10779121218
+},
+{
+  "type": "node",
+  "id": 10800799512
+},
+{
+  "type": "node",
+  "id": 10801074996
+},
+{
+  "type": "node",
+  "id": 10801074998
+},
+{
+  "type": "node",
+  "id": 12287937936
+},
+{
+  "type": "node",
+  "id": 12313863793
+},
+{
+  "type": "node",
+  "id": 12313877251
+},
+{
+  "type": "node",
+  "id": 12313882736
+},
+{
+  "type": "way",
+  "id": 225177250
+},
+{
+  "type": "way",
+  "id": 475757306
+},
+{
+  "type": "way",
+  "id": 595268291
+},
+{
+  "type": "way",
+  "id": 597363262
+},
+{
+  "type": "way",
+  "id": 597363267
+},
+{
+  "type": "way",
+  "id": 600380264
+},
+{
+  "type": "way",
+  "id": 603638421
+},
+{
+  "type": "way",
+  "id": 603638557
+},
+{
+  "type": "way",
+  "id": 603638612
+},
+{
+  "type": "way",
+  "id": 937995717
+},
+{
+  "type": "way",
+  "id": 937995718
+},
+{
+  "type": "way",
+  "id": 1072524309
+},
+{
+  "type": "way",
+  "id": 1119410373
+},
+{
+  "type": "area",
+  "id": 3614322006,
+  "tags": {
+    "admin_level": "5",
+    "boundary": "administrative",
+    "check_date": "2026-04-13",
+    "description": "Jembrana adalah salah satu kabupaten di Provinsi Bali",
+    "name": "Jembrana",
+    "name:ar": "جيمبرانا",
+    "name:arz": "جيمبرانا",
+    "name:ban": "᭄ᬚᬾᬫ᭄ᬩ᭄ᬭᬦ",
+    "name:bn": "জেমব্রানা",
+    "name:el": "Τζεμπράνα",
+    "name:fa": "جمبرانا",
+    "name:he": "ג'מברנה",
+    "name:hi": "जेम्ब्राना",
+    "name:hy": "Ջեմբրանա",
+    "name:ja": "ジェンブラナ",
+    "name:ka": "ჯემბრანა",
+    "name:kk": "Джембрана",
+    "name:km": "ជេមប្រាណា",
+    "name:kn": "ಜೆಂಬ್ರಾನಾ",
+    "name:ko": "젬브라나",
+    "name:ky": "Джембрана",
+    "name:lo": "ເຈມບຣານາ",
+    "name:mk": "Джембрана",
+    "name:ml": "ജെംബ്രാണ",
+    "name:mn": "Джембрана",
+    "name:mr": "जेंब्राना",
+    "name:my": "ဂျမ်ဘရာနာ",
+    "name:or": "ଜେମ୍ବ୍ରାନା",
+    "name:ru": "Джембрана",
+    "name:si": "ජෙම්බ්‍රානා",
+    "name:sr": "Джембрана",
+    "name:te": "జెంబ్రానా",
+    "name:th": "เจมบรานา",
+    "name:yi": "דזשעמבראַנאַ",
+    "name:zh": "杰姆布拉纳",
+    "name:zh-Hant": "傑姆布拉納",
+    "official_name": "Kabupaten Jembrana",
+    "ref:kemendagri": "51.01",
+    "type": "boundary",
+    "wikidata": "Q11499",
+    "wikipedia": "id:Jembrana"
+  }
+},
+{
+  "type": "node",
+  "id": 274750656
+},
+{
+  "type": "node",
+  "id": 274813078
+},
+{
+  "type": "node",
+  "id": 4965837975
+},
+{
+  "type": "node",
+  "id": 10779010555
+},
+{
+  "type": "node",
+  "id": 10779013748
+},
+{
+  "type": "node",
+  "id": 10779027615
+},
+{
+  "type": "node",
+  "id": 10779073221
+},
+{
+  "type": "node",
+  "id": 10779078991
+},
+{
+  "type": "node",
+  "id": 12293396265
+},
+{
+  "type": "node",
+  "id": 12293406735
+},
+{
+  "type": "node",
+  "id": 12293410046
+},
+{
+  "type": "node",
+  "id": 12293422755
+},
+{
+  "type": "node",
+  "id": 12313908583
+},
+{
+  "type": "way",
+  "id": 1150185346
+},
+{
+  "type": "way",
+  "id": 1185103949
+},
+{
+  "type": "way",
+  "id": 1190145498
+},
+{
+  "type": "way",
+  "id": 1192654164
+},
+{
+  "type": "way",
+  "id": 1567223230
+},
+{
+  "type": "area",
+  "id": 3614322007,
+  "tags": {
+    "admin_level": "5",
+    "boundary": "administrative",
+    "check_date": "2026-04-13",
+    "description": "Buleleng adalah salah satu kabupaten di Provinsi Bali",
+    "name": "Buleleng",
+    "name:ar": "بوليلينغ",
+    "name:arz": "بوليلينغ",
+    "name:ban": "ᬩᬸᬮᬾᬮᬾᬂ",
+    "name:bn": "বুলেলেং",
+    "name:el": "Μπουλελένγκ",
+    "name:fa": "بوللنگ",
+    "name:he": "בוללנג",
+    "name:hi": "बुलेलेंग",
+    "name:hy": "Բուլելենգ",
+    "name:ja": "ブレレン",
+    "name:ka": "ბულელენგი",
+    "name:kk": "Булеленг",
+    "name:km": "ប៊ូលេង",
+    "name:kn": "ಬುಲೆಲೆಂಗ್",
+    "name:ko": "불레렝",
+    "name:ky": "Булеленг",
+    "name:lo": "ບູເລເລງ",
+    "name:mk": "Булеленг",
+    "name:ml": "ബുലെലെങ്",
+    "name:mn": "Булеленг",
+    "name:mr": "बुलेलेंग",
+    "name:my": "ဘူလီလန်း",
+    "name:or": "ବୁଲେଲେଙ୍ଗ୍",
+    "name:ru": "Булеленг",
+    "name:si": "බුලෙලෙන්ග්",
+    "name:sr": "Булеленг",
+    "name:te": "బులెంగ్",
+    "name:th": "บูเลเลง",
+    "name:yi": "בולעלענג",
+    "name:zh": "布莱伦",
+    "name:zh-Hant": "布萊倫",
+    "official_name": "Kabupaten Buleleng",
+    "ref:kemendagri": "51.08",
+    "type": "boundary",
+    "wikidata": "Q11495",
+    "wikipedia": "id:Buleleng"
+  }
+},
+{
+  "type": "node",
+  "id": 2847473231
+},
+{
+  "type": "node",
+  "id": 3299570661
+},
+{
+  "type": "node",
+  "id": 3754488727
+},
+{
+  "type": "node",
+  "id": 3754488728
+},
+{
+  "type": "node",
+  "id": 3754491925
+},
+{
+  "type": "node",
+  "id": 4368999206
+},
+{
+  "type": "node",
+  "id": 4420365789
+},
+{
+  "type": "node",
+  "id": 4467738625
+},
+{
+  "type": "node",
+  "id": 4467739093
+},
+{
+  "type": "node",
+  "id": 4704509289
+},
+{
+  "type": "node",
+  "id": 5052517732
+},
+{
+  "type": "node",
+  "id": 5419297521
+},
+{
+  "type": "node",
+  "id": 5651550475
+},
+{
+  "type": "node",
+  "id": 5755867921
+},
+{
+  "type": "node",
+  "id": 5755867922
+},
+{
+  "type": "node",
+  "id": 6178072124
+},
+{
+  "type": "node",
+  "id": 6611231166
+},
+{
+  "type": "node",
+  "id": 6611231167
+},
+{
+  "type": "node",
+  "id": 6680805485
+},
+{
+  "type": "node",
+  "id": 7105955685
+},
+{
+  "type": "node",
+  "id": 10798201666
+},
+{
+  "type": "node",
+  "id": 10799072563
+},
+{
+  "type": "node",
+  "id": 11012490778
+},
+{
+  "type": "node",
+  "id": 11012490782
+},
+{
+  "type": "node",
+  "id": 11012542529
+},
+{
+  "type": "node",
+  "id": 11012542530
+},
+{
+  "type": "node",
+  "id": 11033884333
+},
+{
+  "type": "node",
+  "id": 11033915359
+},
+{
+  "type": "node",
+  "id": 11033915360
+},
+{
+  "type": "node",
+  "id": 11048153450
+},
+{
+  "type": "node",
+  "id": 11674186496
+},
+{
+  "type": "node",
+  "id": 11918886642
+},
+{
+  "type": "node",
+  "id": 11951722650
+},
+{
+  "type": "node",
+  "id": 11954796697
+},
+{
+  "type": "node",
+  "id": 11954796698
+},
+{
+  "type": "node",
+  "id": 12252323023
+},
+{
+  "type": "node",
+  "id": 12269097382
+},
+{
+  "type": "node",
+  "id": 12277190271
+},
+{
+  "type": "node",
+  "id": 12287921053
+},
+{
+  "type": "node",
+  "id": 12290074005
+},
+{
+  "type": "node",
+  "id": 12290095501
+},
+{
+  "type": "node",
+  "id": 12291632313
+},
+{
+  "type": "node",
+  "id": 12293398519
+},
+{
+  "type": "node",
+  "id": 12293398520
+},
+{
+  "type": "node",
+  "id": 12293406734
+},
+{
+  "type": "node",
+  "id": 12293426640
+},
+{
+  "type": "node",
+  "id": 12468698409
+},
+{
+  "type": "node",
+  "id": 14284211424
+},
+{
+  "type": "way",
+  "id": 509677807
+},
+{
+  "type": "way",
+  "id": 509984088
+},
+{
+  "type": "way",
+  "id": 559976070
+},
+{
+  "type": "way",
+  "id": 560886709
+},
+{
+  "type": "way",
+  "id": 560893611
+},
+{
+  "type": "way",
+  "id": 564399387
+},
+{
+  "type": "way",
+  "id": 602497076
+},
+{
+  "type": "way",
+  "id": 602497077
+},
+{
+  "type": "way",
+  "id": 602497078
+},
+{
+  "type": "way",
+  "id": 1121908173
+},
+{
+  "type": "way",
+  "id": 1184213626
+},
+{
+  "type": "way",
+  "id": 1447743524
+},
+{
+  "type": "area",
+  "id": 3614322004,
+  "tags": {
+    "admin_level": "5",
+    "boundary": "administrative",
+    "check_date": "2026-04-13",
+    "description": "Bangli adalah salah satu kabupaten di Provinsi Bali",
+    "name": "Bangli",
+    "name:ar": "بانجلي",
+    "name:arz": "بانجلي",
+    "name:ban": "ᬩᬗ᭄ᬮᬶ",
+    "name:bn": "বাংলা",
+    "name:el": "Μπάνγκλι",
+    "name:fa": "بنگلی",
+    "name:he": "בנגלית",
+    "name:hi": "बांग्ली",
+    "name:hy": "բենգալերեն",
+    "name:ja": "バングリ",
+    "name:ka": "ბენგალური",
+    "name:kk": "Бангли",
+    "name:km": "បាងលី",
+    "name:kn": "ಬ್ಯಾಂಗ್ಲಿ",
+    "name:ko": "방글리",
+    "name:ky": "Бангли",
+    "name:lo": "ບັງກລີ",
+    "name:mk": "Бангли",
+    "name:ml": "ബംഗ്ലി",
+    "name:mn": "Бангли",
+    "name:mr": "बंगाली",
+    "name:my": "ဘင်္ဂါလီ",
+    "name:or": "ବାଙ୍ଗଲି",
+    "name:ru": "Бангли",
+    "name:si": "බංග්ලි",
+    "name:sr": "Бангли",
+    "name:te": "బంగ్లీ",
+    "name:th": "บังลี",
+    "name:yi": "באַנגלי",
+    "name:zh": "邦利",
+    "name:zh-Hant": "邦利",
+    "official_name": "Kabupaten Bangli",
+    "ref:kemendagri": "51.06",
+    "type": "boundary",
+    "wikidata": "Q11491",
+    "wikipedia": "id:Bangli"
+  }
+},
+{
+  "type": "node",
+  "id": 4247757589
+},
+{
+  "type": "node",
+  "id": 4362250290
+},
+{
+  "type": "node",
+  "id": 4591597595
+},
+{
+  "type": "node",
+  "id": 6712210047
+},
+{
+  "type": "node",
+  "id": 6721922709
+},
+{
+  "type": "node",
+  "id": 6721922710
+},
+{
+  "type": "node",
+  "id": 11012490777
+},
+{
+  "type": "node",
+  "id": 11012490783
+},
+{
+  "type": "node",
+  "id": 11033884332
+},
+{
+  "type": "node",
+  "id": 11033884335
+},
+{
+  "type": "node",
+  "id": 11033884337
+},
+{
+  "type": "node",
+  "id": 12277185797
+},
+{
+  "type": "way",
+  "id": 563856417
+},
+{
+  "type": "way",
+  "id": 1181397892
+},
+{
+  "type": "way",
+  "id": 1534383090
+},
+{
+  "type": "area",
+  "id": 3614613952,
+  "tags": {
+    "admin_level": "5",
+    "boundary": "administrative",
+    "check_date": "2026-04-13",
+    "description": "Gianyar adalah salah satu kabupaten di Provinsi Bali",
+    "name": "Gianyar",
+    "name:ar": "جيانيار",
+    "name:arz": "جيانيار",
+    "name:ban": "᭄ᬕᬶᬬᬜᬃ",
+    "name:bn": "গিয়ানিয়ার",
+    "name:el": "Γκιανγιάρ",
+    "name:fa": "جیانیار",
+    "name:he": "ג'יאניאר",
+    "name:hi": "जियान्यार",
+    "name:hy": "Գյանյար",
+    "name:ja": "ギャニャール",
+    "name:ka": "გიანარი",
+    "name:kk": "Гианьяр",
+    "name:km": "ហ្គីយ៉ានយ៉ា",
+    "name:kn": "ಗಿಯಾನ್ಯಾರ್",
+    "name:ko": "기안야르",
+    "name:ky": "Гианьяр",
+    "name:lo": "ກີຢານຢາ",
+    "name:mk": "Гианьяр",
+    "name:ml": "ഗിയാൻയാർ",
+    "name:mn": "Гианьяр",
+    "name:mr": "गियानार",
+    "name:my": "ဂျီယာနာ",
+    "name:or": "ଗିଆନାର୍",
+    "name:ru": "Гианьяр",
+    "name:si": "ගියන්යාර්",
+    "name:sr": "Гианьяр",
+    "name:te": "గియన్యార్",
+    "name:th": "เกียนยาร์",
+    "name:yi": "גיאַניאַר",
+    "name:zh": "吉安雅",
+    "name:zh-Hant": "吉安雅",
+    "official_name": "Kabupaten Gianyar",
+    "ref:kemendagri": "51.04",
+    "type": "boundary",
+    "wikidata": "Q11496",
+    "wikipedia": "id:Gianyar"
+  }
+},
+{
+  "type": "node",
+  "id": 1963471597
+},
+{
+  "type": "node",
+  "id": 2272949196
+},
+{
+  "type": "node",
+  "id": 3530974108
+},
+{
+  "type": "node",
+  "id": 3791297306
+},
+{
+  "type": "node",
+  "id": 4198773706
+},
+{
+  "type": "node",
+  "id": 4198773752
+},
+{
+  "type": "node",
+  "id": 4422250828
+},
+{
+  "type": "node",
+  "id": 4446960858
+},
+{
+  "type": "node",
+  "id": 4446961398
+},
+{
+  "type": "node",
+  "id": 4467737446
+},
+{
+  "type": "node",
+  "id": 4467738292
+},
+{
+  "type": "node",
+  "id": 4593501492
+},
+{
+  "type": "node",
+  "id": 4593501496
+},
+{
+  "type": "node",
+  "id": 4593535189
+},
+{
+  "type": "node",
+  "id": 4593932704
+},
+{
+  "type": "node",
+  "id": 4593932705
+},
+{
+  "type": "node",
+  "id": 4707866590
+},
+{
+  "type": "node",
+  "id": 5017453423
+},
+{
+  "type": "node",
+  "id": 5833788586
+},
+{
+  "type": "node",
+  "id": 6286590885
+},
+{
+  "type": "node",
+  "id": 6355894185
+},
+{
+  "type": "node",
+  "id": 6355894485
+},
+{
+  "type": "node",
+  "id": 6355907290
+},
+{
+  "type": "node",
+  "id": 6355913587
+},
+{
+  "type": "node",
+  "id": 6712210032
+},
+{
+  "type": "node",
+  "id": 9274481126
+},
+{
+  "type": "node",
+  "id": 9464806554
+},
+{
+  "type": "node",
+  "id": 9498002342
+},
+{
+  "type": "node",
+  "id": 11002518744
+},
+{
+  "type": "node",
+  "id": 11033884336
+},
+{
+  "type": "way",
+  "id": 512355161
+},
+{
+  "type": "way",
+  "id": 514001663
+},
+{
+  "type": "way",
+  "id": 514011012
+},
+{
+  "type": "way",
+  "id": 545825031
+},
+{
+  "type": "way",
+  "id": 563856427
+},
+{
+  "type": "way",
+  "id": 1087957090
+},
+{
+  "type": "way",
+  "id": 1489545694
+},
+{
+  "type": "way",
+  "id": 1532743149
+},
+{
+  "type": "area",
+  "id": 3607789828,
+  "tags": {
+    "admin_level": "5",
+    "boundary": "administrative",
+    "check_date": "2026-04-13",
+    "description": "Kota Denpasar adalah salah satu kota di Provinsi Bali",
+    "name": "Denpasar",
+    "name:ar": "مدينة دينباسار",
+    "name:arz": "مدينة دينباسار",
+    "name:ban": "ᬤᬾᬦ᭄ᬧᬲᬃ",
+    "name:bn": "কোটা ডেনপাসার",
+    "name:el": "Κότα Ντενπασάρ",
+    "name:fa": "کوتا دنپاسار",
+    "name:he": "קוטה דנפסאר",
+    "name:hi": "कोटा डेनपासर",
+    "name:hy": "Կոտա Դենպասար",
+    "name:ja": "デンパサール市",
+    "name:ka": "კოტა დენპასარი",
+    "name:kk": "Кота Денпасар",
+    "name:km": "កូតា ដេនប៉ាសារ",
+    "name:kn": "ಕೋಟಾ ಡೆನ್‌ಪಸರ್",
+    "name:ko": "코타 덴파사르",
+    "name:ky": "Кота Денпасар",
+    "name:lo": "ໂກຕາ ເດນປາຊາ",
+    "name:mk": "Кота Денпасар",
+    "name:ml": "കോട്ട ഡെൻപസർ",
+    "name:mn": "Кота Денпасар",
+    "name:mr": "कोटा डेनपासार",
+    "name:my": "ကိုတာ ဒန်ပါဆာ",
+    "name:or": "କୋଟା ଡେନପାସର",
+    "name:ru": "Кота Денпасар",
+    "name:si": "කොටා ඩෙන්පසාර්",
+    "name:sr": "Кота Денпасар",
+    "name:te": "కోట డెన్‌పాసర్",
+    "name:th": "เมืองเดนปาซาร์",
+    "name:uk": "Денпасар",
+    "name:yi": "קאָטאַ דענפּאַסאַר",
+    "name:zh": "登巴萨市",
+    "name:zh-Hant": "登巴薩市",
+    "official_name": "Kota Denpasar",
+    "population": "788445",
+    "ref:kemendagri": "51.71",
+    "type": "boundary",
+    "wikidata": "Q11506",
+    "wikipedia": "id:Kota Denpasar"
+  }
+},
+{
+  "type": "node",
+  "id": 610371699
+},
+{
+  "type": "node",
+  "id": 610371788
+},
+{
+  "type": "node",
+  "id": 1534960000
+},
+{
+  "type": "node",
+  "id": 1675080290
+},
+{
+  "type": "node",
+  "id": 1963471634
+},
+{
+  "type": "node",
+  "id": 2279234528
+},
+{
+  "type": "node",
+  "id": 2488170415
+},
+{
+  "type": "node",
+  "id": 2498046486
+},
+{
+  "type": "node",
+  "id": 2498046487
+},
+{
+  "type": "node",
+  "id": 2498046488
+},
+{
+  "type": "node",
+  "id": 3175963462
+},
+{
+  "type": "node",
+  "id": 3292077086
+},
+{
+  "type": "node",
+  "id": 3646990902
+},
+{
+  "type": "node",
+  "id": 3671677724
+},
+{
+  "type": "node",
+  "id": 3675164637
+},
+{
+  "type": "node",
+  "id": 3718349380
+},
+{
+  "type": "node",
+  "id": 3780445716
+},
+{
+  "type": "node",
+  "id": 3781991815
+},
+{
+  "type": "node",
+  "id": 3784338063
+},
+{
+  "type": "node",
+  "id": 3787237309
+},
+{
+  "type": "node",
+  "id": 3791203569
+},
+{
+  "type": "node",
+  "id": 3828371871
+},
+{
+  "type": "node",
+  "id": 3834339466
+},
+{
+  "type": "node",
+  "id": 4157284889
+},
+{
+  "type": "node",
+  "id": 4217406976
+},
+{
+  "type": "node",
+  "id": 4236778069
+},
+{
+  "type": "node",
+  "id": 4249837879
+},
+{
+  "type": "node",
+  "id": 4426603389
+},
+{
+  "type": "node",
+  "id": 4438497483
+},
+{
+  "type": "node",
+  "id": 4938684923
+},
+{
+  "type": "node",
+  "id": 4959546626
+},
+{
+  "type": "node",
+  "id": 5103311413
+},
+{
+  "type": "node",
+  "id": 5104508763
+},
+{
+  "type": "node",
+  "id": 5126061305
+},
+{
+  "type": "node",
+  "id": 5441794405
+},
+{
+  "type": "node",
+  "id": 5529682390
+},
+{
+  "type": "node",
+  "id": 5575035954
+},
+{
+  "type": "node",
+  "id": 11002446836
+},
+{
+  "type": "node",
+  "id": 11002478812
+},
+{
+  "type": "node",
+  "id": 11707649769
+},
+{
+  "type": "node",
+  "id": 12661989424
+},
+{
+  "type": "node",
+  "id": 14060362657
+},
+{
+  "type": "way",
+  "id": 374650214
+},
+{
+  "type": "way",
+  "id": 374650232
+},
+{
+  "type": "way",
+  "id": 375347728
+},
+{
+  "type": "way",
+  "id": 522920168
+},
+{
+  "type": "way",
+  "id": 577920894
+},
+{
+  "type": "way",
+  "id": 1089980892
+},
+{
+  "type": "way",
+  "id": 1090641137
+},
+{
+  "type": "way",
+  "id": 1090920815
+},
+{
+  "type": "way",
+  "id": 1329030189
+},
+{
+  "type": "way",
+  "id": 1547522483
+},
+{
+  "type": "way",
+  "id": 1557359089
+},
+{
+  "type": "area",
+  "id": 3614264457,
+  "tags": {
+    "admin_level": "5",
+    "boundary": "administrative",
+    "check_date": "2026-04-13",
+    "description": "Karangasem adalah salah satu kabupaten di Provinsi Bali",
+    "name": "Karangasem",
+    "name:ar": "كارانجاسيم",
+    "name:arz": "كارانجاسيم",
+    "name:ban": "ᬓᬭᬗᬲᬾᬫ᭄",
+    "name:bn": "কারাঙ্গাসেম",
+    "name:el": "Καρανγκασέμ",
+    "name:fa": "کارنگاسم",
+    "name:he": "קרנגסם",
+    "name:hi": "करांगसेम",
+    "name:hy": "Կարանգասեմ",
+    "name:ja": "カランガセム",
+    "name:ka": "კარანგასემი",
+    "name:kk": "Карангасем",
+    "name:km": "ការ៉ាងហ្គាសេម",
+    "name:kn": "ಕರಂಗಸೆಮ್",
+    "name:ko": "카랑가셈",
+    "name:ky": "Карангасем",
+    "name:lo": "ການັງກາເຊມ",
+    "name:mk": "Карангасем",
+    "name:ml": "കരങ്കാസെം",
+    "name:mn": "Карангасем",
+    "name:mr": "करांगसेम",
+    "name:my": "ကာရန်ဂါဆမ်",
+    "name:or": "କରଙ୍ଗାସେମ",
+    "name:ru": "Карангасем",
+    "name:si": "කරන්ගසෙම්",
+    "name:sr": "Карангасем",
+    "name:te": "కరంగసేం",
+    "name:th": "คารังอาเซม",
+    "name:yi": "קאַראַנגאַסעם",
+    "name:zh": "卡朗阿森",
+    "name:zh-Hant": "卡朗阿森",
+    "official_name": "Kabupaten Karangasem",
+    "ref:kemendagri": "51.07",
+    "type": "boundary",
+    "wikidata": "Q11501",
+    "wikipedia": "id:Karangasem"
+  }
+},
+{
+  "type": "node",
+  "id": 1291386618
+},
+{
+  "type": "node",
+  "id": 2148876485
+},
+{
+  "type": "node",
+  "id": 2845852089
+},
+{
+  "type": "node",
+  "id": 3329762011
+},
+{
+  "type": "node",
+  "id": 3749170052
+},
+{
+  "type": "node",
+  "id": 3749171670
+},
+{
+  "type": "node",
+  "id": 3775472294
+},
+{
+  "type": "node",
+  "id": 3921459354
+},
+{
+  "type": "node",
+  "id": 4540413890
+},
+{
+  "type": "node",
+  "id": 6040845285
+},
+{
+  "type": "node",
+  "id": 6050520885
+},
+{
+  "type": "node",
+  "id": 7192803785
+},
+{
+  "type": "node",
+  "id": 7660527085
+},
+{
+  "type": "node",
+  "id": 11012515469
+},
+{
+  "type": "node",
+  "id": 11048165238
+},
+{
+  "type": "node",
+  "id": 11048165239
+},
+{
+  "type": "node",
+  "id": 11048165240
+},
+{
+  "type": "node",
+  "id": 11048165241
+},
+{
+  "type": "node",
+  "id": 11048180310
+},
+{
+  "type": "node",
+  "id": 11048180311
+},
+{
+  "type": "node",
+  "id": 11048180312
+},
+{
+  "type": "node",
+  "id": 11048180313
+},
+{
+  "type": "node",
+  "id": 11048180314
+},
+{
+  "type": "node",
+  "id": 11048190871
+},
+{
+  "type": "node",
+  "id": 11048190872
+},
+{
+  "type": "node",
+  "id": 11048190873
+},
+{
+  "type": "node",
+  "id": 11048192287
+},
+{
+  "type": "node",
+  "id": 11048192289
+},
+{
+  "type": "node",
+  "id": 11909772240
+},
+{
+  "type": "node",
+  "id": 11909796444
+},
+{
+  "type": "node",
+  "id": 12277145587
+},
+{
+  "type": "node",
+  "id": 12277189747
+},
+{
+  "type": "way",
+  "id": 209462178
+},
+{
+  "type": "way",
+  "id": 1087950699
+},
+{
+  "type": "way",
+  "id": 1175041480
+}
+
+  ]
+}

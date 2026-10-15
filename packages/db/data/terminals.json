@@ -1,0 +1,20 @@
+[
+  {
+    "osm": "way/239759320",
+    "name": "TBBM Sanggaran",
+    "address": "Terminal BBM Pertamina Patra Niaga, Sanggaran, Denpasar",
+    "regionId": 1,
+    "lat": -8.7187922,
+    "lng": 115.2160118,
+    "slug": "tbbm-sanggaran"
+  },
+  {
+    "osm": "way/38709255",
+    "name": "TBBM Manggis",
+    "address": "Depot Pertamina, Manggis, Karangasem",
+    "regionId": 9,
+    "lat": -8.5109668,
+    "lng": 115.505707,
+    "slug": "tbbm-manggis"
+  }
+]
