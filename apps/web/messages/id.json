@@ -125,7 +125,9 @@
     "helpTitle": "Bantu warga lain",
     "hereYes": "Ada BBM",
     "hereNo": "Tidak ada BBM",
-    "hereLimited": "Tinggal sedikit / terbatas"
+    "hereLimited": "Tinggal sedikit / terbatas",
+    "searchNearby": "Titik salah? Cari di Google Maps",
+    "navCoords": "Arahkan ke titik koordinat"
   },
   "nearby": {
     "prompt": "Anda di {name}? Bantu warga lain, laporkan stok.",
@@ -285,7 +287,7 @@
   },
   "about": {
     "title": "Tentang Wenten BBM",
-    "intro": "Wenten (bahasa Bali: \"ada\") BBM adalah proyek warga untuk membantu sesama menemukan SPBU yang masih punya stok selama gangguan pasokan BBM di Bali. Status dihitung dari laporan warga yang sedang berada di SPBU.",
+    "intro": "Wenten (ada) BBM adalah proyek warga untuk membantu sesama menemukan SPBU yang masih punya stok selama gangguan pasokan BBM di Bali. Status dihitung dari laporan warga yang sedang berada di SPBU, bukan dari data resmi.",
     "howTitle": "Cara kerja",
     "how1": "Warga yang berada dalam radius 300 m dari SPBU melaporkan stok per jenis BBM dan panjang antrean.",
     "how2": "Sistem menggabungkan laporan 2 jam terakhir. Laporan yang lebih baru dan dikonfirmasi warga lain berbobot lebih besar.",
@@ -295,7 +297,14 @@
     "privacyTitle": "Privasi",
     "disclaimerTitle": "Penafian",
     "disclaimer": "Wenten BBM bukan aplikasi resmi Pertamina, Shell, BP, Vivo, atau pemerintah. Semua status adalah laporan warga dan bisa keliru. Selalu periksa di lokasi.",
-    "data": "Data SPBU awal dari OpenStreetMap (ODbL), diverifikasi relawan."
+    "data": "Data SPBU awal dari OpenStreetMap (ODbL), diverifikasi relawan.",
+    "step1Title": "Warga melapor",
+    "step2Title": "Dihitung otomatis",
+    "step3Title": "Memudar sendiri",
+    "trademark": "Pertamina, Pertalite, Pertamax, Shell, BP, dan Vivo adalah merek milik pemiliknya masing-masing dan disebut hanya untuk keperluan informasi.",
+    "regionsTitle": "Cek per wilayah",
+    "dataLink": "Data dan statistik",
+    "credits": "Peta: Esri. Data lokasi: © OpenStreetMap contributors (ODbL). Foto jalan, bila tampil: Mapillary (CC BY-SA)."
   },
   "search": {
     "placeholder": "Cari SPBU, Pertamini, atau tempat",

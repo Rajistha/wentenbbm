@@ -28,6 +28,15 @@ export function googleMapsDirUrl(p: LatLng): string {
   return `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`;
 }
 
+/**
+ * Buka pencarian Google Maps ("SPBU Pertamina") berpusat di titik ini, zoom 18.
+ * Berguna bila koordinat dari OpenStreetMap meleset beberapa meter: pengguna memilih
+ * tempat SPBU yang benar dari daftar Google lalu menekan Rute di sana.
+ */
+export function googleMapsSearchNearUrl(p: LatLng, query: string): string {
+  return `https://www.google.com/maps/search/${encodeURIComponent(query).replace(/%20/g, "+")}/@${p.lat},${p.lng},18z`;
+}
+
 export function geoUri(p: LatLng, label: string): string {
   return `geo:${p.lat},${p.lng}?q=${p.lat},${p.lng}(${encodeURIComponent(label)})`;
 }

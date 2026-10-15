@@ -125,7 +125,9 @@
     "helpTitle": "Help inform others",
     "hereYes": "Fuel here",
     "hereNo": "No fuel",
-    "hereLimited": "Running low / limited"
+    "hereLimited": "Running low / limited",
+    "searchNearby": "Wrong spot? Search in Google Maps",
+    "navCoords": "Directions to exact coordinates"
   },
   "nearby": {
     "prompt": "At {name}? Help others, report the stock.",
@@ -285,7 +287,7 @@
   },
   "about": {
     "title": "About Wenten BBM",
-    "intro": "Wenten (Balinese for \"there is\") BBM is a community project helping people find petrol stations that still have fuel during Bali's supply disruption. Status is computed from reports by people at the station.",
+    "intro": "Wenten (there is) BBM is a community project helping people find petrol stations that still have fuel during Bali's supply disruption. Status is computed from reports by people at the station, not from official data.",
     "howTitle": "How it works",
     "how1": "People within 300 m of a station report stock per fuel type and queue length.",
     "how2": "The system combines reports from the last 2 hours. Newer reports and those confirmed by others weigh more.",
@@ -295,7 +297,14 @@
     "privacyTitle": "Privacy",
     "disclaimerTitle": "Disclaimer",
     "disclaimer": "Wenten BBM is not an official app of Pertamina, Shell, BP, Vivo, or the government. All statuses are community reports and can be wrong. Always check on site.",
-    "data": "Initial station data from OpenStreetMap (ODbL), verified by volunteers."
+    "data": "Initial station data from OpenStreetMap (ODbL), verified by volunteers.",
+    "step1Title": "People report",
+    "step2Title": "Computed automatically",
+    "step3Title": "Fades on its own",
+    "trademark": "Pertamina, Pertalite, Pertamax, Shell, BP and Vivo are trademarks of their respective owners and are mentioned for information only.",
+    "regionsTitle": "Browse by regency",
+    "dataLink": "Data and statistics",
+    "credits": "Map: Esri. Location data: © OpenStreetMap contributors (ODbL). Street photos, when shown: Mapillary (CC BY-SA)."
   },
   "search": {
     "placeholder": "Search stations, Pertamini, or places",

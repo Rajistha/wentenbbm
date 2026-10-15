@@ -21,15 +21,15 @@ const OVERPASS = process.env.OVERPASS_URL ?? "https://overpass-api.de/api/interp
 
 const QUERIES = {
   "osm-raw.json":
-    '[out:json][timeout:90];area["ISO3166-2"="ID-BA"]->.bali;(node["amenity"="fuel"](area.bali);way["amenity"="fuel"](area.bali););out center tags;',
+    '[out:json][timeout:120];area["ISO3166-2"="ID-BA"]->.bali;(node["amenity"="fuel"](area.bali);way["amenity"="fuel"](area.bali);nwr["name"~"pertamini|petramini|pertashop|pom mini",i](area.bali););out center tags;',
   "osm-regions.json":
-    '[out:json][timeout:150];area["ISO3166-2"="ID-BA"]->.bali;rel(area.bali)["admin_level"="5"]["boundary"="administrative"];map_to_area->.regs;foreach.regs->.r(.r out tags;(node(area.r)["amenity"="fuel"];way(area.r)["amenity"="fuel"];);out ids;);',
+    '[out:json][timeout:180];area["ISO3166-2"="ID-BA"]->.bali;rel(area.bali)["admin_level"="5"]["boundary"="administrative"];map_to_area->.regs;foreach.regs->.r(.r out tags;(node(area.r)["amenity"="fuel"];way(area.r)["amenity"="fuel"];nwr(area.r)["name"~"pertamini|petramini|pertashop|pom mini",i];);out ids;);',
   "osm-localities.json":
     '[out:json][timeout:150];area["ISO3166-2"="ID-BA"]->.bali;node(area.bali)["place"~"^(city|town|suburb|village|neighbourhood|quarter)$"]["name"];out body;',
 } as const;
 
 interface OsmElement {
-  type: "node" | "way" | "area";
+  type: "node" | "way" | "relation" | "area";
   id: number;
   lat?: number;
   lon?: number;
@@ -56,16 +56,51 @@ const DEFAULT_FUELS: Record<string, number[]> = {
   retailer: [1],
 };
 
+const MIRRORS = [
+  process.env.OVERPASS_URL,
+  "https://overpass-api.de/api/interpreter",
+  "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
+  "https://overpass.kumi.systems/api/interpreter",
+].filter(Boolean) as string[];
+
+async function fetchOverpass(query: string): Promise<string> {
+  let last = "";
+  for (let attempt = 0; attempt < 3; attempt++) {
+    for (const url of MIRRORS) {
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "user-agent": "wentenbbm-import/1.0", "content-type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams({ data: query }),
+        });
+        const text = await res.text();
+        if (res.ok && text.trimStart().startsWith("{") && text.includes('"elements"')) {
+          // Overpass membalas hasil sebagian bila kehabisan waktu atau memori, ditandai di "remark"
+          const remark = (JSON.parse(text) as { remark?: string }).remark;
+          if (!remark) return text;
+          last = `${url} hasil sebagian: ${remark.slice(0, 80)}`;
+        } else last = `${url} ${res.status}`;
+      } catch (err) {
+        last = `${url} ${(err as Error).message}`;
+      }
+    }
+    await new Promise((r) => setTimeout(r, 8000 * (attempt + 1)));
+  }
+  throw new Error("Overpass gagal di semua mirror: " + last);
+}
+
 async function load(file: keyof typeof QUERIES): Promise<{ elements: OsmElement[] }> {
   const path = join(DATA, file);
-  if (process.argv.includes("--fetch")) {
-    const res = await fetch(OVERPASS, {
-      method: "POST",
-      headers: { "user-agent": "wentenbbm-import/1.0", "content-type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ data: QUERIES[file] }),
-    });
-    if (!res.ok) throw new Error(`Overpass ${res.status} untuk ${file}`);
-    writeFileSync(path, await res.text());
+  const all = process.argv.includes("--fetch-all");
+  const wanted = process.argv.includes("--fetch") && (file !== "osm-localities.json" || all);
+  if (wanted) {
+    console.log("Mengambil", file, "dari OpenStreetMap…");
+    const text = await fetchOverpass(QUERIES[file]);
+    if (file === "osm-regions.json") {
+      const n = (JSON.parse(text) as { elements: OsmElement[] }).elements.filter((e) => e.type === "area").length;
+      if (n < 9) throw new Error(`Data wilayah tidak lengkap (${n} dari 9), coba lagi nanti`);
+    }
+    writeFileSync(path, text);
   }
   return JSON.parse(readFileSync(path, "utf8"));
 }
@@ -172,6 +207,8 @@ async function main() {
     const tags = e.tags ?? {};
     const kind = classify(tags);
     if (!kind) continue;
+    // Elemen yang diambil hanya dari nama harus benar-benar pengecer, bukan SPBU atau tempat lain
+    if (tags.amenity !== "fuel" && kind === "spbu") continue;
     const pos = e.center ?? { lat: e.lat!, lon: e.lon! };
     const locality = nearestLocality(pos);
     const code = codeOf(tags);
@@ -209,7 +246,7 @@ async function main() {
       lat: Math.round(pos.lat * 1e6) / 1e6,
       lng: Math.round(pos.lon * 1e6) / 1e6,
       is24h: tags.opening_hours === "24/7",
-      osmId: e.type === "way" ? -e.id : e.id,
+      osmId: e.type === "node" ? e.id : e.type === "way" ? -e.id : -(e.id + 1e13),
       fuelIds: fuelsOf(tags, kind),
     });
   }

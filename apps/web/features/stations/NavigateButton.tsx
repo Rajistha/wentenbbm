@@ -1,21 +1,20 @@
 "use client";
 import { Icon } from "@/features/common/Icon";
-import { geoUri, googleMapsDirUrl } from "@wenten/core";
+import { geoUri, googleMapsDirToCoordsUrl, googleMapsDirToPlaceUrl, type Place } from "@wenten/core";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { useApp } from "@/lib/store";
 
 interface Props {
-  lat: number;
-  lng: number;
-  name: string;
+  place: Place;
   compact?: boolean;
   highlight?: boolean;
   withMenu?: boolean;
 }
 
 /** Tombol "Arahkan" ke Google Maps (US-04), plus aplikasi peta lain dan salin koordinat. */
-export function NavigateButton({ lat, lng, name, compact, highlight, withMenu }: Props) {
+export function NavigateButton({ place, compact, highlight, withMenu }: Props) {
+  const { lat, lng, name } = place;
   const t = useTranslations("detail");
   const [open, setOpen] = useState(false);
   const wrap = useRef<HTMLDivElement>(null);
@@ -33,7 +32,7 @@ export function NavigateButton({ lat, lng, name, compact, highlight, withMenu }:
   const link = (
     <a
       className={`btn btn-primary${compact ? "" : " btn-lg"}${highlight ? " btn-highlight" : ""}`}
-      href={googleMapsDirUrl({ lat, lng })}
+      href={googleMapsDirToPlaceUrl(place)}
       target="_blank"
       rel="noopener noreferrer"
       onClick={(e) => e.stopPropagation()}
@@ -64,6 +63,9 @@ export function NavigateButton({ lat, lng, name, compact, highlight, withMenu }:
         <div className="menu" role="menu" style={{ top: "calc(100% + 4px)", left: 0 }}>
           <a role="menuitem" href={geoUri({ lat, lng }, name)}>
             <Icon name="locate" /> {t("otherApp")}
+          </a>
+          <a role="menuitem" href={googleMapsDirToCoordsUrl({ lat, lng })} target="_blank" rel="noopener noreferrer">
+            <Icon name="pin" /> {t("navCoords")}
           </a>
           <button
             role="menuitem"

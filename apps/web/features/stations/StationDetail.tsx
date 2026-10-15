@@ -137,7 +137,7 @@ export function StationDetail() {
       </p>
 
       <div className="action-row">
-        <NavigateButton lat={place.lat} lng={place.lng} name={place.name} highlight={highlight} withMenu />
+        <NavigateButton place={place} highlight={highlight} withMenu />
         <button type="button" className="btn btn-icon btn-lg" aria-label={t("detail.share")} onClick={onShare}>
           <Icon name="share" />
         </button>

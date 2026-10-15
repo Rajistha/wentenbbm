@@ -45,7 +45,8 @@ interface AppState extends Prefs {
   generatedAt: string | null;
   onlineNow: number;
   reportsTotal: number;
-  visitorsTotal: number;
+  /** null = server belum mengirim angka pengunjung (migrasi 0007 belum dijalankan). */
+  visitorsTotal: number | null;
   readOnly: boolean;
   demo: boolean;
   liveVia: LiveVia;
@@ -112,7 +113,7 @@ export const useApp = create<AppState>((set, get) => ({
   generatedAt: null,
   onlineNow: 0,
   reportsTotal: 0,
-  visitorsTotal: 0,
+  visitorsTotal: null,
   readOnly: false,
   demo: false,
   liveVia: "loading",

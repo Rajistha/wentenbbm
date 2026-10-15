@@ -41,7 +41,7 @@ export function IdentityCard({ children }: { children?: React.ReactNode }) {
       {children && <span className="identity-menu">{children}</span>}
       <span className="identity-extra muted">
         {t("online", { n: formatNumber(onlineNow, locale) })} · {t("reports", { n: formatNumber(reportsTotal, locale) })}
-        {visitorsTotal > 0 && ` · ${t("visitors", { n: formatNumber(visitorsTotal, locale) })}`}
+        {visitorsTotal != null && ` · ${t("visitors", { n: formatNumber(visitorsTotal, locale) })}`}
       </span>
       <Link href="/data" className="identity-extra">
         {t("seeData")} <Icon name="next" size={14} style={{ verticalAlign: "middle" }} />

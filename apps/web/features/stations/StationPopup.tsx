@@ -58,7 +58,7 @@ export function StationPopup({ id }: { id: string }) {
         </div>
       )}
       <div style={{ display: "flex", gap: 8 }}>
-        <NavigateButton lat={place.lat} lng={place.lng} name={place.name} compact highlight={highlight} withMenu />
+        <NavigateButton place={place} compact highlight={highlight} withMenu />
         <button type="button" className="btn" onClick={() => openPanel("detail")}>
           {t("detail.open")}
         </button>

@@ -7,7 +7,7 @@ import {
   formatDistance,
   formatRelative,
   freshness,
-  googleMapsDirUrl,
+  googleMapsDirToPlaceUrl,
   REGION_NAMES,
   searchPlaces,
   statusRank,
@@ -270,7 +270,7 @@ function ListItem({ place, distance, locale, now, onOpen }: { place: Place; dist
           </button>
           <a
             className="act act-go"
-            href={googleMapsDirUrl(place)}
+            href={googleMapsDirToPlaceUrl(place)}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={t("detail.navigate")}
