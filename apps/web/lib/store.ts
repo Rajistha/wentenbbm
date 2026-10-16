@@ -44,6 +44,8 @@ interface AppState extends Prefs {
   statuses: Map<string, StationStatus>;
   generatedAt: string | null;
   onlineNow: number;
+  /** Jumlah tab yang sedang terbuka (Realtime Presence). null = belum tersambung / mode demo. */
+  presenceCount: number | null;
   reportsTotal: number;
   /** null = server belum mengirim angka pengunjung (migrasi 0007 belum dijalankan). */
   visitorsTotal: number | null;
@@ -124,6 +126,7 @@ export const useApp = create<AppState>((set, get) => ({
   statuses: new Map(),
   generatedAt: null,
   onlineNow: 0,
+  presenceCount: null,
   reportsTotal: 0,
   visitorsTotal: null,
   readOnly: false,

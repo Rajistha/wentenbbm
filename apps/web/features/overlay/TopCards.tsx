@@ -13,7 +13,7 @@ export function IdentityCard({ children }: { children?: React.ReactNode }) {
   const t = useTranslations("identity");
   const locale = useLocale() as Locale;
   const { liveVia, generatedAt, onlineNow, reportsTotal, visitorsTotal, demo } = useApp(
-    useShallow((s) => ({ liveVia: s.liveVia, generatedAt: s.generatedAt, onlineNow: s.onlineNow, reportsTotal: s.reportsTotal, visitorsTotal: s.visitorsTotal, demo: s.demo })),
+    useShallow((s) => ({ liveVia: s.liveVia, generatedAt: s.generatedAt, onlineNow: s.presenceCount ?? s.onlineNow, reportsTotal: s.reportsTotal, visitorsTotal: s.visitorsTotal, demo: s.demo })),
   );
   useNow(10_000);
   const on = liveVia === "realtime" || liveVia === "polling";

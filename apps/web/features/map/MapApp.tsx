@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useGeolocationBootstrap } from "@/lib/geolocation";
 import { restorePrefs, useApp } from "@/lib/store";
 import { useDataSync } from "@/lib/sync";
+import { usePresence } from "@/lib/presence";
 import { useRegisterVisit } from "@/lib/visit";
 import { useIsDesktop } from "../common/useMedia";
 import { ActionDock, MapFabs } from "../overlay/ActionDock";
@@ -38,6 +39,7 @@ export function MapApp({ initialSlug }: { initialSlug?: string }) {
   useEffect(restorePrefs, []);
   useDataSync();
   useRegisterVisit();
+  usePresence();
   useGeolocationBootstrap();
 
   // Buka SPBU dari tautan berbagi /spbu/[slug]
