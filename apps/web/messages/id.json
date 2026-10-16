@@ -307,7 +307,7 @@
     "spamQp": "Tempat dikarantina",
     "method": "Cara kerja dan privasi",
     "methodBody": "Status dihitung dari laporan 2 jam terakhir. Laporan baru berbobot lebih besar, dan bobotnya meluruh sekitar 63% setiap jam. Konfirmasi warga menambah bobot, bantahan menguranginya. Jika total bobot terlalu kecil, status kembali menjadi Belum ada laporan. Laporan yang dikarantina sistem tidak dihitung.",
-    "privacyBody": "Tidak ada data pribadi wajib. Lokasi pelapor dibulatkan sekitar 11 m, tidak pernah ditampilkan publik, dan dihapus setelah 30 hari. Admin dapat melihat lokasi sebuah laporan (maksimal 30 hari) untuk menangani penyalahgunaan; setiap akses dicatat. Alamat IP hanya disimpan sebagai hash dengan garam harian. Statistik kunjungan dan kecepatan halaman memakai Vercel Analytics dan Speed Insights tanpa cookie dan tanpa menyimpan identitas pengunjung.",
+    "privacyBody": "Tidak ada data pribadi wajib. Lokasi pelapor dibulatkan sekitar 11 m, tidak pernah ditampilkan publik, dan dihapus setelah 30 hari. Lokasi pelapor hanya dipakai untuk memeriksa keabsahan laporan dan mencegah penyalahgunaan. Alamat IP hanya disimpan sebagai hash dengan garam harian. Statistik kunjungan dan kecepatan halaman dikumpulkan tanpa cookie dan tanpa menyimpan identitas pengunjung.",
     "license": "Data agregat berlisensi CC BY 4.0",
     "hoursMinutes": "{h} j {m} mnt",
     "minutes": "{m} mnt"
