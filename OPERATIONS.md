@@ -54,6 +54,7 @@ Berkas ada di `packages/db/supabase/migrations/`. Jalankan berurutan di SQL Edit
 | 0016 | Harga BBM dari warga |
 | 0018 | Sakelar syarat radius 300 m (tab Ringkasan di /admin) |
 | 0019 | Harga resmi Pertamina sebagai acuan (tab Pengaturan di /admin) |
+| 0020 | Admin menghapus laporan palsu secara permanen (tab Laporan) |
 
 ## 5. Syarat radius 300 m
 

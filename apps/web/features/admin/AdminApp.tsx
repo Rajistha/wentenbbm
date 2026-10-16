@@ -423,6 +423,17 @@ function Reports({ ctx }: { ctx: Ctx }) {
   };
   const setStatus = (id: string, status: "hidden" | "active") =>
     run(() => adm(sb, "admin_set_report_status", { p_ids: [id], p_status: status, p_note: null }), status === "hidden" ? "Laporan disembunyikan." : "Laporan dipulihkan.");
+  const remove = (r: Row) => {
+    if (!window.confirm(`Hapus permanen laporan di ${r.station_name}? Tidak bisa dibatalkan. Status SPBU dihitung ulang tanpa laporan ini.`)) return;
+    void run(() => adm(sb, "admin_delete_reports", { p_ids: [r.id], p_note: "laporan palsu" }), "Laporan dihapus permanen.");
+  };
+  const removeAllFrom = (r: Row) => {
+    if (!window.confirm(`Hapus SEMUA laporan ${r.pseudonym} dalam 24 jam terakhir? Tidak bisa dibatalkan.`)) return;
+    void run(async () => {
+      const res = await adm(sb, "admin_delete_profile_reports", { p_profile: r.reporter_id, p_hours: 24 });
+      notify(`${res.deleted ?? 0} laporan dihapus.`);
+    }, "Selesai.");
+  };
   const block = (r: Row) => {
     const reason = window.prompt(`Blokir ${r.pseudonym}? Semua laporannya 24 jam terakhir ikut disembunyikan. Tulis alasan singkat:`);
     if (!reason) return;
@@ -467,7 +478,9 @@ function Reports({ ctx }: { ctx: Ctx }) {
                 ) : (
                   <button type="button" className="btn btn-primary" onClick={() => setStatus(r.id, "active")}>Pulihkan</button>
                 )}
+                <button type="button" className="btn btn-danger" onClick={() => remove(r)}>Hapus laporan</button>
                 {!r.is_blocked && <button type="button" className="btn btn-danger" onClick={() => block(r)}>Blokir pelapor</button>}
+                <button type="button" className="btn" onClick={() => removeAllFrom(r)}>Hapus semua dari pelapor ini</button>
               </div>
             </article>
           );
