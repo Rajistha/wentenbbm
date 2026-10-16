@@ -48,7 +48,10 @@ export async function runTurnstile(): Promise<string | undefined> {
           resolve(token);
           api.remove(id);
         },
-        "error-callback": () => reject(new Error("turnstile_failed")),
+        "error-callback": (code?: unknown) => {
+          reject(new Error(`turnstile_failed:${String(code ?? "")}`));
+          return true;
+        },
         "timeout-callback": () => reject(new Error("turnstile_timeout")),
       });
     });

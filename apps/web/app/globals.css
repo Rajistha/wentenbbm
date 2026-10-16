@@ -2792,3 +2792,103 @@ html {
     justify-content: flex-start;
   }
 }
+
+/* Halaman masuk admin */
+.adm-auth {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background: linear-gradient(180deg, var(--surface-tint), var(--bg));
+}
+.adm-auth-card {
+  width: min(100%, 380px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px 24px 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: 0 12px 40px rgb(15 23 42 / 0.1);
+}
+.adm-auth-card .logo {
+  align-self: flex-start;
+}
+.adm-auth-card h1 {
+  margin: 6px 0 0;
+  font-size: 24px;
+  line-height: 30px;
+}
+.adm-auth-sub {
+  margin: -8px 0 4px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.adm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.adm-field input {
+  width: 100%;
+  height: 46px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text);
+}
+.adm-field input:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+.adm-pass {
+  position: relative;
+  display: block;
+}
+.adm-pass input {
+  padding-right: 104px;
+}
+.adm-eye {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  padding: 6px 8px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-accent);
+  cursor: pointer;
+}
+.adm-auth-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--r-md);
+  background: #fff1f2;
+  color: #be123c;
+  font-size: 14px;
+  line-height: 20px;
+}
+.adm-auth-foot {
+  margin: 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+/* Edge menambah ikon mata bawaan; tombol "Tampilkan" sudah ada */
+.adm-pass input::-ms-reveal,
+.adm-pass input::-ms-clear {
+  display: none;
+}

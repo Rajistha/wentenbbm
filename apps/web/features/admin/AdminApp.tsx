@@ -4,6 +4,8 @@ import { REGIONS } from "@wenten/core";
 import { useCallback, useEffect, useState } from "react";
 import { IS_DEMO } from "@/lib/env";
 import { getSupabase } from "@/lib/supabase/client";
+import { Icon } from "../common/Icon";
+import { Logo } from "../common/Logo";
 import { runTurnstile } from "../session/turnstile";
 
 type Json = Record<string, unknown>;
@@ -49,7 +51,7 @@ export function AdminApp() {
 
   if (IS_DEMO) return <Shell><p>Panel admin hanya tersedia saat Supabase terhubung.</p></Shell>;
   if (auth === "loading" || !sb) return <Shell><p className="muted">Memuat…</p></Shell>;
-  if (auth === "out") return <Shell><Login sb={sb} onDone={() => check(sb)} /></Shell>;
+  if (auth === "out") return <Login sb={sb} onDone={() => check(sb)} />;
   if (auth === "denied") {
     return (
       <Shell>
@@ -99,6 +101,7 @@ function Shell({ children, right }: { children: React.ReactNode; right?: React.R
 function Login({ sb, onDone }: { sb: SupabaseClient; onDone(): void }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [show, setShow] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const submit = async (e: React.FormEvent) => {
@@ -108,27 +111,58 @@ function Login({ sb, onDone }: { sb: SupabaseClient; onDone(): void }) {
     try {
       const captchaToken = await runTurnstile();
       const { error: err } = await sb.auth.signInWithPassword({ email, password, options: captchaToken ? { captchaToken } : undefined });
-      if (err) setError(err.message);
+      if (err) setError(err.message === "Invalid login credentials" ? "Email atau kata sandi salah." : err.message);
       else onDone();
-    } catch {
-      setError("Gagal masuk. Periksa koneksi lalu coba lagi.");
+    } catch (e) {
+      const m = e instanceof Error ? e.message : "";
+      if (m.startsWith("turnstile")) {
+        const code = m.split(":")[1];
+        setError(
+          `Verifikasi captcha gagal${code ? ` (kode ${code})` : ""}. Pastikan ${location.hostname} terdaftar di widget Turnstile Cloudflare (untuk uji lokal tambahkan localhost) dan site key benar.`,
+        );
+      } else {
+        setError("Gagal masuk. Periksa koneksi lalu coba lagi.");
+      }
     } finally {
       setBusy(false);
     }
   };
   return (
-    <form className="adm-login" onSubmit={submit}>
-      <label>
-        Email
-        <input type="email" autoComplete="username" required value={email} onChange={(e) => setEmail(e.target.value)} />
-      </label>
-      <label>
-        Kata sandi
-        <input type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
-      </label>
-      {error && <div className="form-error">{error}</div>}
-      <button className="btn btn-primary btn-lg" disabled={busy}>{busy ? "Masuk…" : "Masuk"}</button>
-    </form>
+    <main className="adm-auth">
+      <form className="adm-auth-card" onSubmit={submit}>
+        <Logo size={36} />
+        <h1>Masuk admin</h1>
+        <p className="adm-auth-sub">Khusus pengelola Wenten BBM.</p>
+        <label className="adm-field">
+          <span>Email</span>
+          <input type="email" autoComplete="username" inputMode="email" required autoFocus value={email} onChange={(e) => setEmail(e.target.value)} />
+        </label>
+        <label className="adm-field">
+          <span>Kata sandi</span>
+          <span className="adm-pass">
+            <input
+              type={show ? "text" : "password"}
+              autoComplete="current-password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type="button" className="adm-eye" onClick={() => setShow((v) => !v)} aria-pressed={show}>
+              {show ? "Sembunyikan" : "Tampilkan"}
+            </button>
+          </span>
+        </label>
+        {error && (
+          <div className="adm-auth-error" role="alert">
+            <Icon name="alert" size={16} /> {error}
+          </div>
+        )}
+        <button className="btn btn-primary btn-lg btn-block" disabled={busy}>
+          {busy ? "Memeriksa…" : "Masuk"}
+        </button>
+        <p className="adm-auth-foot">Dilindungi captcha. Akses dicatat.</p>
+      </form>
+    </main>
   );
 }
 
