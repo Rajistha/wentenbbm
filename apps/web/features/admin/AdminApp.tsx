@@ -1,12 +1,16 @@
 "use client";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { REGIONS } from "@wenten/core";
+import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { IS_DEMO } from "@/lib/env";
 import { getSupabase } from "@/lib/supabase/client";
 import { Icon } from "../common/Icon";
 import { Logo } from "../common/Logo";
 import { runTurnstile } from "../session/turnstile";
+
+// Peta (maplibre) dimuat hanya saat tampilan Peta dibuka
+const ReportsMap = dynamic(() => import("./ReportsMap").then((m) => m.ReportsMap), { ssr: false });
 
 type Json = Record<string, unknown>;
 type Row = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -405,7 +409,25 @@ const QUEUE_LABEL: Record<string, string> = { none: "tidak antre", short: "antre
 function Reports({ ctx }: { ctx: Ctx }) {
   const { sb, notify, refresh } = ctx;
   const [filter, setFilter] = useState("flagged");
-  const { rows, error, reload } = useLoad(sb, "admin_moderation_queue", { p_filter: filter, p_limit: 100 });
+  // Saring semua laporan dari satu kunci IP (hash harian), bukan IP asli
+  const [ip, setIp] = useState<string | null>(null);
+  const [view, setView] = useState<"list" | "map">("list");
+  const { rows, error, reload } = useLoad(sb, "admin_moderation_queue", { p_filter: filter, p_limit: 100, p_ip: ip });
+  // Koordinat pelapor yang sudah diambil, per laporan
+  const [origins, setOrigins] = useState<Record<string, { lat: number; lng: number; km: string }>>({});
+  // Titik lokasi pelapor untuk peta (dimuat hanya saat tampilan Peta; tiap pemuatan tercatat di log audit)
+  const mapArgs = { p_filter: filter, p_ip: ip, p_hours: 24, p_limit: 300 };
+  const [mapRows, setMapRows] = useState<Row[] | null>(null);
+  const [mapError, setMapError] = useState<string | null>(null);
+  useEffect(() => {
+    if (view !== "map") return;
+    setMapRows(null);
+    setMapError(null);
+    adm(sb, "admin_reports_map", mapArgs)
+      .then((d) => setMapRows((d.rows as Row[]) ?? []))
+      .catch((e) => setMapError(String((e as Error).message)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [view, filter, ip, sb]);
   const [fuels, setFuels] = useState<Record<number, string>>({});
   useEffect(() => {
     sb.from("fuel_types").select("id,name").then(({ data }) => setFuels(Object.fromEntries((data ?? []).map((f) => [f.id, f.name]))));
@@ -423,6 +445,16 @@ function Reports({ ctx }: { ctx: Ctx }) {
   };
   const setStatus = (id: string, status: "hidden" | "active") =>
     run(() => adm(sb, "admin_set_report_status", { p_ids: [id], p_status: status, p_note: null }), status === "hidden" ? "Laporan disembunyikan." : "Laporan dipulihkan.");
+  const showOrigin = async (r: Row) => {
+    try {
+      const res = await adm(sb, "admin_report_location", { p_id: r.id });
+      const km = (res.distance_m as number) >= 1000 ? `${((res.distance_m as number) / 1000).toFixed(1)} km` : `${res.distance_m} m`;
+      setOrigins((o) => ({ ...o, [r.id]: { lat: res.lat as number, lng: res.lng as number, km } }));
+    } catch (e) {
+      const m = String((e as Error).message);
+      notify(m === "NO_LOCATION" ? "Koordinat sudah dihapus (lebih dari 30 hari) atau tidak tersimpan." : m, "bad");
+    }
+  };
   const remove = (r: Row) => {
     if (!window.confirm(`Hapus permanen laporan di ${r.station_name}? Tidak bisa dibatalkan. Status SPBU dihitung ulang tanpa laporan ini.`)) return;
     void run(() => adm(sb, "admin_delete_reports", { p_ids: [r.id], p_note: "laporan palsu" }), "Laporan dihapus permanen.");
@@ -442,14 +474,45 @@ function Reports({ ctx }: { ctx: Ctx }) {
 
   return (
     <>
-      <Filters
-        value={filter}
-        onChange={setFilter}
-        options={[["flagged", "Ditandai warga"], ["quarantined", "Dikarantina"], ["hidden", "Disembunyikan"], ["recent", "24 jam terakhir"]]}
-      />
-      <ListState rows={rows} error={error} empty="Tidak ada laporan di kategori ini." />
+      {ip ? (
+        <Notice>
+          Menampilkan laporan dari kunci IP <code>#{ip}</code> (7 hari terakhir). Kunci ini hash harian, bukan alamat IP asli, jadi hanya mengelompokkan laporan pada hari yang sama.{" "}
+          <button type="button" className="adm-link" onClick={() => setIp(null)}>Kembali ke daftar</button>
+        </Notice>
+      ) : (
+        <Filters
+          value={filter}
+          onChange={setFilter}
+          options={[["flagged", "Ditandai warga"], ["quarantined", "Dikarantina"], ["hidden", "Disembunyikan"], ["recent", "24 jam terakhir"]]}
+        />
+      )}
+      <div className="adm-viewtoggle" role="tablist" aria-label="Tampilan laporan">
+        <button type="button" role="tab" aria-selected={view === "list"} onClick={() => setView("list")}>Daftar</button>
+        <button type="button" role="tab" aria-selected={view === "map"} onClick={() => setView("map")}>Peta lokasi pelapor</button>
+      </div>
+      {view === "map" && (
+        <div className="adm-mapbox">
+          {mapError ? (
+            <Notice tone="bad">{mapError}</Notice>
+          ) : mapRows === null ? (
+            <p className="muted">Memuat peta…</p>
+          ) : (
+            <>
+              <div className="adm-maplegend">
+                <span><i style={{ background: "#2563eb" }} /> Aktif</span>
+                <span><i style={{ background: "#f59e0b" }} /> Dikarantina</span>
+                <span><i style={{ background: "#64748b" }} /> Disembunyikan</span>
+                <span><i className="ring" /> SPBU</span>
+                <span className="adm-meta">{mapRows.length} titik. Garis putus-putus menghubungkan pelapor ke SPBU yang dilaporkan.</span>
+              </div>
+              {mapRows.length === 0 ? <Empty>Tidak ada laporan dengan koordinat tersimpan di kategori ini (koordinat dihapus setelah 30 hari).</Empty> : <ReportsMap rows={mapRows} />}
+            </>
+          )}
+        </div>
+      )}
+      {view === "list" && <ListState rows={rows} error={error} empty="Tidak ada laporan di kategori ini." />}
       <div className="adm-list">
-        {rows?.map((r) => {
+        {view === "list" && rows?.map((r) => {
           const [stLabel, stTone] = STATUS_TONE[r.moderation_status] ?? [r.moderation_status, "muted" as Tone];
           return (
             <article key={r.id} className="adm-item">
@@ -472,6 +535,27 @@ function Reports({ ctx }: { ctx: Ctx }) {
                 {r.is_blocked ? " (diblokir)" : ""} · {r.report_count} laporan, {r.disputed_count} disanggah · jarak {r.distance_m} m · akurasi {Math.round(r.accuracy_m)} m · setuju {r.confirms}, sanggah {r.disputes}
                 {r.quarantine_reason ? ` · alasan karantina: ${r.quarantine_reason}` : ""}
               </p>
+              <div className="adm-origin">
+                {r.ip_key ? (
+                  <button type="button" className="adm-chip-btn" onClick={() => setIp(r.ip_key)} title="Tampilkan semua laporan dari kunci IP ini">
+                    IP #{r.ip_key}
+                    {r.ip_reports_24h > 1 && <strong> · {r.ip_reports_24h} laporan 24 jam</strong>}
+                  </button>
+                ) : (
+                  <span className="adm-meta">IP tidak tercatat</span>
+                )}
+                {origins[r.id] ? (
+                  <a className="adm-chip-btn" href={mapsUrl(origins[r.id]!.lat, origins[r.id]!.lng)} target="_blank" rel="noopener noreferrer">
+                    <Icon name="pin" size={13} /> Buka lokasi pelapor ({origins[r.id]!.lat}, {origins[r.id]!.lng}) · ±{origins[r.id]!.km} dari SPBU
+                  </a>
+                ) : r.has_location ? (
+                  <button type="button" className="adm-chip-btn" onClick={() => showOrigin(r)}>
+                    <Icon name="pin" size={13} /> Ambil koordinat pelapor
+                  </button>
+                ) : (
+                  <span className="adm-meta">Koordinat tidak tersimpan</span>
+                )}
+              </div>
               <div className="adm-actions">
                 {r.moderation_status === "active" ? (
                   <button type="button" className="btn" onClick={() => setStatus(r.id, "hidden")}>Sembunyikan</button>

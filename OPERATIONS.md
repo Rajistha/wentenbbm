@@ -57,6 +57,8 @@ Berkas ada di `packages/db/supabase/migrations/`. Jalankan berurutan di SQL Edit
 | 0020 | Admin menghapus laporan palsu secara permanen (tab Laporan) |
 | 0021 | Fungsi peluruhan mengikuti jendela status; nilai awal 4 jam |
 | 0022 | Status SPBU bertahan sampai 24 jam (jendela 1440, peluruhan 360, ambang 0,015); setel di /admin → Pengaturan |
+| 0023 | Admin melihat kunci IP (hash harian) dan mengambil koordinat pelapor (tercatat di log audit) |
+| 0024 | Peta lokasi pelapor di tab Laporan (tercatat di log audit) |
 
 ## 5. Syarat radius 300 m
 

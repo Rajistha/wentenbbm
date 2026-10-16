@@ -306,7 +306,7 @@
     "spamQp": "Places quarantined",
     "method": "Method and privacy",
     "methodBody": "Status is computed from reports in the last 2 hours. Newer reports weigh more, and weight decays by about 63% per hour. Confirmations add weight, disputes reduce it. If the total weight is too small the status returns to No reports yet. Reports quarantined by the system are not counted.",
-    "privacyBody": "No personal data is required. Reporter locations are rounded to about 11 m, never shown publicly, and deleted after 30 days. IP addresses are only stored as hashes with a daily salt. Visit and page-speed statistics use Vercel Analytics and Speed Insights, without cookies and without storing visitor identity.",
+    "privacyBody": "No personal data is required. Reporter locations are rounded to about 11 m, never shown publicly, and deleted after 30 days. Admins can view the location of a report (up to 30 days) to handle abuse; every access is logged. IP addresses are only stored as hashes with a daily salt. Visit and page-speed statistics use Vercel Analytics and Speed Insights, without cookies and without storing visitor identity.",
     "license": "Aggregate data licensed CC BY 4.0",
     "hoursMinutes": "{h} h {m} min",
     "minutes": "{m} min"
