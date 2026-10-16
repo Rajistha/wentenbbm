@@ -1,18 +1,18 @@
 "use client";
 import { useEffect } from "react";
-import { deviceId } from "./device";
 import { IS_DEMO } from "./env";
 import { getSupabase } from "./supabase/client";
 import { useApp } from "./store";
 
 /**
  * Hitung pengunjung online lewat Supabase Realtime Presence: tiap tab yang terbuka bergabung ke
- * satu kanal; entri hilang otomatis saat tab ditutup. Hanya ID perangkat acak yang dikirim.
+ * satu kanal; entri hilang otomatis saat tab ditutup. Hanya ID acak per tab yang dikirim.
  * Tab tersembunyi keluar dari kanal (hemat koneksi) dan bergabung lagi saat dibuka.
  */
 export function usePresence() {
   useEffect(() => {
     if (IS_DEMO) return;
+    const tabKey = crypto.randomUUID();
     let disposed = false;
     let channel: ReturnType<Awaited<ReturnType<typeof getSupabase>>["channel"]> | null = null;
     let client: Awaited<ReturnType<typeof getSupabase>> | null = null;
@@ -25,8 +25,8 @@ export function usePresence() {
       if (channel || disposed || document.hidden) return;
       client = await getSupabase();
       if (channel || disposed || document.hidden) return;
-      // Beberapa tab satu perangkat terhitung sekali: kunci presence = ID perangkat
-      const ch = client.channel("online:bali", { config: { presence: { key: deviceId() } } });
+      // Kunci acak per tab: setiap tab yang terbuka dihitung sendiri
+      const ch = client.channel("online:bali", { config: { presence: { key: tabKey } } });
       channel = ch;
       ch.on("presence", { event: "sync" }, () => {
         useApp.setState({ presenceCount: Object.keys(ch.presenceState()).length });
