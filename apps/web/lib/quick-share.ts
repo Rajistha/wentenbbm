@@ -54,19 +54,52 @@ export function readyImage(lang: string): Blob | null {
 
 export const siteUrl = (lang: string) => SITE_URL.replace(/\/$/, "") + (lang === "en" ? "/en" : "");
 
-type Outcome = "shared" | "cancelled" | "unsupported" | "failed";
+export interface QuickShareHooks {
+  /** Gambar belum siap: sedang diunduh. */
+  preparing(): void;
+  /** Hasil akhir: menu bagikan dipakai, gambar diunduh dan teks disalin, atau gagal. */
+  done(kind: "shared" | "downloaded" | "failed"): void;
+}
 
-/** Panggil langsung di dalam penangan klik. `text` sudah memuat tautan situs. */
-export function shareNow(lang: string, text: string): Outcome | Promise<Outcome> {
-  if (!canShareFiles()) return "unsupported";
-  const blob = readyImage(lang);
-  if (!blob) return "failed";
-  const file = new File([blob], "wenten-bbm.png", { type: "image/png" });
-  if (!navigator.canShare({ files: [file] })) return "unsupported";
-  // Segarkan di latar belakang bila sudah lama, untuk ketukan berikutnya
-  if (!cache || Date.now() - cache.at >= TTL_MS) void prefetchShareImage(lang);
-  return navigator
-    .share({ files: [file], text })
-    .then((): Outcome => "shared")
-    .catch((err: unknown): Outcome => (err instanceof DOMException && err.name === "AbortError" ? "cancelled" : "failed"));
+function download(blob: Blob, text: string) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "wenten-bbm.png";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 10_000);
+  void navigator.clipboard?.writeText(text).catch(() => {});
+}
+
+/**
+ * Panggil langsung di dalam penangan klik. Bila gambar sudah siap, menu bagikan perangkat dibuka seketika
+ * (masih dalam ketukan pengguna). Bila perangkat tidak mendukung berbagi berkas, gambar diunduh dan teks
+ * (beserta tautan) disalin. `text` sudah memuat tautan situs.
+ */
+export function quickShare(lang: string, text: string, hooks: QuickShareHooks) {
+  const run = async (blob: Blob) => {
+    const file = new File([blob], "wenten-bbm.png", { type: "image/png" });
+    if (canShareFiles() && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], text });
+        hooks.done("shared");
+        return;
+      } catch (err) {
+        // Pengguna menutup menu bagikan: selesai. Galat lain (mis. izin ketukan hilang): unduh saja.
+        if (err instanceof DOMException && err.name === "AbortError") return;
+      }
+    }
+    download(blob, text);
+    hooks.done("downloaded");
+  };
+  const ready = readyImage(lang);
+  if (ready) {
+    void run(ready);
+    // Segarkan di latar belakang bila sudah lama, untuk ketukan berikutnya
+    if (!cache || Date.now() - cache.at >= TTL_MS) void prefetchShareImage(lang);
+    return;
+  }
+  hooks.preparing();
+  void prefetchShareImage(lang).then((b) => (b ? run(b) : hooks.done("failed")));
 }

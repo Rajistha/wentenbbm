@@ -50,7 +50,7 @@ export function MapApp({ initialSlug }: { initialSlug?: string }) {
   const lang = useLocale();
   useEffect(() => {
     if (!placesLoaded || !canShareFiles()) return;
-    const id = setTimeout(() => void prefetchShareImage(lang), 6000);
+    const id = setTimeout(() => void prefetchShareImage(lang), 2000);
     return () => clearTimeout(id);
   }, [placesLoaded, lang]);
 
