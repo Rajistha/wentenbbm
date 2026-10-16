@@ -68,6 +68,11 @@ interface AppState extends Prefs {
   /** Penanda tempat hasil pencarian (mis. Kuta) di peta. */
   searchPin: { lat: number; lng: number; name: string } | null;
   shareTarget: { url: string; title: string; text: string; slug?: string } | null;
+  /** Alur tambah tempat: pilih titik di peta, lalu isi formulir. */
+  addMode: "pick" | "form" | null;
+  addPoint: { lat: number; lng: number } | null;
+  /** Tempat tambahan saya yang masih menunggu verifikasi (hanya terlihat oleh saya). */
+  pendingIds: string[];
   /** Jawaban pertama dari tombol di detail SPBU, melewati pertanyaan pertama. */
   reportPreset: "available" | "limited" | "empty" | null;
 
@@ -90,6 +95,11 @@ interface AppState extends Prefs {
   openPanel(p: Panel, opts?: { focusSearch?: boolean }): void;
   setSearchPin(p: { lat: number; lng: number; name: string } | null): void;
   openShare(t: { url: string; title: string; text: string; slug?: string }): void;
+  startAdd(): void;
+  setAddMode(m: "pick" | "form" | null): void;
+  setAddPoint(p: { lat: number; lng: number } | null): void;
+  endAdd(): void;
+  addPlaceLocal(place: Place, pending: boolean): void;
   closeShare(): void;
   startReport(preset: "available" | "limited" | "empty" | null): void;
   closePanel(): void;
@@ -100,6 +110,8 @@ interface AppState extends Prefs {
   showToast(text: string): void;
   hideToast(): void;
 }
+
+const MINE_KEY = "wenten-my-places";
 
 // Penanda isi status terakhir, supaya polling yang hasilnya sama tidak memicu render ulang peta dan daftar
 let lastStatusKey = "";
@@ -131,6 +143,9 @@ export const useApp = create<AppState>((set, get) => ({
   listQuery: "",
   searchPin: null,
   shareTarget: null,
+  addMode: null,
+  addPoint: null,
+  pendingIds: [],
   reportPreset: null,
 
   user: null,
@@ -140,7 +155,11 @@ export const useApp = create<AppState>((set, get) => ({
 
   applyPlaces(p) {
     const snap = decodePlaces(p);
-    set({ places: snap.places, placeById: new Map(snap.places.map((x) => [x.id, x])), fuelTypes: snap.fuelTypes });
+    // Tambahan saya yang menunggu verifikasi belum ada di snapshot publik: gabungkan, dan buang yang sudah disetujui
+    const mine = lsGet<Place[]>(MINE_KEY, []).filter((m) => !snap.places.some((x) => x.id === m.id));
+    lsSet(MINE_KEY, mine);
+    const places = [...snap.places, ...mine];
+    set({ places, placeById: new Map(places.map((x) => [x.id, x])), fuelTypes: snap.fuelTypes, pendingIds: mine.map((m) => m.id) });
   },
   applyStatus(s, via) {
     const key = JSON.stringify(s.stations);
@@ -196,6 +215,18 @@ export const useApp = create<AppState>((set, get) => ({
   openPanel: (panel, opts = {}) => set({ panel, listFocusSearch: !!opts.focusSearch, reportPreset: null }),
   setSearchPin: (searchPin) => set({ searchPin }),
   openShare: (shareTarget) => set({ shareTarget }),
+  startAdd: () => set({ addMode: "pick", addPoint: null, panel: null, selectedId: null, searchPin: null }),
+  setAddMode: (addMode) => set({ addMode }),
+  setAddPoint: (addPoint) => set({ addPoint }),
+  endAdd: () => set({ addMode: null, addPoint: null }),
+  addPlaceLocal(place, pending) {
+    const s = get();
+    if (s.placeById.has(place.id)) return;
+    const places = [...s.places, place];
+    set({ places, placeById: new Map(places.map((x) => [x.id, x])), pendingIds: pending ? [...s.pendingIds, place.id] : s.pendingIds });
+    // Yang menunggu verifikasi hanya ada di perangkat ini, simpan agar tidak hilang saat dimuat ulang
+    if (pending) lsSet(MINE_KEY, [...lsGet<Place[]>(MINE_KEY, []), place]);
+  },
   closeShare: () => set({ shareTarget: null }),
   startReport: (reportPreset) => set({ panel: "report", reportPreset }),
   closePanel: () => set({ panel: null, listFocusSearch: false }),

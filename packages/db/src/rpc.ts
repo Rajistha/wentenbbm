@@ -1,5 +1,5 @@
 // Pembungkus RPC bertipe. Nama dan parameter sama persis dengan fungsi di migrasi 0004.
-import type { FuelAvailability, QueueLevel, RpcResult, VoteType } from "@wenten/core";
+import type { FuelAvailability, PlaceTuple, QueueLevel, RpcResult, VoteType } from "@wenten/core";
 
 export interface SubmitReportArgs {
   p_station_id: string;
@@ -20,7 +20,20 @@ export interface CastVoteArgs {
   p_accuracy_m: number;
 }
 
+export interface SuggestPlaceArgs {
+  p_kind: "retailer" | "pertashop";
+  p_name: string | null;
+  p_address: string | null;
+  p_lat: number;
+  p_lng: number;
+  p_fuels: number[];
+}
+
 export interface RpcMap {
+  suggest_place: {
+    args: SuggestPlaceArgs;
+    result: RpcResult<{ id: string; status: "approved" | "quarantined"; place: PlaceTuple }>;
+  };
   submit_report: { args: SubmitReportArgs; result: RpcResult<{ report_id: string }> };
   cast_vote: { args: CastVoteArgs; result: RpcResult<{ confirms: number; disputes: number }> };
   register_visit: { args: { p_device?: string }; result: { ok: boolean } };

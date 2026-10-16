@@ -14,6 +14,8 @@ export async function POST(req: Request, ctx: RouteContext<"/api/demo/rpc/[fn]">
       return Response.json(store.demoSubmitReport(device, args));
     case "cast_vote":
       return Response.json(store.demoCastVote(device, args));
+    case "suggest_place":
+      return Response.json(store.demoSuggestPlace(device, args));
     case "register_visit":
       return Response.json(store.demoRegisterVisit(device));
     case "station_recent_reports":

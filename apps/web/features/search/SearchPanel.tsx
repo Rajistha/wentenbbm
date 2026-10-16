@@ -52,6 +52,7 @@ function Highlight({ text, q }: { text: string; q: string }): ReactNode {
 export function SearchPanel() {
   const t = useTranslations("search");
   const ts = useTranslations("status");
+  const tAdd = useTranslations("add");
   const locale = useLocale() as Locale;
   const isDesktop = useIsDesktop();
   const places = useApp((s) => s.places);
@@ -355,6 +356,16 @@ export function SearchPanel() {
             <div className="sr-empty">
               <p>{t("none", { q: q.trim() })}</p>
               <p className="caption muted">{t("noneHint")}</p>
+              <button
+                type="button"
+                className="btn"
+                onClick={() => {
+                  useApp.getState().closePanel();
+                  useApp.getState().startAdd();
+                }}
+              >
+                <Icon name="plus" /> {tAdd("addCta")}
+              </button>
             </div>
           )}
         </>

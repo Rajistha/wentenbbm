@@ -61,7 +61,8 @@
     "share": "Bagikan",
     "myLocation": "Lokasi saya",
     "zoomIn": "Perbesar",
-    "zoomOut": "Perkecil"
+    "zoomOut": "Perkecil",
+    "add": "Tambah"
   },
   "nearest": {
     "none": "Belum ada laporan SPBU tersedia dalam 15 km. Periksa lagi beberapa saat.",
@@ -194,7 +195,11 @@
     "REPORT_NOT_FOUND": "Laporan ini sudah tidak aktif.",
     "OWN_REPORT": "Anda tidak bisa memvalidasi laporan sendiri.",
     "ALREADY_VOTED": "Anda sudah memberi validasi untuk laporan ini.",
-    "NETWORK": "Gangguan jaringan. Periksa koneksi lalu coba lagi."
+    "NETWORK": "Gangguan jaringan. Periksa koneksi lalu coba lagi.",
+    "OUT_OF_BOUNDS": "Lokasi di luar Bali. Geser penanda ke daratan Bali.",
+    "TOO_CLOSE": "Sudah ada {name} sekitar {d} dari titik ini. Buka tempat itu untuk melapor.",
+    "PLACE_LIMIT": "Batas 3 tempat baru per hari tercapai. Coba lagi besok.",
+    "INVALID_PLACE": "Data tempat tidak valid. Periksa lalu coba lagi."
   },
   "banners": {
     "offline": "Anda sedang offline. Menampilkan data pukul {time}.",
@@ -371,5 +376,32 @@
     "closed": "Jalan ditutup",
     "speed": "Sekarang {c} km/jam, biasanya {f} km/jam",
     "note": "Ini kondisi jalan, belum tentu antrean BBM."
+  },
+  "add": {
+    "title": "Tambah tempat",
+    "menuShort": "Tambah",
+    "pickTitle": "Geser peta ke lokasinya",
+    "pickHint": "Letakkan penanda tepat di Pertamini atau Pertashop, lalu tekan Lanjut.",
+    "next": "Lanjut",
+    "cancel": "Batal",
+    "exists": "Sudah ada: {name} ({d} m dari titik ini). Geser sedikit atau buka tempat itu untuk melapor.",
+    "formTitle": "Detail tempat",
+    "location": "Lokasi dipilih",
+    "change": "Ubah",
+    "kind": "Jenis",
+    "kind_retailer": "Pertamini / pengecer",
+    "kind_pertashop": "Pertashop",
+    "name": "Nama (opsional)",
+    "namePh": "Contoh: Pak Made",
+    "fuels": "BBM yang dijual",
+    "landmark": "Patokan (opsional)",
+    "landmarkPh": "Contoh: depan warung, sebelah banjar",
+    "submit": "Tambahkan tempat",
+    "sending": "Menyimpan…",
+    "added": "Terima kasih, tempat ditambahkan.",
+    "pending": "Terima kasih. Tempat ini akan diperiksa dulu sebelum tampil untuk semua orang.",
+    "pendingBadge": "Menunggu verifikasi. Untuk sementara hanya terlihat olehmu.",
+    "hint": "Hanya untuk Pertamini, Pertashop, dan pengecer BBM. SPBU resmi sudah terdata.",
+    "addCta": "Tambah tempat"
   }
 }

@@ -106,8 +106,12 @@ export type RpcErrorCode =
   | "REPORT_NOT_FOUND"
   | "OWN_REPORT"
   | "ALREADY_VOTED"
+  | "OUT_OF_BOUNDS"
+  | "TOO_CLOSE"
+  | "PLACE_LIMIT"
+  | "INVALID_PLACE"
   | "NETWORK";
 
 export type RpcResult<T = Record<string, unknown>> =
   | ({ ok: true } & T)
-  | { ok: false; code: RpcErrorCode; distance_m?: number };
+  | { ok: false; code: RpcErrorCode; distance_m?: number; near_name?: string };

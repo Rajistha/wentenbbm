@@ -71,6 +71,9 @@ export function InfoMenu() {
               <button type="button" className="btn" onClick={() => { setOpen(false); useApp.getState().openPanel("layers"); }}>
                 <Icon name="layers" /> {tDock("layers")}
               </button>
+              <button type="button" className="btn" onClick={() => { setOpen(false); useApp.getState().startAdd(); }}>
+                <Icon name="plus" /> {tDock("add")}
+              </button>
               <button type="button" className="btn" onClick={() => { setOpen(false); void share("/", tShare("text")); }}>
                 <Icon name="share" /> {tDock("share")}
               </button>

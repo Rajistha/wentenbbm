@@ -59,7 +59,7 @@ export function LocationCard() {
   if (hidden || user) return null;
   if (geoState === "prompt") {
     return (
-      <div className="float-card banner" role="region" aria-label={t("promptTitle")}>
+      <div className="float-card banner banner-inline" role="region" aria-label={t("promptTitle")}>
         <Icon name="locate" />
         <div className="grow">
           <strong>{t("promptTitle")}</strong>
@@ -78,7 +78,7 @@ export function LocationCard() {
   }
   if (geoState === "denied" || geoState === "unavailable") {
     return (
-      <div className="float-card banner" role="status">
+      <div className="float-card banner banner-inline" role="status">
         <Icon name="locate" />
         <div className="grow">
           {t("denied")}

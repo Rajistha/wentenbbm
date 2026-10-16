@@ -325,11 +325,11 @@ a {
   line-height: 18px;
   color: var(--text-muted);
   min-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  overflow: visible;
 }
 .live-dot {
+  /* ruang untuk cincin denyut (5 px) agar tidak terpotong */
+  margin: 0 5px;
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -2376,4 +2376,169 @@ html {
 }
 .traffic-credit a {
   color: inherit;
+}
+
+/* ───────── Tambah tempat ───────── */
+.picking .overlay,
+.picking .map-fabs,
+.picking .legend-desktop {
+  display: none;
+}
+.add-top {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  left: 12px;
+  right: 12px;
+  z-index: 8;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: grid;
+  gap: 2px;
+}
+.add-pin {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 7;
+  transform: translate(-50%, -100%);
+  color: var(--accent);
+  pointer-events: none;
+  filter: drop-shadow(0 3px 4px rgb(15 23 42 / 0.35));
+}
+.add-pin svg {
+  fill: #fff;
+}
+.add-pin-dot {
+  position: absolute;
+  left: 50%;
+  bottom: -3px;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px #fff;
+}
+.add-bottom {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 8;
+  max-width: 520px;
+  margin: 0 auto;
+  display: grid;
+  gap: 10px;
+}
+.add-bottom .btn-lg {
+  min-height: 56px;
+  border-radius: 16px;
+  font-size: 17px;
+}
+.text-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--bg);
+}
+.chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ───────── Rapikan tumpukan kartu di bawah peta ───────── */
+.bottom-cluster {
+  gap: 10px;
+}
+.strip-empty {
+  gap: 10px;
+  padding: 12px 14px;
+}
+.strip-empty-title {
+  font-size: 15px;
+  line-height: 22px;
+}
+.strip-empty .strip-summary {
+  margin-top: 1px;
+}
+.strip-empty .btn {
+  min-height: 40px;
+  white-space: nowrap;
+}
+.banner-inline .grow > div:last-child {
+  margin-top: 8px;
+}
+.banner-inline .btn {
+  min-height: 40px;
+}
+.dock-secondary .btn,
+.dock-list {
+  min-height: 52px;
+  border-radius: var(--r-md);
+}
+
+@media (min-width: 640px) {
+  .strip-empty {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .strip-empty .btn {
+    align-self: center;
+    flex-shrink: 0;
+  }
+  .banner-inline {
+    align-items: center;
+  }
+  .banner-inline .grow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+  }
+  .banner-inline .grow > strong {
+    flex-basis: 100%;
+  }
+  .banner-inline .grow > div:last-child {
+    margin-top: 0 !important;
+    display: flex;
+    gap: 8px;
+  }
+}
+
+/* Desktop: jaga jarak dari legenda di kiri bawah (lebar ±230 px) pada layar yang tidak terlalu lebar */
+@media (min-width: 1024px) {
+  .bottom-cluster {
+    margin-left: max(262px, calc(50% - 320px));
+    margin-right: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bottom-cluster {
+    max-width: 680px;
+    margin-left: max(262px, calc(50% - 340px));
+  }
+  .dock-secondary {
+    gap: 8px;
+  }
+  .dock-secondary .btn {
+    padding: 0 12px;
+    font-size: 14px;
+  }
+  .dock-main {
+    min-width: 0;
+  }
+}
+
+.live-text {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

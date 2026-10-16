@@ -11,7 +11,7 @@ export class RpcError extends Error {
   }
 }
 
-const NEEDS_SESSION: RpcName[] = ["submit_report", "cast_vote"];
+const NEEDS_SESSION: RpcName[] = ["submit_report", "cast_vote", "suggest_place"];
 
 /** Panggil fungsi RPC: Supabase di produksi, /api/demo/rpc di mode demo. */
 export async function callRpc<N extends RpcName>(name: N, args: RpcMap[N]["args"]): Promise<RpcMap[N]["result"]> {

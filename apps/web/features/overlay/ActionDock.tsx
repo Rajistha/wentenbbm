@@ -69,6 +69,9 @@ export function ActionDock() {
         <button type="button" className="btn" onClick={() => openPanel("layers")}>
           <Icon name="layers" /> {t("dock.layers")}
         </button>
+        <button type="button" className="btn" onClick={() => useApp.getState().startAdd()}>
+          <Icon name="plus" /> {t("dock.add")}
+        </button>
         <button
           type="button"
           className="btn"

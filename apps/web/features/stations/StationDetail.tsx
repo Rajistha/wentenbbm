@@ -24,6 +24,7 @@ export function StationDetail() {
   const fuelTypes = useApp((s) => s.fuelTypes);
   const user = useApp((s) => s.user);
   const demo = useApp((s) => s.demo);
+  const isPending = useApp((s) => (s.selectedId ? s.pendingIds.includes(s.selectedId) : false));
   const readOnly = useApp((s) => s.readOnly);
   const highlight = useApp((s) => s.highlightNavigate);
   const fromList = useApp((s) => s.detailFromList);
@@ -84,6 +85,11 @@ export function StationDetail() {
 
   return (
     <BottomSheet label={place.name} header={header} onClose={() => select(null)} initial="half">
+      {isPending && (
+        <p className="form-error" role="status" style={{ marginTop: 12 }}>
+          {t("add.pendingBadge")}
+        </p>
+      )}
       <StationPhoto slug={place.slug} name={place.name} variant="banner" />
       <div className="detail-status">
         <StatusGlyph status={overall} size={28} confirmed={status?.confirmed} stale={fr === "stale"} />

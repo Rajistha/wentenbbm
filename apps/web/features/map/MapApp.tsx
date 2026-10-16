@@ -9,6 +9,7 @@ import { useIsDesktop } from "../common/useMedia";
 import { ActionDock, MapFabs } from "../overlay/ActionDock";
 import { AnnouncementBanner, SystemBanners, Toast } from "../overlay/Banners";
 import { InfoMenu } from "../overlay/InfoMenu";
+import { AddPlacePicker } from "../place/AddPlace";
 import { MapLegend } from "../overlay/MapLegend";
 import { LocationCard, NearbyPrompt } from "../overlay/NearbyPrompt";
 import { StatusStrip } from "../overlay/StatusStrip";
@@ -22,12 +23,14 @@ const StationDetail = dynamic(() => import("../stations/StationDetail").then((m)
 const ReportSheet = dynamic(() => import("../report/ReportSheet").then((m) => m.ReportSheet), { ssr: false });
 const SearchPanel = dynamic(() => import("../search/SearchPanel").then((m) => m.SearchPanel), { ssr: false });
 const LayerPanel = dynamic(() => import("../overlay/LayerPanel").then((m) => m.LayerPanel), { ssr: false });
+const AddPlaceSheet = dynamic(() => import("../place/AddPlace").then((m) => m.AddPlaceSheet), { ssr: false });
 const ShareModal = dynamic(() => import("../share/ShareModal").then((m) => m.ShareModal), { ssr: false });
 
 /** Layar utama: peta penuh layar dengan kontrol mengambang (DESIGN.md 7). */
 export function MapApp({ initialSlug }: { initialSlug?: string }) {
   const panel = useApp((s) => s.panel);
   const shareOpen = useApp((s) => !!s.shareTarget);
+  const addMode = useApp((s) => s.addMode);
   const selectedId = useApp((s) => s.selectedId);
   const placesLoaded = useApp((s) => s.places.length > 0);
   const isDesktop = useIsDesktop();
@@ -52,7 +55,7 @@ export function MapApp({ initialSlug }: { initialSlug?: string }) {
   const showDock = isDesktop || !sheetOpen;
 
   return (
-    <div className={`app-root${drawerOpen ? " drawer-open" : ""}`}>
+    <div className={`app-root${drawerOpen ? " drawer-open" : ""}${addMode === "pick" ? " picking" : ""}`}>
       <StationMap />
 
       <div className="overlay">
@@ -88,6 +91,8 @@ export function MapApp({ initialSlug }: { initialSlug?: string }) {
       {panel === "report" && selectedId && <ReportSheet />}
       {panel === "layers" && <LayerPanel />}
       {panel === "search" && <SearchPanel />}
+      {addMode === "pick" && <AddPlacePicker />}
+      {addMode === "form" && <AddPlaceSheet />}
       {shareOpen && <ShareModal />}
       <Toast />
     </div>

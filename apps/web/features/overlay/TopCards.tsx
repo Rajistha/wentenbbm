@@ -34,8 +34,10 @@ export function IdentityCard({ children }: { children?: React.ReactNode }) {
       <Logo size={26} />
       <span className="live" role="status">
         <span className={`live-dot ${on ? "on" : "off"}`} aria-hidden="true" />
-        {label}
-        {time && <span className="identity-time">{` · ${t("updated", { time })}`}</span>}
+        <span className="live-text">
+          {label}
+          {time && <span className="identity-time">{` · ${t("updated", { time })}`}</span>}
+        </span>
       </span>
       {demo && <span className="demo-badge">{t("demo")}</span>}
       {children && <span className="identity-menu">{children}</span>}

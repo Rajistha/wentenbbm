@@ -27,9 +27,11 @@ export function StatusStrip() {
   if (counts[0] + counts[1] + counts[2] === 0) {
     return (
       <div className="float-card strip strip-empty">
-        <div className="strip-empty-title">{t("strip.emptyTitle")}</div>
-        <div className="strip-summary" style={{ display: "block" }}>
-          {t("strip.emptyBody", { n: formatNumber(total, locale) })}
+        <div className="strip-empty-text">
+          <div className="strip-empty-title">{t("strip.emptyTitle")}</div>
+          <div className="strip-summary" style={{ display: "block" }}>
+            {t("strip.emptyBody", { n: formatNumber(total, locale) })}
+          </div>
         </div>
         <button type="button" className="btn btn-primary" onClick={() => openPanel("list")}>
           {t("strip.emptyCta")}

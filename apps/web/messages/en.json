@@ -61,7 +61,8 @@
     "share": "Share",
     "myLocation": "My location",
     "zoomIn": "Zoom in",
-    "zoomOut": "Zoom out"
+    "zoomOut": "Zoom out",
+    "add": "Add"
   },
   "nearest": {
     "none": "No stations reported available within 15 km yet. Check again shortly.",
@@ -194,7 +195,11 @@
     "REPORT_NOT_FOUND": "This report is no longer active.",
     "OWN_REPORT": "You cannot validate your own report.",
     "ALREADY_VOTED": "You already validated this report.",
-    "NETWORK": "Network problem. Check your connection and try again."
+    "NETWORK": "Network problem. Check your connection and try again.",
+    "OUT_OF_BOUNDS": "That location is outside Bali. Move the marker onto Bali's land.",
+    "TOO_CLOSE": "{name} is already about {d} from this point. Open it to report.",
+    "PLACE_LIMIT": "You reached the limit of 3 new places per day. Try again tomorrow.",
+    "INVALID_PLACE": "Invalid place data. Check and try again."
   },
   "banners": {
     "offline": "You are offline. Showing data from {time}.",
@@ -371,5 +376,32 @@
     "closed": "Road closed",
     "speed": "Now {c} km/h, usually {f} km/h",
     "note": "This is road traffic, not necessarily a fuel queue."
+  },
+  "add": {
+    "title": "Add a place",
+    "menuShort": "Add",
+    "pickTitle": "Move the map to the spot",
+    "pickHint": "Put the marker right on the Pertamini or Pertashop, then tap Next.",
+    "next": "Next",
+    "cancel": "Cancel",
+    "exists": "Already there: {name} ({d} m from this point). Move slightly or open it to report.",
+    "formTitle": "Place details",
+    "location": "Selected location",
+    "change": "Change",
+    "kind": "Type",
+    "kind_retailer": "Pertamini / retailer",
+    "kind_pertashop": "Pertashop",
+    "name": "Name (optional)",
+    "namePh": "E.g. Pak Made",
+    "fuels": "Fuels sold",
+    "landmark": "Landmark (optional)",
+    "landmarkPh": "E.g. in front of the warung, next to the banjar",
+    "submit": "Add place",
+    "sending": "Saving…",
+    "added": "Thank you, the place was added.",
+    "pending": "Thank you. This place will be reviewed before it shows for everyone.",
+    "pendingBadge": "Awaiting review. For now only you can see it.",
+    "hint": "For Pertamini, Pertashop and fuel retailers only. Official stations are already listed.",
+    "addCta": "Add a place"
   }
 }

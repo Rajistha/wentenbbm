@@ -182,6 +182,7 @@ export function StationMap() {
     map.on("style.load", onStyle);
 
     map.on("click", "stations", (e) => {
+      if (useApp.getState().addMode) return;
       const props = e.features?.[0]?.properties;
       const id = props?.id as string | undefined;
       if (!id) return;

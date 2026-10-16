@@ -539,3 +539,48 @@ export function demoRegisterVisit(device: string): Json {
   }
   return { ok: true };
 }
+
+const placeLog = new Map<string, number[]>();
+
+/** Meniru suggest_place(): batas harian, jarak minimal, dan batas wilayah Bali. */
+export function demoSuggestPlace(device: string, a: Json): Json {
+  const s = state();
+  const kind = a.p_kind === "pertashop" ? "pertashop" : a.p_kind === "retailer" ? "retailer" : null;
+  const lat = Number(a.p_lat);
+  const lng = Number(a.p_lng);
+  if (!kind || !Number.isFinite(lat) || !Number.isFinite(lng)) return { ok: false, code: "INVALID_PLACE" };
+  if (lat < -8.88 || lat > -8.03 || lng < 114.4 || lng > 115.75) return { ok: false, code: "OUT_OF_BOUNDS" };
+  const now = Date.now();
+  const mine = (placeLog.get(device) ?? []).filter((t) => now - t < 24 * 60 * MIN);
+  if (mine.length >= 3) return { ok: false, code: "PLACE_LIMIT" };
+  let nearest: { p: Place; d: number } | null = null;
+  for (const p of s.places) {
+    const d = distanceM({ lat, lng }, p);
+    if (!nearest || d < nearest.d) nearest = { p, d };
+  }
+  if (nearest && nearest.d <= 50) return { ok: false, code: "TOO_CLOSE", near_name: nearest.p.name, distance_m: Math.round(nearest.d) };
+
+  const base = String(a.p_name ?? "").trim().slice(0, 60);
+  const prefix = kind === "retailer" ? "Pertamini" : "Pertashop";
+  const name = !base ? prefix : new RegExp(prefix, "i").test(base) || (kind === "retailer" && /pengecer|eceran|pom mini/i.test(base)) ? base : `${prefix} ${base}`;
+  const fuels = Array.isArray(a.p_fuels) ? (a.p_fuels as number[]).filter((f) => DEMO_FUEL_TYPES.some((x) => x.id === f)) : [];
+  const id = uid();
+  const place: Place = {
+    id,
+    slug: `${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}-${id.slice(0, 5)}`,
+    kind,
+    brand: kind === "pertashop" ? "pertamina" : "none",
+    code: null,
+    name,
+    lat: Math.round(lat * 1e6) / 1e6,
+    lng: Math.round(lng * 1e6) / 1e6,
+    regionId: nearest?.p.regionId ?? null,
+    is24h: false,
+    fuelIds: fuels.length ? fuels : [1],
+    address: typeof a.p_address === "string" && a.p_address.trim() ? a.p_address.trim().slice(0, 120) : null,
+  };
+  s.places.push(place);
+  s.byId.set(id, place);
+  placeLog.set(device, [...mine, now]);
+  return { ok: true, id, status: nearest && nearest.d > 3000 ? "quarantined" : "approved", place: encodePlace(place) };
+}
