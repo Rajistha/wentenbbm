@@ -60,9 +60,12 @@ export function formatNumber(n: number, locale: Locale = "id"): string {
 
 export type Freshness = "new" | "normal" | "stale" | "expired";
 
-/** PRD 8 "Kesegaran". */
+/**
+ * PRD 8 "Kesegaran". Lebih dari 90 menit selalu "stale" (mungkin sudah berubah); kapan status benar-benar hilang
+ * ditentukan server (jendela dan peluruhan di app_settings), bukan klien. "expired" hanya untuk tanpa laporan.
+ */
 export function freshness(ageMin: number | null): Freshness {
-  if (ageMin == null || ageMin > 120) return "expired";
+  if (ageMin == null) return "expired";
   if (ageMin <= 30) return "new";
   if (ageMin <= 90) return "normal";
   return "stale";

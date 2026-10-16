@@ -2759,3 +2759,56 @@ revoke execute on function admin_delete_profile_reports(uuid, int) from public, 
 grant execute on function admin_delete_profile_reports(uuid, int) to authenticated;
 
 
+-- ===== 0021_longer_status_memory.sql =====
+-- Status SPBU bertahan lebih lama di awal peluncuran, saat laporan masih jarang.
+-- Sebelumnya satu laporan memudar menjadi "belum ada laporan" setelah ±96 menit (bobot exp(-umur/60) < 0,2),
+-- padahal daftar "Laporan terbaru" masih menampilkannya 24 jam. Sekarang satu laporan tetap terbaca ±3,8 jam
+-- (bobot exp(-umur/120) >= 0,15), dan klien menandainya "Mungkin sudah berubah" setelah 90 menit.
+-- Nilai bisa disetel lagi kapan saja di /admin → Pengaturan.
+set search_path = public, extensions;
+
+update app_settings set value = '240',  updated_at = now() where key = 'status_window_min';
+update app_settings set value = '120',  updated_at = now() where key = 'decay_tau_min';
+update app_settings set value = '0.15', updated_at = now() where key = 'min_weight';
+
+-- Peluruhan berkala ikut jendela baru (sebelumnya tetap 3 jam)
+create or replace function decay_all_statuses() returns int
+language plpgsql security definer set search_path = public as $$
+declare
+  v_id uuid;
+  v_n  int := 0;
+  v_window interval := make_interval(mins => setting_num('status_window_min')::int);
+begin
+  for v_id in
+    select station_id from reports where created_at > now() - v_window
+    union
+    select station_id from station_status where overall_status <> 'unknown' or queue_level is not null
+  loop
+    perform recompute_station_status(v_id);
+    v_n := v_n + 1;
+  end loop;
+  return v_n;
+end;
+$$;
+revoke execute on function decay_all_statuses() from public, anon, authenticated;
+
+-- Hitung ulang sekarang juga, supaya laporan yang sudah masuk langsung terbaca
+select decay_all_statuses();
+
+
+-- ===== 0022_status_24h.sql =====
+-- Status SPBU bertahan sampai 24 jam sejak laporan terakhir (jendela 1440 menit).
+-- Peluruhan 360 menit: laporan 6 jam lalu masih berbobot 0,37 dibanding laporan baru, jadi laporan terbaru tetap
+-- menang bila bertentangan dengan yang lama. Ambang 0,015 supaya satu laporan lolos sampai batas 24 jam
+-- (exp(-1440/360) = 0,018). Klien menandai laporan lebih dari 90 menit sebagai "Mungkin sudah berubah".
+-- Setel kapan saja di /admin → Pengaturan (status_window_min, decay_tau_min, min_weight).
+set search_path = public, extensions;
+
+update app_settings set value = '1440',  updated_at = now() where key = 'status_window_min';
+update app_settings set value = '360',   updated_at = now() where key = 'decay_tau_min';
+update app_settings set value = '0.015', updated_at = now() where key = 'min_weight';
+
+-- Hitung ulang sekarang juga (decay_all_statuses sudah mengikuti status_window_min sejak 0021)
+select decay_all_statuses();
+
+

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { useApp } from "@/lib/store";
-import { useOpenShareModal, useQuickShare } from "../share/useQuickShare";
+import { useQuickShare } from "../share/useQuickShare";
 import { LegendList } from "./MapLegend";
 
 /** Tombol info: bantuan, legenda, data, tentang, bahasa, tema. */
@@ -16,9 +16,7 @@ export function InfoMenu() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const quickShare = useQuickShare();
-  const openShareModal = useOpenShareModal();
   const tDock = useTranslations("dock");
-  const tSnap = useTranslations("snap");
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
@@ -89,9 +87,6 @@ export function InfoMenu() {
               <div className="label">{t("legend")}</div>
               <LegendList />
             </div>
-            <button type="button" className="btn" onClick={() => { setOpen(false); openShareModal(); }}>
-              <Icon name="share" /> {tSnap("chooseFormat")}
-            </button>
             <Link href="/data" onClick={() => setOpen(false)} style={{ minHeight: 44, display: "flex", alignItems: "center" }}>
               {t("data")} <Icon name="next" size={16} />
             </Link>

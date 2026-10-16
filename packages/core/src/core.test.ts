@@ -49,7 +49,8 @@ describe("format", () => {
     expect(freshness(10)).toBe("new");
     expect(freshness(60)).toBe("normal");
     expect(freshness(100)).toBe("stale");
-    expect(freshness(130)).toBe("expired");
+    expect(freshness(130)).toBe("stale");
+    expect(freshness(null)).toBe("expired");
   });
 });
 

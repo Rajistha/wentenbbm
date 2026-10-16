@@ -36,9 +36,3 @@ export function useQuickShare() {
     openModal();
   };
 }
-
-/** Buka modal pilihan format (Cerita, Postingan, Pesan) secara langsung. */
-export function useOpenShareModal() {
-  const tShare = useTranslations("share");
-  return () => useApp.getState().openShare({ url: "/", title: "Wenten BBM", text: tShare("text") });
-}

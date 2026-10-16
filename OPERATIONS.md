@@ -55,6 +55,8 @@ Berkas ada di `packages/db/supabase/migrations/`. Jalankan berurutan di SQL Edit
 | 0018 | Sakelar syarat radius 300 m (tab Ringkasan di /admin) |
 | 0019 | Harga resmi Pertamina sebagai acuan (tab Pengaturan di /admin) |
 | 0020 | Admin menghapus laporan palsu secara permanen (tab Laporan) |
+| 0021 | Fungsi peluruhan mengikuti jendela status; nilai awal 4 jam |
+| 0022 | Status SPBU bertahan sampai 24 jam (jendela 1440, peluruhan 360, ambang 0,015); setel di /admin → Pengaturan |
 
 ## 5. Syarat radius 300 m
 

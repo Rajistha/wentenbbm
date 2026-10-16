@@ -507,7 +507,6 @@
     "copied": "Text copied.",
     "copyText": "Copy text and link",
     "msgText": "Fuel in Bali right now: {n} of {total} stations have fuel, by live reports from residents. Check before you go, and report what you see:",
-    "msgNoData": "Bali fuel map from live resident reports. Check which stations have fuel before you go, and report what you see:",
-    "chooseFormat": "Choose share image format"
+    "msgNoData": "Bali fuel map from live resident reports. Check which stations have fuel before you go, and report what you see:"
   }
 }
