@@ -54,6 +54,8 @@ export interface StationStatus {
   fuels: FuelStatusEntry[];
   /** Laporan aktif dalam 3 jam terakhir; undefined = server belum mengirim (migrasi 0011 belum dijalankan). */
   reports3h?: number;
+  /** Jumlah orang yang sedang mengantre (pelacak antrean); undefined = migrasi 0014 belum dijalankan. */
+  queuing?: number;
 }
 
 /** Ringkasan se-Bali per jenis BBM: [tersedia, terbatas, habis, belum ada laporan]. */
@@ -114,6 +116,8 @@ export type RpcErrorCode =
   | "TOO_CLOSE"
   | "PLACE_LIMIT"
   | "INVALID_PLACE"
+  | "NOT_FOUND"
+  | "FORBIDDEN"
   | "NETWORK";
 
 export type RpcResult<T = Record<string, unknown>> =

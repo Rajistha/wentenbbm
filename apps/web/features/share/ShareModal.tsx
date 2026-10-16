@@ -2,6 +2,7 @@
 import QRCode from "qrcode";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "@/i18n/navigation";
 import { useApp } from "@/lib/store";
 import { Icon } from "../common/Icon";
 
@@ -105,6 +106,9 @@ export function ShareModal() {
               <Icon name="share" size={16} /> {t("viaApp")}
             </button>
           )}
+          <Link className="btn" href={target.slug ? `/poster?spbu=${target.slug}` : "/poster"} onClick={close}>
+            <Icon name="printer" size={16} /> {t("poster")}
+          </Link>
           {qr && (
             <a className="btn" href={qr} download={`wenten-bbm-${target.slug ?? "qr"}.png`}>
               <Icon name="next" size={16} style={{ transform: "rotate(90deg)" }} /> {t("downloadQr")}

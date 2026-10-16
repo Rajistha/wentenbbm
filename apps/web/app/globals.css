@@ -2552,3 +2552,213 @@ html {
   color: #b45309;
   font-weight: 600;
 }
+
+/* Pelacak antrean */
+.queue-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  pointer-events: auto;
+  border-left: 4px solid var(--accent);
+}
+.queue-bar-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.queue-bar-top .grow {
+  min-width: 0;
+}
+.queue-bar-top .caption {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.queue-bar-actions {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr auto;
+  gap: 6px;
+}
+
+/* Baris aksi kecil di detail SPBU */
+.station-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 4px;
+}
+
+/* Harga */
+.price-fields {
+  display: grid;
+  gap: 8px;
+}
+.price-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+}
+.price-input {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--text-muted);
+}
+.price-input input {
+  width: 84px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 16px;
+  color: var(--text);
+  text-align: right;
+}
+
+/* Usulan koreksi */
+.fix-kinds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.fix-note {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  font: inherit;
+  font-size: 16px;
+  resize: vertical;
+}
+
+/* Misi pelapor */
+.mission-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: var(--r-md);
+  background: var(--surface-tint);
+  border: 1px solid var(--border);
+}
+.mission-card .grow {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Panel admin */
+.adm {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px;
+  min-height: 100dvh;
+}
+.adm-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.adm-top h1 {
+  margin: 0;
+  font-size: 20px;
+}
+.adm-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.adm-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.adm-card,
+.adm-box {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+.adm-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.adm-num {
+  font-size: 28px;
+  font-weight: 700;
+}
+.adm-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.adm-row .grow {
+  flex: 1;
+  min-width: 0;
+}
+.adm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+.adm-login,
+.adm-form {
+  display: grid;
+  gap: 10px;
+  max-width: 420px;
+  margin-bottom: 16px;
+}
+.adm-login label,
+.adm-form label {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+}
+.adm-login input,
+.adm-form input,
+.adm-form textarea,
+.adm-form select,
+.adm-set {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  font: inherit;
+  font-size: 16px;
+  background: var(--surface);
+}
+.adm-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.adm-set {
+  width: 120px;
+}
+@media (max-width: 640px) {
+  .adm-row {
+    flex-direction: column;
+  }
+  .adm-actions {
+    justify-content: flex-start;
+  }
+}

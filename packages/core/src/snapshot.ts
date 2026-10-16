@@ -40,6 +40,7 @@ export type StationStatusTuple = [
   string | null,
   FuelStatusTuple[],
   number?, // laporan 3 jam terakhir
+  number?, // sedang antre
 ];
 
 export interface PlacesPayload {
@@ -55,6 +56,8 @@ export interface StatusPayload {
   reports_total: number;
   /** Laporan aktif dalam 24 jam terakhir (migrasi 0011). */
   reports_24h?: number;
+  /** Orang yang sedang mengantre se-Bali (migrasi 0014). */
+  queuing_now?: number;
   summary: Record<string, SummaryCounts>;
   stations: StationStatusTuple[];
 }
@@ -88,7 +91,7 @@ export function encodeFuelType(f: FuelType): FuelTypeTuple {
 }
 
 export function decodeStationStatus(t: StationStatusTuple): StationStatus {
-  const [id, overall, confirmed, queue, waitLow, waitHigh, lastReportAt, fuels, reports3h] = t;
+  const [id, overall, confirmed, queue, waitLow, waitHigh, lastReportAt, fuels, reports3h, queuing] = t;
   return {
     id,
     overall,
@@ -98,6 +101,7 @@ export function decodeStationStatus(t: StationStatusTuple): StationStatus {
     waitHigh,
     lastReportAt,
     ...(reports3h != null ? { reports3h } : {}),
+    ...(queuing != null ? { queuing } : {}),
     fuels: fuels.map(([fuelTypeId, status, c, at]) => ({
       fuelTypeId,
       status,
@@ -118,6 +122,7 @@ export function encodeStationStatus(s: StationStatus): StationStatusTuple {
     s.lastReportAt,
     s.fuels.map((f) => [f.fuelTypeId, f.status, f.confirmed, f.lastReportAt]),
     ...(s.reports3h != null ? [s.reports3h] : []),
+    ...(s.queuing != null ? [s.queuing] : []),
   ] as StationStatusTuple;
 }
 

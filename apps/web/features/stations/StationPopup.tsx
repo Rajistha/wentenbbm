@@ -7,7 +7,7 @@ import { RelativeTime, useNow } from "../common/RelativeTime";
 import { StatusGlyph } from "../common/StatusGlyph";
 import { NavigateButton } from "./NavigateButton";
 import { useFuelName, useStationStatus } from "./hooks";
-import { OpeningNote, ReportCountNote } from "./StationNotes";
+import { OpeningNote, QueuingNote, ReportCountNote } from "./StationNotes";
 
 /** Popup ringkas yang menempel pada penanda (desktop). */
 export function StationPopup({ id }: { id: string }) {
@@ -53,6 +53,7 @@ export function StationPopup({ id }: { id: string }) {
         <div className="caption muted">{t("detail.noReport")}</div>
       )}
       <OpeningNote place={place} />
+      <QueuingNote status={status} />
       {status && status.fuels.length > 0 && (
         <div className="caption">
           {status.fuels

@@ -10,7 +10,10 @@ import { QueueIndicator } from "../common/QueueIndicator";
 import { RelativeTime, useNow } from "../common/RelativeTime";
 import { StatusGlyph } from "../common/StatusGlyph";
 import { NavigateButton } from "./NavigateButton";
-import { OpeningNote, ReportCountNote } from "./StationNotes";
+import { FavoriteButton } from "./FavoriteButton";
+import { QueueJoin } from "../queue/QueueBar";
+import { formatRupiah, StationActions, useStationPrices } from "./StationActions";
+import { OpeningNote, QueuingNote, ReportCountNote } from "./StationNotes";
 import { StationPhoto } from "./StationPhoto";
 import { TrafficRow } from "./TrafficRow";
 import { RecentReports } from "./RecentReports";
@@ -35,6 +38,7 @@ export function StationDetail() {
   const share = useShare();
   const now = useNow();
   const [hint, setHint] = useState<string | null>(null);
+  const prices = useStationPrices(id).data;
 
   if (!place) return null;
   const overall: FuelStatus = status?.overall ?? "unknown";
@@ -75,10 +79,12 @@ export function StationDetail() {
             .join(" · ")}
         </div>
         <OpeningNote place={place} />
+        <QueuingNote status={status} />
         <div className="caption muted">
           {[place.address, user ? formatDistance(distanceM(user, place), locale) : null].filter(Boolean).join(" · ")}
         </div>
       </div>
+      <FavoriteButton id={place.id} />
       <button type="button" className="btn btn-icon btn-ghost" aria-label={t("detail.close")} onClick={() => select(null)}>
         <Icon name="close" />
       </button>
@@ -122,7 +128,14 @@ export function StationDetail() {
             const stale = freshness(ageMinutes(fs?.lastReportAt, now)) === "stale";
             return (
               <tr key={f.id}>
-                <td>{f.name}</td>
+                <td>
+                  {f.name}
+                  {prices?.get(f.id) && (
+                    <div className="caption muted tnum" title={t("more.priceFrom", { n: prices.get(f.id)!.n })}>
+                      {formatRupiah(prices.get(f.id)!.price, locale)}
+                    </div>
+                  )}
+                </td>
                 <td>
                   <span className="status-inline">
                     <StatusGlyph status={st} size={15} confirmed={fs?.confirmed} stale={stale} />
@@ -148,6 +161,7 @@ export function StationDetail() {
       </p>
 
       {place.kind !== "terminal" && <TrafficRow slug={place.slug} />}
+      <QueueJoin place={place} />
 
       <div className="action-row">
         <NavigateButton place={place} highlight={highlight} withMenu />
@@ -172,6 +186,7 @@ export function StationDetail() {
         </button>
         {!geo.ok && <p className="caption muted" style={{ margin: "8px 0 0" }}>{t("detail.reportNeedNear")}</p>}
       </section>
+      <StationActions place={place} />
       {hint && (
         <p className="form-error" role="status">
           {hint}

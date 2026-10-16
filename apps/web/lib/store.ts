@@ -47,6 +47,8 @@ interface AppState extends Prefs {
   reportsTotal: number;
   /** null = server belum mengirim (migrasi 0011 belum dijalankan). */
   reports24h: number | null;
+  /** Orang yang sedang mengantre se-Bali; null = migrasi 0014 belum dijalankan. */
+  queuingNow: number | null;
   /** null = server belum mengirim angka pengunjung (migrasi 0007 belum dijalankan). */
   visitorsTotal: number | null;
   readOnly: boolean;
@@ -128,6 +130,7 @@ export const useApp = create<AppState>((set, get) => ({
   onlineNow: 0,
   reportsTotal: 0,
   reports24h: null,
+  queuingNow: null,
   visitorsTotal: null,
   readOnly: false,
   demo: false,
@@ -174,6 +177,7 @@ export const useApp = create<AppState>((set, get) => ({
       onlineNow: s.online_now,
       reportsTotal: s.reports_total,
       reports24h: s.reports_24h ?? get().reports24h,
+      queuingNow: s.queuing_now ?? get().queuingNow,
       visitorsTotal: s.visitors_total ?? get().visitorsTotal,
       readOnly: !!s.read_only,
       demo: !!s.demo,

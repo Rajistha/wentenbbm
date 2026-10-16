@@ -8,7 +8,9 @@ import {
   formatRelative,
   freshness,
   googleMapsDirToPlaceUrl,
+  bestBets,
   REGION_NAMES,
+  regionNeeds,
   searchPlaces,
   statusRank,
   type Locale,
@@ -16,12 +18,13 @@ import {
 } from "@wenten/core";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useFavorites } from "@/lib/favorites";
 import { useApp } from "@/lib/store";
 import { BottomSheet, type Snap } from "../common/BottomSheet";
 import { RelativeTime, useNow } from "../common/RelativeTime";
 import { StatusGlyph } from "../common/StatusGlyph";
 import { NavigateButton } from "./NavigateButton";
-import { OpeningNote, ReportCountNote } from "./StationNotes";
+import { OpeningNote, QueuingNote, ReportCountNote } from "./StationNotes";
 import { StationPhoto } from "./StationPhoto";
 import { useFuelName, useGeofence, useShare } from "./hooks";
 import { useVisiblePlaces } from "./selectors";
@@ -42,6 +45,8 @@ export function StationList() {
   const { closePanel, select, setPrefs } = useApp.getState();
   const [q, setQ] = useState(() => useApp.getState().listQuery);
   const [sort, setSort] = useState<Sort>("distance");
+  const [favOnly, setFavOnly] = useState(false);
+  const favIds = useFavorites((s) => s.ids);
   const [limit, setLimit] = useState(PAGE);
   const [snap, setSnap] = useState<Snap>("half");
   const searchRef = useRef<HTMLInputElement>(null);
@@ -53,10 +58,10 @@ export function StationList() {
   useEffect(() => {
     if (focusSearch) searchRef.current?.focus();
   }, [focusSearch]);
-  useEffect(() => setLimit(PAGE), [q, sort, fuelFilter, onlyAvailable]);
+  useEffect(() => setLimit(PAGE), [q, sort, fuelFilter, onlyAvailable, favOnly]);
 
   const rows = useMemo(() => {
-    const found = searchPlaces(visible, q, REGION_NAMES);
+    const found = searchPlaces(visible, q, REGION_NAMES).filter((p) => !favOnly || favIds.includes(p.id));
     const withMeta = found.map((p) => {
       const e = effectiveStatus(statuses.get(p.id), fuelFilter);
       return { p, e, d: user ? distanceM(user, p) : null };
@@ -79,7 +84,11 @@ export function StationList() {
       return kr[a.p.kind] - kr[b.p.kind] || a.p.name.localeCompare(b.p.name);
     });
     return withMeta;
-  }, [visible, q, statuses, fuelFilter, user, sort]);
+  }, [visible, q, statuses, fuelFilter, user, sort, favOnly, favIds]);
+
+  // Rekomendasi terbaik dan wilayah yang butuh laporan, hanya saat tidak sedang mencari atau menyaring
+  const picks = useMemo(() => (q || favOnly ? [] : bestBets(visible, statuses, user, fuelFilter, 3, now)), [visible, statuses, user, fuelFilter, q, favOnly, now]);
+  const need = useMemo(() => (q || favOnly ? null : regionNeeds(visible, statuses, now).find((r) => r.stale >= 3) ?? null), [visible, statuses, q, favOnly, now]);
 
   const nearbyAvailable = user
     ? rows.filter((r) => r.d != null && r.d < 5000 && (r.e.status === "available" || r.e.status === "limited")).length
@@ -115,6 +124,9 @@ export function StationList() {
               {t(`list.sort${s[0]!.toUpperCase()}${s.slice(1)}` as "list.sortDistance")}
             </button>
           ))}
+          <button type="button" className="chip" aria-pressed={favOnly} onClick={() => setFavOnly((v) => !v)}>
+            <Icon name="heart" size={14} /> {t("more.favorites")}
+          </button>
           <button type="button" className="chip" aria-pressed={onlyAvailable} onClick={() => setPrefs({ onlyAvailable: !onlyAvailable })}>
             {onlyAvailable && <Icon name="check" size={14} />}
             {t("list.onlyAvailable")}
@@ -128,7 +140,40 @@ export function StationList() {
     <>
       <BottomSheet label={t("list.title")} header={header} onClose={closePanel} initial="half" onSnapChange={setSnap}>
         {nearbyAvailable === 0 && !q && <p className="form-error">{t("list.noneNearby")}</p>}
-        {!rows.length && <p className="muted">{t("list.empty")}</p>}
+        {need && (
+          <div className="mission-card">
+            <Icon name="target" size={18} />
+            <div className="grow">
+              <strong>{t("more.missionTitle", { region: REGION_NAMES[need.regionId] ?? "" })}</strong>
+              <div className="caption muted">{t("more.missionBody", { stale: need.stale, total: need.total })}</div>
+            </div>
+            <button type="button" className="btn" onClick={() => setQ(REGION_NAMES[need.regionId] ?? "")}>
+              {t("more.missionGo")}
+            </button>
+          </div>
+        )}
+        {picks.length > 0 && (
+          <>
+            <h3 className="section-title">
+              <Icon name="sparkles" size={15} /> {t("more.bestTitle")}
+            </h3>
+            <p className="caption muted" style={{ margin: "0 0 8px" }}>
+              {t("more.bestBody")}
+            </p>
+            {picks.map((r) => (
+              <ListItem
+                key={`best-${r.place.id}`}
+                place={r.place}
+                distance={r.distanceM}
+                locale={locale}
+                now={now}
+                onOpen={() => select(r.place.id, { open: true, fly: true, fromList: true })}
+              />
+            ))}
+            <h3 className="section-title">{t("more.allTitle")}</h3>
+          </>
+        )}
+        {!rows.length && <p className="muted">{favOnly ? t("more.favEmpty") : t("list.empty")}</p>}
         {rows.slice(0, limit).map(({ p, e, d }) => (
           <ListItem
             key={p.id}
@@ -208,6 +253,7 @@ function ListItem({ place, distance, locale, now, onOpen }: { place: Place; dist
             {place.address}
           </div>
           <OpeningNote place={place} />
+          <QueuingNote status={status} />
         </div>
       </div>
 

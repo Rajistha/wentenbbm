@@ -29,7 +29,33 @@ export interface SuggestPlaceArgs {
   p_fuels: number[];
 }
 
+export interface PositionArgs {
+  p_lat: number;
+  p_lng: number;
+  p_accuracy_m: number;
+}
+
+export type CorrectionKind = "wrong_location" | "closed" | "wrong_fuels" | "duplicate" | "other";
+export type QueueEndReason = "got_fuel" | "left" | "empty";
+
 export interface RpcMap {
+  queue_my_session: { args: Record<string, never>; result: { id: string; station_id: string; fuel_type_id: number | null; started_at: string } | null };
+  queue_join: {
+    args: PositionArgs & { p_station_id: string; p_fuel_type_id: number | null };
+    result: RpcResult<{ session_id: string; started_at: string }>;
+  };
+  queue_ping: { args: { p_session_id: string; p_lat: number; p_lng: number }; result: { ok: boolean; open?: boolean } };
+  queue_leave: {
+    args: { p_session_id: string; p_reason: QueueEndReason; p_lat?: number | null; p_lng?: number | null; p_accuracy_m?: number | null };
+    result: RpcResult<{ wait_minutes: number; reported: boolean }>;
+  };
+  suggest_correction: {
+    args: { p_station_id: string; p_kind: CorrectionKind; p_lat?: number | null; p_lng?: number | null; p_note?: string | null };
+    result: RpcResult<{ duplicate?: boolean }>;
+  };
+  submit_price: { args: PositionArgs & { p_station_id: string; p_fuel_type_id: number; p_price: number }; result: RpcResult };
+  station_prices: { args: { p_station_id: string }; result: [number, number, number, string][] };
+
   suggest_place: {
     args: SuggestPlaceArgs;
     result: RpcResult<{ id: string; status: "approved" | "quarantined"; place: PlaceTuple }>;

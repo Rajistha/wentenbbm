@@ -1,6 +1,8 @@
 "use client";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
+import { useFavoriteAlerts } from "@/lib/favorites";
 import { useGeolocationBootstrap } from "@/lib/geolocation";
 import { restorePrefs, useApp } from "@/lib/store";
 import { useDataSync } from "@/lib/sync";
@@ -14,6 +16,7 @@ import { MapLegend } from "../overlay/MapLegend";
 import { LocationCard, NearbyPrompt } from "../overlay/NearbyPrompt";
 import { StatusStrip } from "../overlay/StatusStrip";
 import { ControlCard, IdentityCard } from "../overlay/TopCards";
+import { QueueBar } from "../queue/QueueBar";
 import { SearchBar } from "../search/SearchBar";
 
 // Pecah bundel: peta (maplibre, ~800 KB), daftar, detail, lapor, cari, dan modal bagikan dimuat saat diperlukan
@@ -38,6 +41,8 @@ export function MapApp({ initialSlug }: { initialSlug?: string }) {
   useEffect(restorePrefs, []);
   useDataSync();
   useRegisterVisit();
+  const tMore = useTranslations("more");
+  useFavoriteAlerts((name, st) => tMore(st === "available" ? "favAlertAvailable" : "favAlertEmpty", { name }));
   useGeolocationBootstrap();
 
   // Buka SPBU dari tautan berbagi /spbu/[slug]
@@ -65,6 +70,9 @@ export function MapApp({ initialSlug }: { initialSlug?: string }) {
             <IdentityCard>{!isDesktop && <InfoMenu />}</IdentityCard>
           </div>
           {(!sheetOpen || isDesktop) && <ControlCard>{isDesktop && <InfoMenu />}</ControlCard>}
+        </div>
+        <div className="top-cluster" style={{ marginTop: 8 }}>
+          <QueueBar />
         </div>
         {(!sheetOpen || isDesktop) && (
           <div className="top-cluster" style={{ marginTop: 8, flexDirection: "column" }}>

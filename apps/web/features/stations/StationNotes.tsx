@@ -31,6 +31,18 @@ export function OpeningNote({ place }: { place: Place }) {
   );
 }
 
+/** "N orang sedang antre" dari pelacak antrean. */
+export function QueuingNote({ status }: { status: StationStatus | undefined }) {
+  const t = useTranslations("more");
+  const n = status?.queuing ?? 0;
+  if (n <= 0) return null;
+  return (
+    <div className="sc-meta">
+      <Icon name="timer" size={13} /> {t("queuingNow", { n })}
+    </div>
+  );
+}
+
 /** Jumlah laporan 3 jam terakhir, dengan peringatan bila baru sedikit. Tersembunyi bila server belum mengirim angkanya. */
 export function ReportCountNote({ status }: { status: StationStatus | undefined }) {
   const t = useTranslations("detail");

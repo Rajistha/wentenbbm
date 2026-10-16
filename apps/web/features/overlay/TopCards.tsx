@@ -12,8 +12,8 @@ import { useNow } from "../common/RelativeTime";
 export function IdentityCard({ children }: { children?: React.ReactNode }) {
   const t = useTranslations("identity");
   const locale = useLocale() as Locale;
-  const { liveVia, generatedAt, onlineNow, reports24h, reportsTotal, visitorsTotal, demo } = useApp(
-    useShallow((s) => ({ liveVia: s.liveVia, generatedAt: s.generatedAt, onlineNow: s.onlineNow, reports24h: s.reports24h, reportsTotal: s.reportsTotal, visitorsTotal: s.visitorsTotal, demo: s.demo })),
+  const { liveVia, generatedAt, onlineNow, queuingNow, reports24h, reportsTotal, visitorsTotal, demo } = useApp(
+    useShallow((s) => ({ liveVia: s.liveVia, generatedAt: s.generatedAt, onlineNow: s.onlineNow, queuingNow: s.queuingNow, reports24h: s.reports24h, reportsTotal: s.reportsTotal, visitorsTotal: s.visitorsTotal, demo: s.demo })),
   );
   useNow(10_000);
   const on = liveVia === "realtime" || liveVia === "polling";
@@ -44,6 +44,7 @@ export function IdentityCard({ children }: { children?: React.ReactNode }) {
       <span className="identity-extra muted" title={onlineNow > 0 ? t("onlineTitle") : undefined}>
         {[
           onlineNow > 0 ? t("online", { n: formatNumber(onlineNow, locale) }) : null,
+          queuingNow != null && queuingNow > 0 ? t("queuing", { n: formatNumber(queuingNow, locale) }) : null,
           reports24h != null
             ? reports24h > 0
               ? t("reports24h", { n: formatNumber(reports24h, locale) })

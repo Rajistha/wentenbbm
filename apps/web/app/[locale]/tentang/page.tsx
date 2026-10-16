@@ -97,6 +97,9 @@ export default async function About({ params }: PageProps<"/[locale]/tentang">) 
               {r.name}
             </Link>
           ))}
+          <Link href="/poster" className="chip">
+            <Icon name="printer" size={16} /> {t("posterLink")}
+          </Link>
           <Link href="/data" className="chip">
             <Icon name="list" size={16} /> {t("dataLink")}
           </Link>

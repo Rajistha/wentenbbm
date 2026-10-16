@@ -45,7 +45,8 @@
     "seeData": "Lihat data",
     "demo": "Mode demo",
     "visitors": "{n} pengunjung",
-    "justLaunched": "Baru dibuka · ayo mulai melapor"
+    "justLaunched": "Baru dibuka · ayo mulai melapor",
+    "queuing": "{n} sedang antre"
   },
   "strip": {
     "summary": "{a} dari {total} SPBU dilaporkan ada {fuel}",
@@ -206,7 +207,9 @@
     "OUT_OF_BOUNDS": "Lokasi di luar Bali. Geser penanda ke daratan Bali.",
     "TOO_CLOSE": "Sudah ada {name} sekitar {d} dari titik ini. Buka tempat itu untuk melapor.",
     "PLACE_LIMIT": "Batas 3 tempat baru per hari tercapai. Coba lagi besok.",
-    "INVALID_PLACE": "Data tempat tidak valid. Periksa lalu coba lagi."
+    "INVALID_PLACE": "Data tempat tidak valid. Periksa lalu coba lagi.",
+    "NOT_FOUND": "Data tidak ditemukan. Muat ulang halaman.",
+    "FORBIDDEN": "Akses ditolak."
   },
   "banners": {
     "offline": "Anda sedang offline. Menampilkan data pukul {time}.",
@@ -249,7 +252,8 @@
     "copyLink": "Salin tautan",
     "copiedShort": "Tersalin",
     "viaApp": "Bagikan lewat…",
-    "downloadQr": "Unduh QR"
+    "downloadQr": "Unduh QR",
+    "poster": "Poster cetak"
   },
   "footer": {
     "disclaimer": "Laporan warga, bukan aplikasi resmi.",
@@ -320,7 +324,8 @@
     "trademark": "Pertamina, Pertalite, Pertamax, Shell, BP, dan Vivo adalah merek milik pemiliknya masing-masing dan disebut hanya untuk keperluan informasi.",
     "regionsTitle": "Cek per wilayah",
     "dataLink": "Data dan statistik",
-    "credits": "Peta: Esri. Data lokasi: © OpenStreetMap contributors (ODbL). Foto jalan, bila tampil: Mapillary (CC BY-SA)."
+    "credits": "Peta: Esri. Data lokasi: © OpenStreetMap contributors (ODbL). Foto jalan, bila tampil: Mapillary (CC BY-SA).",
+    "posterLink": "Cetak poster QR"
   },
   "search": {
     "placeholder": "Cari SPBU, Pertamini, atau tempat",
@@ -410,5 +415,68 @@
     "pendingBadge": "Menunggu verifikasi. Untuk sementara hanya terlihat olehmu.",
     "hint": "Hanya untuk Pertamini, Pertashop, dan pengecer BBM. SPBU resmi sudah terdata.",
     "addCta": "Tambah tempat"
+  },
+  "more": {
+    "limitDaily": "Batas harian tercapai. Coba lagi besok.",
+    "joinQueue": "Saya di antrean ini",
+    "joinTitle": "Ukur antreanmu",
+    "joinBody": "Kami mengukur berapa lama kamu antre dan membagikannya ke warga lain. Lokasimu hanya dipakai untuk memastikan kamu masih di sekitar SPBU, dan tidak disimpan tepat.",
+    "joinFuel": "Jenis BBM",
+    "joinStart": "Mulai ukur antrean",
+    "queueStarted": "Antrean mulai diukur. Terima kasih sudah membantu!",
+    "queueRunning": "Antre {min} menit",
+    "queueEnded": "Pengukuran antrean berakhir karena kamu menjauh dari SPBU.",
+    "queueDone": "Terima kasih! Antreanmu tercatat {min} menit.",
+    "gotFuel": "Dapat BBM",
+    "soldOut": "Habis atau tutup",
+    "leftQueue": "Pergi",
+    "queuingNow": "{n} orang sedang antre",
+    "priceAction": "Isi harga",
+    "priceTitle": "Harga BBM",
+    "priceBody": "Isi harga yang tertera di SPBU ini. Hanya jenis yang kamu ketahui.",
+    "priceRange": "Harga harus antara Rp 3.000 dan Rp 60.000 per liter.",
+    "priceSend": "Kirim harga",
+    "priceThanks": "Terima kasih, harga tercatat.",
+    "priceFrom": "Median dari {n} laporan warga dalam 7 hari terakhir",
+    "fixAction": "Usulkan koreksi",
+    "fixTitle": "Usulkan koreksi",
+    "fix_wrong_location": "Lokasi di peta salah",
+    "fix_closed": "Sudah tutup permanen",
+    "fix_wrong_fuels": "Jenis BBM tidak sesuai",
+    "fix_duplicate": "Data ganda",
+    "fix_other": "Lainnya",
+    "fixNote": "Catatan (opsional, maks 280 huruf)",
+    "fixNeedNote": "Tulis catatan singkat untuk koreksi jenis Lainnya.",
+    "fixNeedLocation": "Untuk koreksi lokasi, berdirilah di titik yang benar dan izinkan lokasi dengan akurasi baik.",
+    "fixLocationHint": "Titik yang kamu usulkan adalah lokasimu sekarang.",
+    "fixSend": "Kirim usulan",
+    "fixThanks": "Terima kasih! Usulanmu akan ditinjau pengelola.",
+    "favorites": "Favorit",
+    "favAdd": "Simpan sebagai favorit",
+    "favRemove": "Hapus dari favorit",
+    "favAdded": "Disimpan ke favorit. Kamu akan diberi tahu bila statusnya berubah saat membuka aplikasi.",
+    "favRemoved": "Dihapus dari favorit.",
+    "favLimit": "Favorit penuh (maks {n}). Hapus salah satu dulu.",
+    "favEmpty": "Belum ada favorit. Buka SPBU lalu ketuk ikon hati.",
+    "favAlertAvailable": "{name}: BBM kini tersedia",
+    "favAlertEmpty": "{name}: BBM kini habis",
+    "bestTitle": "Rekomendasi terbaik",
+    "bestBody": "Diurutkan dari jarak, antrean, dan seberapa baru laporannya.",
+    "allTitle": "Semua tempat",
+    "missionTitle": "{region} butuh laporan",
+    "missionBody": "{stale} dari {total} SPBU belum ada kabar terbaru.",
+    "missionGo": "Lihat"
+  },
+  "poster": {
+    "title": "Cek BBM di Bali sebelum berangkat",
+    "lead": "Lihat SPBU mana yang BBM-nya masih ada, dari laporan sesama warga.",
+    "stationTitle": "Lapor BBM di {name}",
+    "stationLead": "Sudah di sini? Bantu semeton lain dengan melapor: ada atau habis.",
+    "qrAlt": "Kode QR menuju Wenten BBM",
+    "step1": "Pindai kode QR dengan kamera ponsel.",
+    "step2": "Izinkan lokasi, lalu pilih SPBU terdekat.",
+    "step3": "Ketuk Ada BBM atau Habis. Selesai.",
+    "print": "Cetak poster",
+    "hint": "Atur kertas ke A4. Poster ini tidak perlu login atau aplikasi."
   }
 }
