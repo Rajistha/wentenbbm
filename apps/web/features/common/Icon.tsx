@@ -26,6 +26,7 @@ import {
   Share2,
   ShieldCheck,
   TriangleAlert,
+  Users,
   X,
   type LucideProps,
 } from "lucide-react";
@@ -58,6 +59,7 @@ const ICONS = {
   search: Search,
   share: Share2,
   verified: ShieldCheck,
+  users: Users,
   close: X,
 } as const;
 

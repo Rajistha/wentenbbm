@@ -32,6 +32,8 @@ export interface Place {
   is24h: boolean;
   fuelIds: number[];
   address: string | null;
+  /** Ditambahkan warga lewat Tambah Tempat (source = user). */
+  byUser?: boolean;
 }
 
 export interface FuelStatusEntry {
@@ -50,6 +52,8 @@ export interface StationStatus {
   waitHigh: number | null;
   lastReportAt: string | null;
   fuels: FuelStatusEntry[];
+  /** Laporan aktif dalam 3 jam terakhir; undefined = server belum mengirim (migrasi 0011 belum dijalankan). */
+  reports3h?: number;
 }
 
 /** Ringkasan se-Bali per jenis BBM: [tersedia, terbatas, habis, belum ada laporan]. */

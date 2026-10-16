@@ -7,3 +7,4 @@ export * from "./regions";
 export * from "./search";
 export * from "./photo";
 export * from "./navigate";
+export * from "./hours";

@@ -13,6 +13,8 @@ export interface AnnouncementRow {
 export interface StatusResponse extends StatusPayload {
   read_only: boolean;
   visitors_total?: number;
+  /** Perangkat unik yang aktif dalam 4 jam terakhir. */
+  active_4h?: number;
   announcements: AnnouncementRow[];
   demo?: boolean;
 }

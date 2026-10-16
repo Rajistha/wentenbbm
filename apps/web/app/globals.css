@@ -2542,3 +2542,13 @@ html {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+/* Peringatan "baru sedikit laporan" */
+.meta-warn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 6px;
+  color: #b45309;
+  font-weight: 600;
+}

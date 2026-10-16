@@ -21,6 +21,7 @@ import { BottomSheet, type Snap } from "../common/BottomSheet";
 import { RelativeTime, useNow } from "../common/RelativeTime";
 import { StatusGlyph } from "../common/StatusGlyph";
 import { NavigateButton } from "./NavigateButton";
+import { OpeningNote, ReportCountNote } from "./StationNotes";
 import { StationPhoto } from "./StationPhoto";
 import { useFuelName, useGeofence, useShare } from "./hooks";
 import { useVisiblePlaces } from "./selectors";
@@ -206,11 +207,7 @@ function ListItem({ place, distance, locale, now, onOpen }: { place: Place; dist
             {distance != null && place.address ? " · " : ""}
             {place.address}
           </div>
-          {place.is24h && (
-            <div className="sc-meta">
-              <Icon name="clock" size={13} /> {t("detail.h24")}
-            </div>
-          )}
+          <OpeningNote place={place} />
         </div>
       </div>
 
@@ -242,6 +239,8 @@ function ListItem({ place, distance, locale, now, onOpen }: { place: Place; dist
           <>
             {t("detail.lastReport", { t: "" })}
             <RelativeTime at={e.lastReportAt} />
+            {status?.reports3h ? " · " : ""}
+            <ReportCountNote status={status} />
           </>
         ) : (
           t("list.beFirst")

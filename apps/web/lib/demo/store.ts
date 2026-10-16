@@ -329,12 +329,19 @@ export function demoStatus(): StatusResponse {
     online_now: s.onlineNow,
     reports_total: s.reports.filter((r) => r.status === "active").length + 8000,
     visitors_total: s.visitorsTotal,
+    active_4h: Math.max(1, Math.round(s.onlineNow * 3.4)),
     summary,
-    stations: [...s.statuses.values()].map(encodeStationStatus),
+    reports_24h: s.reports.filter((r) => r.status === "active" && Date.now() - r.createdAt < 24 * 60 * MIN).length + 300,
+    stations: [...s.statuses.values()].map((st) => encodeStationStatus({ ...st, reports3h: demoReports3h(s, st.id) })),
     read_only: false,
     announcements: s.announcements,
     demo: true,
   };
+}
+
+function demoReports3h(s: DemoState, id: string): number {
+  const now = Date.now();
+  return s.reports.filter((r) => r.stationId === id && r.status === "active" && now - r.createdAt < 180 * MIN).length;
 }
 
 export function demoPlaceBySlug(slug: string) {

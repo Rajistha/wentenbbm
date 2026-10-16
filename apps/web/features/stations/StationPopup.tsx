@@ -7,6 +7,7 @@ import { RelativeTime, useNow } from "../common/RelativeTime";
 import { StatusGlyph } from "../common/StatusGlyph";
 import { NavigateButton } from "./NavigateButton";
 import { useFuelName, useStationStatus } from "./hooks";
+import { OpeningNote, ReportCountNote } from "./StationNotes";
 
 /** Popup ringkas yang menempel pada penanda (desktop). */
 export function StationPopup({ id }: { id: string }) {
@@ -45,10 +46,13 @@ export function StationPopup({ id }: { id: string }) {
         <div className="caption muted">
           <Icon name="clock" size={13} style={{ verticalAlign: "-2px" }} /> <RelativeTime at={effective.lastReportAt} />
           {stale && ` · ${t("status.stale")}`}
+          {status?.reports3h ? " · " : ""}
+          <ReportCountNote status={status} />
         </div>
       ) : (
         <div className="caption muted">{t("detail.noReport")}</div>
       )}
+      <OpeningNote place={place} />
       {status && status.fuels.length > 0 && (
         <div className="caption">
           {status.fuels

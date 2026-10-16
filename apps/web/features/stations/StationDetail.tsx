@@ -10,6 +10,7 @@ import { QueueIndicator } from "../common/QueueIndicator";
 import { RelativeTime, useNow } from "../common/RelativeTime";
 import { StatusGlyph } from "../common/StatusGlyph";
 import { NavigateButton } from "./NavigateButton";
+import { OpeningNote, ReportCountNote } from "./StationNotes";
 import { StationPhoto } from "./StationPhoto";
 import { TrafficRow } from "./TrafficRow";
 import { RecentReports } from "./RecentReports";
@@ -69,10 +70,11 @@ export function StationDetail() {
       <div className="grow">
         <h2 className="title">{place.name}</h2>
         <div className="caption muted">
-          {[place.brand === "none" ? null : place.brand[0]!.toUpperCase() + place.brand.slice(1), place.code, place.is24h ? t("detail.h24") : null]
+          {[place.brand === "none" ? null : place.brand[0]!.toUpperCase() + place.brand.slice(1), place.code]
             .filter(Boolean)
             .join(" · ")}
         </div>
+        <OpeningNote place={place} />
         <div className="caption muted">
           {[place.address, user ? formatDistance(distanceM(user, place), locale) : null].filter(Boolean).join(" · ")}
         </div>
@@ -103,6 +105,8 @@ export function StationDetail() {
             <Icon name="clock" size={14} style={{ verticalAlign: "-2px" }} /> {t("detail.lastReport", { t: "" })}
             <RelativeTime at={status.lastReportAt} />
             {fr === "stale" && ` · ${t("status.stale")}`}
+            {status.reports3h ? " · " : ""}
+            <ReportCountNote status={status} />
           </>
         ) : (
           t("detail.noReport")
