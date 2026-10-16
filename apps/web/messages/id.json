@@ -46,7 +46,12 @@
     "demo": "Mode demo",
     "visitors": "{n} pengunjung",
     "justLaunched": "Baru dibuka · ayo mulai melapor",
-    "queuing": "{n} sedang antre"
+    "queuing": "{n} sedang antre",
+    "statsLabel": "Ringkasan angka",
+    "statOnline": "online",
+    "statQueuing": "antre",
+    "statReports": "laporan",
+    "statVisitors": "pengunjung"
   },
   "strip": {
     "summary": "{a} dari {total} SPBU dilaporkan ada {fuel}",

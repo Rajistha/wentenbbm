@@ -156,8 +156,18 @@ function useLoad(sb: SupabaseClient, fn: string, args: Json = {}) {
 
 function Overview({ sb }: { sb: SupabaseClient }) {
   const [d, setD] = useState<Row | null>(null);
+  const [geofence, setGeofence] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const load = useCallback(() => adm(sb, "admin_overview").then(setD).catch((e) => setError(String(e.message))), [sb]);
+  const load = useCallback(async () => {
+    try {
+      setD(await adm(sb, "admin_overview"));
+      const s = await adm(sb, "admin_list_settings");
+      const row = (s.rows as Row[]).find((x) => x.key === "geofence_enabled");
+      setGeofence(row ? row.value === true : null);
+    } catch (e) {
+      setError(String((e as Error).message));
+    }
+  }, [sb]);
   useEffect(() => void load(), [load]);
   if (error) return <p className="form-error">{error}</p>;
   if (!d) return <p className="muted">Memuat…</p>;
@@ -176,6 +186,12 @@ function Overview({ sb }: { sb: SupabaseClient }) {
     await adm(sb, "admin_set_setting", { p_key: "read_only", p_value: !d.read_only });
     void load();
   };
+  const toggleGeofence = async () => {
+    const next = !geofence;
+    if (!window.confirm(next ? "Wajibkan pelapor berada dalam radius 300 m dari SPBU?" : "Matikan syarat radius? Warga bisa melapor dari mana saja, sehingga laporan lebih mudah dipalsukan.")) return;
+    await adm(sb, "admin_set_setting", { p_key: "geofence_enabled", p_value: next });
+    void load();
+  };
   return (
     <>
       <div className="adm-cards">
@@ -191,6 +207,17 @@ function Overview({ sb }: { sb: SupabaseClient }) {
         <button type="button" className={`btn ${d.read_only ? "btn-primary" : ""}`} onClick={toggle}>
           {d.read_only ? "Buka pelaporan" : "Hentikan pelaporan"}
         </button>
+      </div>
+      <div className="adm-box" style={{ marginTop: 10 }}>
+        <span>
+          <strong>Syarat radius 300 m</strong>:{" "}
+          {geofence == null ? "belum tersedia (jalankan migrasi 0018)" : geofence ? "aktif (hanya yang berada di SPBU bisa melapor)" : "MATI (melapor dari mana saja)"}
+        </span>
+        {geofence != null && (
+          <button type="button" className={`btn ${geofence ? "" : "btn-primary"}`} onClick={toggleGeofence}>
+            {geofence ? "Matikan syarat radius" : "Aktifkan syarat radius"}
+          </button>
+        )}
       </div>
     </>
   );

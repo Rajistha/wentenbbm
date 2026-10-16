@@ -362,11 +362,31 @@ a {
 }
 /* Angka ringkas (online, laporan, pengunjung): baris tersendiri di bawah merek, juga di HP */
 .identity-stats {
-  display: block;
   flex-basis: 100%;
-  margin-top: -2px;
-  font-size: 12px;
-  line-height: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  margin: 0;
+  padding: 0 2px;
+  list-style: none;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-muted);
+}
+.identity-stats li {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  white-space: nowrap;
+}
+.identity-stats li + li::before {
+  content: "·";
+  margin: 0 8px;
+  color: var(--ink-300);
+}
+.identity-stats strong {
+  font-weight: 600;
+  color: var(--text);
 }
 .identity-time {
   display: none;
@@ -1250,13 +1270,12 @@ a {
   .dock-main {
     flex: 1;
   }
-  .identity-extra,
-  .identity-stats {
+  .identity-extra {
     display: block;
     font-size: 13px;
     line-height: 18px;
-    margin-top: 0;
   }
+  
   .control {
     flex-direction: row;
     align-items: center;

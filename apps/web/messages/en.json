@@ -46,7 +46,12 @@
     "demo": "Demo mode",
     "visitors": "{n} visitors",
     "justLaunched": "Just launched · start reporting",
-    "queuing": "{n} queuing"
+    "queuing": "{n} queuing",
+    "statsLabel": "Summary figures",
+    "statOnline": "online",
+    "statQueuing": "queuing",
+    "statReports": "reports",
+    "statVisitors": "visitors"
   },
   "strip": {
     "summary": "{a} of {total} stations reported to have {fuel}",

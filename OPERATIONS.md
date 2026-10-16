@@ -52,8 +52,15 @@ Berkas ada di `packages/db/supabase/migrations/`. Jalankan berurutan di SQL Edit
 | 0014 | Pelacak antrean |
 | 0015 | Usulan koreksi dari warga |
 | 0016 | Harga BBM dari warga |
+| 0018 | Sakelar syarat radius 300 m (tab Ringkasan di /admin) |
 
-## 5. Catatan fitur
+## 5. Syarat radius 300 m
+
+Di `/admin` → Ringkasan ada tombol **Matikan syarat radius**. Saat mati, warga bisa melapor, memvalidasi, mengukur antrean, dan mengisi harga dari mana saja
+(jarak dan akurasi GPS tidak diperiksa). Berguna di awal peluncuran, tapi laporan jadi lebih mudah dipalsukan; aktifkan kembali saat
+laporan sudah ramai. Perubahan terlihat di klien dalam hitungan detik sampai satu menit (mengikuti cache status).
+
+## 6. Catatan fitur
 
 - **Pelacak antrean.** Sesi tanpa denyut lokasi 20 menit ditutup otomatis (pg_cron `queue-expire`), dan waktunya tidak dihitung.
   Denyut hanya dikirim saat tab terlihat, jadi pengguna yang mengunci layar lama tidak terukur.

@@ -6,6 +6,12 @@ import { useApp } from "@/lib/store";
 /** Status kelayakan lapor/validasi di klien (server tetap memeriksa ulang dengan PostGIS). */
 export function useGeofence(place: Place | null) {
   const user = useApp((s) => s.user);
+  const geofenceOn = useApp((s) => s.geofenceOn);
+  // Syarat radius dimatikan admin: boleh melapor dari mana saja. Tanpa lokasi, dipakai titik SPBU itu sendiri.
+  if (!geofenceOn && place) {
+    const pos = user ?? { lat: place.lat, lng: place.lng, accuracy: 25, at: Date.now() };
+    return { ok: true as const, reason: null, distance: user ? distanceM(user, place) : (null as number | null), user: pos };
+  }
   if (!place || !user) return { ok: false, reason: "no_location" as const, distance: null as number | null, user };
   const distance = distanceM(user, place);
   if (user.accuracy > MAX_ACCURACY_M) return { ok: false, reason: "low_accuracy" as const, distance, user };

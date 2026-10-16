@@ -49,6 +49,8 @@ interface AppState extends Prefs {
   reports24h: number | null;
   /** Orang yang sedang mengantre se-Bali; null = migrasi 0014 belum dijalankan. */
   queuingNow: number | null;
+  /** Syarat radius ke SPBU untuk melapor. false bila admin mematikannya. */
+  geofenceOn: boolean;
   /** null = server belum mengirim angka pengunjung (migrasi 0007 belum dijalankan). */
   visitorsTotal: number | null;
   readOnly: boolean;
@@ -131,6 +133,7 @@ export const useApp = create<AppState>((set, get) => ({
   reportsTotal: 0,
   reports24h: null,
   queuingNow: null,
+  geofenceOn: true,
   visitorsTotal: null,
   readOnly: false,
   demo: false,
@@ -178,6 +181,7 @@ export const useApp = create<AppState>((set, get) => ({
       reportsTotal: s.reports_total,
       reports24h: s.reports_24h ?? get().reports24h,
       queuingNow: s.queuing_now ?? get().queuingNow,
+      geofenceOn: s.geofence_enabled ?? true,
       visitorsTotal: s.visitors_total ?? get().visitorsTotal,
       readOnly: !!s.read_only,
       demo: !!s.demo,

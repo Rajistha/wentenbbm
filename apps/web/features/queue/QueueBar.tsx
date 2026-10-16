@@ -29,7 +29,10 @@ export function QueueBar() {
   useEffect(() => {
     if (!session) return;
     const ping = () => {
-      const user = useApp.getState().user;
+      const app = useApp.getState();
+      const station = app.placeById.get(session.stationId);
+      // Syarat radius mati: tanpa lokasi, denyut memakai titik SPBU agar sesi tidak kedaluwarsa
+      const user = app.user ?? (!app.geofenceOn && station ? station : null);
       if (document.hidden || !user) return;
       callRpc("queue_ping", { p_session_id: session.id, p_lat: user.lat, p_lng: user.lng })
         .then((r) => {

@@ -58,6 +58,8 @@ export interface StatusPayload {
   reports_24h?: number;
   /** Orang yang sedang mengantre se-Bali (migrasi 0014). */
   queuing_now?: number;
+  /** false = syarat radius 300 m dimatikan admin (migrasi 0018); undefined dianggap aktif. */
+  geofence_enabled?: boolean;
   summary: Record<string, SummaryCounts>;
   stations: StationStatusTuple[];
 }

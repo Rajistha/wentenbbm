@@ -41,16 +41,21 @@ export function IdentityCard({ children }: { children?: React.ReactNode }) {
       </span>
       {demo && <span className="demo-badge">{t("demo")}</span>}
       {children && <span className="identity-menu">{children}</span>}
-      <span className="identity-stats muted" title={onlineNow > 0 ? t("onlineTitle") : undefined}>
+      <ul className="identity-stats" aria-label={t("statsLabel")}>
         {[
-          onlineNow > 0 ? t("online", { n: formatNumber(onlineNow, locale) }) : null,
-          queuingNow != null && queuingNow > 0 ? t("queuing", { n: formatNumber(queuingNow, locale) }) : null,
-          t("reports", { n: formatNumber(reportsTotal, locale) }),
-          visitorsTotal != null && visitorsTotal > 0 ? t("visitors", { n: formatNumber(visitorsTotal, locale) }) : null,
+          onlineNow > 0 ? { n: onlineNow, label: t("statOnline"), title: t("onlineTitle") } : null,
+          queuingNow != null && queuingNow > 0 ? { n: queuingNow, label: t("statQueuing") } : null,
+          { n: reportsTotal, label: t("statReports") },
+          visitorsTotal != null && visitorsTotal > 0 ? { n: visitorsTotal, label: t("statVisitors") } : null,
         ]
-          .filter(Boolean)
-          .join(" · ") || t("justLaunched")}
-      </span>
+          .filter((x): x is { n: number; label: string; title?: string } => x !== null)
+          .map((x) => (
+            <li key={x.label} title={x.title}>
+              <strong className="tnum">{formatNumber(x.n, locale)}</strong>
+              <span>{x.label}</span>
+            </li>
+          ))}
+      </ul>
       <Link href="/data" className="identity-extra">
         {t("seeData")} <Icon name="next" size={14} style={{ verticalAlign: "middle" }} />
       </Link>
