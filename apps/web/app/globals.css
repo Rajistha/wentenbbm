@@ -2688,108 +2688,500 @@ html {
 
 /* Panel admin */
 .adm {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 16px;
   min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
 }
-.adm-top {
+.adm-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.adm-bar-in {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 10px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 10px 16px;
 }
-.adm-top h1 {
-  margin: 0;
-  font-size: 20px;
+.adm-bar-in .grow {
+  flex: 1;
+}
+.adm-pill {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface-tint);
+  border: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-accent);
+}
+.adm-main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 14px 16px 64px;
 }
 .adm-tabs {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 14px;
+  gap: 4px;
+  margin: 0 -16px 16px;
+  padding: 0 16px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: none;
 }
-.adm-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 10px;
-  margin-bottom: 14px;
+.adm-tabs::-webkit-scrollbar {
+  display: none;
 }
-.adm-card,
-.adm-box {
-  padding: 12px 14px;
+.adm-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 10px 12px 12px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.adm-tab[aria-current="page"] {
+  color: var(--text-accent);
+}
+.adm-tab[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: -1px;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: var(--accent);
+}
+.adm-count {
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--status-empty);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+}
+
+.adm-section {
+  margin-bottom: 22px;
+}
+.adm-section h2 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  line-height: 22px;
+}
+.adm-hint {
+  margin: 2px 0 10px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-muted);
+}
+.adm-card {
+  padding: 14px 16px;
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   background: var(--surface);
 }
-.adm-box {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+
+/* Angka ringkasan */
+.adm-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
 }
-.adm-num {
-  font-size: 28px;
+.adm-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+button.adm-stat {
+  cursor: pointer;
+}
+button.adm-stat:hover {
+  border-color: var(--accent);
+}
+.adm-stat.attn {
+  border-color: #fda4af;
+  background: #fff1f2;
+}
+.adm-stat-n {
+  font-size: 26px;
+  line-height: 32px;
   font-weight: 700;
 }
-.adm-row {
+.adm-stat.attn .adm-stat-n {
+  color: #be123c;
+}
+.adm-stat-l {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--text-muted);
+}
+
+/* Sakelar */
+.adm-switch-row {
   display: flex;
-  gap: 12px;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
+  gap: 16px;
+  padding: 4px 0;
 }
-.adm-row .grow {
-  flex: 1;
-  min-width: 0;
+.adm-switch-row + .adm-switch-row {
+  margin-top: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.adm-switch-row .adm-hint {
+  margin-bottom: 0;
+}
+.adm-switch-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.adm-switch-state {
+  min-width: 28px;
+  text-align: right;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--text-muted);
+}
+.adm-switch-state.on {
+  color: var(--status-available);
+}
+.adm-switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 48px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ink-300);
+  cursor: pointer;
+  transition: background var(--dur, 0.15s);
+}
+.adm-switch span {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(15 23 42 / 0.3);
+  transition: transform var(--dur, 0.15s);
+}
+.adm-switch[aria-checked="true"] {
+  background: var(--status-available);
+}
+.adm-switch[aria-checked="true"] span {
+  transform: translateX(20px);
+}
+
+/* Filter */
+.adm-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.adm-filter {
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+}
+.adm-filter[aria-selected="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* Daftar kartu */
+.adm-list {
+  display: grid;
+  gap: 10px;
+}
+.adm-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+.adm-item p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+.adm-item-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+}
+.adm-item-head strong {
+  font-size: 15px;
+}
+.adm-meta {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--text-muted);
+}
+.adm-meta a {
+  color: var(--text-accent);
+}
+.adm-quote {
+  padding-left: 10px;
+  border-left: 3px solid var(--border);
+  color: var(--text);
+}
+.adm-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 .adm-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 2px;
 }
-.adm-login,
-.adm-form {
-  display: grid;
-  gap: 10px;
-  max-width: 420px;
-  margin-bottom: 16px;
-}
-.adm-login label,
-.adm-form label {
-  display: grid;
-  gap: 4px;
+.adm-actions .btn {
+  min-height: 38px;
+  padding: 0 14px;
   font-size: 14px;
 }
-.adm-login input,
-.adm-form input,
-.adm-form textarea,
-.adm-form select,
-.adm-set {
-  padding: 8px 10px;
+.btn-danger {
+  color: #be123c;
+  border-color: #fda4af;
+}
+.btn-danger:hover {
+  background: #fff1f2;
+}
+
+/* Lencana */
+.adm-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  background: var(--ink-100);
+  color: var(--ink-700);
+}
+.adm-badge.ok {
+  background: #dcfce7;
+  color: #166534;
+}
+.adm-badge.warn {
+  background: #fef3c7;
+  color: #92400e;
+}
+.adm-badge.bad {
+  background: #ffe4e6;
+  color: #9f1239;
+}
+.adm-badge.info {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+/* Pemberitahuan dan keadaan kosong */
+.adm-notice {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  border-radius: var(--r-md);
+  font-size: 14px;
+  line-height: 20px;
+  background: #eff6ff;
+  color: #1e3a8a;
+}
+.adm-notice.warn {
+  background: #fffbeb;
+  color: #92400e;
+}
+.adm-notice.bad {
+  background: #fff1f2;
+  color: #9f1239;
+}
+.adm-notice svg {
+  margin-top: 2px;
+}
+.adm-empty {
+  padding: 28px 16px;
+  border: 1px dashed var(--border);
+  border-radius: var(--r-md);
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.adm-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: min(92vw, 460px);
+  padding: 11px 16px;
+  border-radius: var(--r-md);
+  background: var(--teal-900);
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 0.25);
+}
+.adm-toast.bad {
+  background: #be123c;
+}
+
+/* Formulir */
+.adm-form {
+  display: grid;
+  gap: 12px;
+}
+.adm-label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.adm-label input,
+.adm-label textarea,
+.adm-label select,
+.adm-setting-edit input {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 12px;
   border: 1px solid var(--border);
   border-radius: var(--r-sm);
+  background: var(--surface);
   font: inherit;
   font-size: 16px;
-  background: var(--surface);
+  font-weight: 400;
+  color: var(--text);
 }
-.adm-inline {
+.adm-label textarea {
+  resize: vertical;
+}
+.adm-label input:focus,
+.adm-label textarea:focus,
+.adm-label select:focus,
+.adm-setting-edit input:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+.adm-grid3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+.adm-money {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
+  padding-left: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  font-weight: 400;
+  color: var(--text-muted);
 }
-.adm-set {
-  width: 120px;
+.adm-money input {
+  border: 0;
+  outline: 0;
+  min-height: 40px;
+  padding-left: 0;
+  background: transparent;
+}
+.adm-form > .btn {
+  justify-self: start;
+}
+
+/* Pengaturan lanjutan */
+.adm-settings {
+  padding: 4px 16px;
+}
+.adm-setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+}
+.adm-setting + .adm-setting {
+  border-top: 1px solid var(--border);
+}
+.adm-setting .grow {
+  flex: 1;
+  min-width: 0;
+}
+.adm-setting code {
+  font-size: 13px;
+  font-weight: 700;
+}
+.adm-setting .adm-hint {
+  margin: 2px 0 0;
+}
+.adm-setting-edit {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.adm-setting-edit input {
+  width: 110px;
+  text-align: right;
 }
 @media (max-width: 640px) {
-  .adm-row {
+  .adm-setting {
     flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
   }
-  .adm-actions {
-    justify-content: flex-start;
+  .adm-setting-edit input {
+    width: 100%;
+    text-align: left;
   }
 }
 

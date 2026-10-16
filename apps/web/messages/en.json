@@ -470,7 +470,9 @@
     "allTitle": "All places",
     "missionTitle": "{region} needs reports",
     "missionBody": "{stale} of {total} stations have no recent news.",
-    "missionGo": "View"
+    "missionGo": "View",
+    "officialLabel": "official price",
+    "officialFrom": "Official Pertamina price as of {date}. Prices at the station may differ."
   },
   "poster": {
     "title": "Check Bali fuel before you go",

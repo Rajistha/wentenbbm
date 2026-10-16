@@ -39,6 +39,7 @@ export function StationDetail() {
   const now = useNow();
   const [hint, setHint] = useState<string | null>(null);
   const prices = useStationPrices(id).data;
+  const official = useApp((s) => s.officialPrices);
 
   if (!place) return null;
   const overall: FuelStatus = status?.overall ?? "unknown";
@@ -130,10 +131,19 @@ export function StationDetail() {
               <tr key={f.id}>
                 <td>
                   {f.name}
-                  {prices?.get(f.id) && (
+                  {prices?.get(f.id) ? (
                     <div className="caption muted tnum" title={t("more.priceFrom", { n: prices.get(f.id)!.n })}>
                       {formatRupiah(prices.get(f.id)!.price, locale)}
                     </div>
+                  ) : (
+                    // Pengecer (Pertamini) menjual di atas harga resmi, jadi acuan resmi hanya untuk SPBU dan Pertashop
+                    official?.prices[f.code] != null &&
+                    place.kind !== "retailer" &&
+                    f.brand === "pertamina" && (
+                      <div className="caption muted tnum" title={t("more.officialFrom", { date: official.asOf })}>
+                        {formatRupiah(official.prices[f.code]!, locale)} · {t("more.officialLabel")}
+                      </div>
+                    )
                   )}
                 </td>
                 <td>

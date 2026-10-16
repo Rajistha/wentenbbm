@@ -43,6 +43,13 @@ export type StationStatusTuple = [
   number?, // sedang antre
 ];
 
+export interface OfficialPrices {
+  /** Tanggal berlaku, YYYY-MM-DD. */
+  asOf: string;
+  /** Rupiah per liter menurut kode jenis BBM (pertalite, pertamax, ...). */
+  prices: Record<string, number>;
+}
+
 export interface PlacesPayload {
   v: number;
   generated_at: string;
@@ -60,6 +67,8 @@ export interface StatusPayload {
   queuing_now?: number;
   /** false = syarat radius 300 m dimatikan admin (migrasi 0018); undefined dianggap aktif. */
   geofence_enabled?: boolean;
+  /** Harga resmi Pertamina per kode BBM (migrasi 0019). */
+  official_prices?: OfficialPrices | null;
   summary: Record<string, SummaryCounts>;
   stations: StationStatusTuple[];
 }

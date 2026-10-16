@@ -5,6 +5,7 @@ import {
   type FuelFilter,
   type FuelStatus,
   type FuelType,
+  type OfficialPrices,
   type Place,
   type PlacesPayload,
   type StationStatus,
@@ -51,6 +52,8 @@ interface AppState extends Prefs {
   queuingNow: number | null;
   /** Syarat radius ke SPBU untuk melapor. false bila admin mematikannya. */
   geofenceOn: boolean;
+  /** Harga resmi Pertamina (acuan bila belum ada harga warga); null bila belum diatur. */
+  officialPrices: OfficialPrices | null;
   /** null = server belum mengirim angka pengunjung (migrasi 0007 belum dijalankan). */
   visitorsTotal: number | null;
   readOnly: boolean;
@@ -134,6 +137,7 @@ export const useApp = create<AppState>((set, get) => ({
   reports24h: null,
   queuingNow: null,
   geofenceOn: true,
+  officialPrices: null,
   visitorsTotal: null,
   readOnly: false,
   demo: false,
@@ -182,6 +186,7 @@ export const useApp = create<AppState>((set, get) => ({
       reports24h: s.reports_24h ?? get().reports24h,
       queuingNow: s.queuing_now ?? get().queuingNow,
       geofenceOn: s.geofence_enabled ?? true,
+      officialPrices: s.official_prices ?? get().officialPrices,
       visitorsTotal: s.visitors_total ?? get().visitorsTotal,
       readOnly: !!s.read_only,
       demo: !!s.demo,

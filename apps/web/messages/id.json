@@ -470,7 +470,9 @@
     "allTitle": "Semua tempat",
     "missionTitle": "{region} butuh laporan",
     "missionBody": "{stale} dari {total} SPBU belum ada kabar terbaru.",
-    "missionGo": "Lihat"
+    "missionGo": "Lihat",
+    "officialLabel": "harga resmi",
+    "officialFrom": "Harga resmi Pertamina per {date}. Harga di SPBU bisa berbeda."
   },
   "poster": {
     "title": "Cek BBM di Bali sebelum berangkat",
