@@ -5,9 +5,22 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { useApp } from "@/lib/store";
 import { Icon } from "../common/Icon";
+import { SnapshotShare } from "./SnapshotShare";
+
+/** Bagikan: gambar ringkasan (umum atau satu SPBU) dengan tab Cerita, Postingan, Pesan; kode QR dan poster di tampilan kedua. */
+export function ShareModal() {
+  const target = useApp((s) => s.shareTarget);
+  const close = useApp((s) => s.closeShare);
+  const [qr, setQr] = useState(false);
+  useEffect(() => setQr(false), [target?.slug]);
+  if (!target) return null;
+  if (!target.slug) return <SnapshotShare onClose={close} />;
+  if (qr) return <StationShareModal onBack={() => setQr(false)} />;
+  return <SnapshotShare onClose={close} onQr={() => setQr(true)} station={{ slug: target.slug, name: target.title, text: target.text, url: target.url }} />;
+}
 
 /** Modal bagikan SPBU: kode QR (bisa diunduh untuk dicetak), salin tautan, dan bagikan lewat aplikasi. */
-export function ShareModal() {
+function StationShareModal({ onBack }: { onBack?(): void }) {
   const t = useTranslations("share");
   const target = useApp((s) => s.shareTarget);
   const close = useApp((s) => s.closeShare);
@@ -104,6 +117,11 @@ export function ShareModal() {
               onClick={() => navigator.share({ title: target.title, text: target.text, url }).catch(() => {})}
             >
               <Icon name="share" size={16} /> {t("viaApp")}
+            </button>
+          )}
+          {onBack && (
+            <button type="button" className="btn" onClick={onBack}>
+              <Icon name="share" size={16} /> {t("asImage")}
             </button>
           )}
           <Link className="btn" href={target.slug ? `/poster?spbu=${target.slug}` : "/poster"} onClick={close}>

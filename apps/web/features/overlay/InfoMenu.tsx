@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { useApp } from "@/lib/store";
-import { useQuickShare } from "../share/useQuickShare";
+import { useShare } from "../stations/hooks";
 import { LegendList } from "./MapLegend";
 
 /** Tombol info: bantuan, legenda, data, tentang, bahasa, tema. */
@@ -15,7 +15,8 @@ export function InfoMenu() {
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const quickShare = useQuickShare();
+  const share = useShare();
+  const tShare = useTranslations("share");
   const tDock = useTranslations("dock");
   useEffect(() => {
     if (!open) return;
@@ -73,7 +74,7 @@ export function InfoMenu() {
               <button type="button" className="btn" onClick={() => { setOpen(false); useApp.getState().startAdd(); }}>
                 <Icon name="plus" /> {tDock("add")}
               </button>
-              <button type="button" className="btn" onClick={() => { setOpen(false); quickShare(); }}>
+              <button type="button" className="btn" onClick={() => { setOpen(false); void share("/", tShare("text")); }}>
                 <Icon name="share" /> {tDock("share")}
               </button>
             </div>

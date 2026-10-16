@@ -314,7 +314,9 @@ Aturan komponen admin: kartu `.adm-item` dengan kepala (nama dan lencana), baris
 
 ## 14. Bagikan
 
-Tombol **Bagikan** (dock dan menu info) membuka modal **"Bagikan Wenten BBM"** dengan tiga tab, gaya mengikuti kontrol segmen:
+Semua tombol **Bagikan** membuka modal tiga tab (HP dan desktop) dengan kontrol segmen: **Cerita**, **Postingan**, **Pesan**. Ada dua versi, dengan tab dan tata letak yang sama.
+
+**Bagikan umum** (dock di peta dan menu `ⓘ`): modal "Bagikan Wenten BBM".
 
 | Tab | Gambar | Isi |
 |---|---|---|
@@ -322,10 +324,13 @@ Tombol **Bagikan** (dock dan menu info) membuka modal **"Bagikan Wenten BBM"** d
 | **Postingan** | 1080×1080 | Logo dan alamat di atas, judul, peta besar, legenda |
 | **Pesan** | 1200×630 | Pratinjau dua kolom dan teks siap kirim dengan angka terkini |
 
-- Latar `#f7f5f0`; peta digambar sebagai titik berwarna status di atas gumpalan abu-abu lembut yang membentuk pulau. Gambar dibuat server (`/api/share/image`, simpan 5 menit) dari data terkini, dalam bahasa yang dipilih.
-- Bila belum ada laporan, judul menjadi "Belum ada laporan hari ini" dengan ajakan melapor; tidak pernah menampilkan "0 dari 308".
-- Tombol utama membuka menu bagikan perangkat dengan gambar terlampir; di perangkat tanpa dukungan berbagi berkas gambar diunduh. Tab Pesan punya tombol tambahan "Salin teks dan tautan".
-- Bagikan **satu SPBU** tetap memakai modal QR: kode QR, salin tautan, WhatsApp, bagikan lewat aplikasi, unduh QR, dan tautan ke **poster cetak**.
+**Bagikan satu SPBU** (kartu daftar, detail, popup): modal "Bagikan SPBU" dengan nama SPBU di bawah judul. Gambarnya berisi nama dan alamat, status besar berwarna (Tersedia, Terbatas, Habis, atau Belum ada laporan), umur laporan terakhir dan jumlah laporan 3 jam, antrean, daftar BBM per jenis dengan status, serta peta Bali dengan SPBU itu disorot (halo biru dan cincin gelap, titik lain dikecilkan). Pita bawah berisi alamat halaman SPBU. Di bawah tombol bagikan ada tombol **"Kode QR dan poster"** yang membuka tampilan kedua (kode QR, salin tautan, WhatsApp, bagikan lewat aplikasi, unduh QR, poster cetak) dengan tombol "Bagikan sebagai gambar" untuk kembali.
+
+Aturan umum:
+- Latar `#f7f5f0`; peta digambar sebagai titik berwarna status di atas gumpalan abu-abu lembut yang membentuk pulau. Gambar dibuat server (`/api/share/image`, parameter `f`, `lang`, `spbu`; disimpan 5 menit) dari data terkini, dalam bahasa yang dipilih.
+- Bila belum ada laporan, judul umum menjadi "Belum ada laporan hari ini" dengan ajakan melapor; tidak pernah menampilkan "0 dari 308".
+- Gambar diunduh ke memori saat tab dibuka (pratinjau memakai gambar yang sama), sehingga tombol utama ("Bagikan cerita", "Bagikan postingan", "Bagikan pesan") membuka menu bagikan perangkat (Instagram, WhatsApp, aplikasi lain) dengan gambar terlampir dalam ketukan yang sama. Tombol nonaktif ("Menyiapkan…") sampai gambar siap.
+- Perangkat tanpa menu bagikan berkas: gambar diunduh, dan tab Pesan membuka WhatsApp dengan teks dan tautan. Tab Pesan juga punya "Salin teks dan tautan".
 
 ## 15. Halaman lain
 

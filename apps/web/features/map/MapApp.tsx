@@ -6,7 +6,6 @@ import { useFavoriteAlerts } from "@/lib/favorites";
 import { useGeolocationBootstrap } from "@/lib/geolocation";
 import { restorePrefs, useApp } from "@/lib/store";
 import { useDataSync } from "@/lib/sync";
-import { canShareFiles, prefetchShareImage } from "@/lib/quick-share";
 import { useRegisterVisit } from "@/lib/visit";
 import { useIsDesktop } from "../common/useMedia";
 import { ActionDock, MapFabs } from "../overlay/ActionDock";
@@ -45,14 +44,6 @@ export function MapApp({ initialSlug }: { initialSlug?: string }) {
   const tMore = useTranslations("more");
   useFavoriteAlerts((name, st) => tMore(st === "available" ? "favAlertAvailable" : "favAlertEmpty", { name }));
   useGeolocationBootstrap();
-
-  // Siapkan gambar bagikan di latar belakang supaya satu ketukan langsung membuka menu bagikan perangkat
-  const lang = useLocale();
-  useEffect(() => {
-    if (!placesLoaded || !canShareFiles()) return;
-    const id = setTimeout(() => void prefetchShareImage(lang), 2000);
-    return () => clearTimeout(id);
-  }, [placesLoaded, lang]);
 
   // Buka SPBU dari tautan berbagi /spbu/[slug]
   useEffect(() => {

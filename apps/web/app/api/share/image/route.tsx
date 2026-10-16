@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { decodePlace, decodeStationStatus, projectBali, summarizeFuel, type FuelSummary, type Place, type StationStatus } from "@wenten/core";
+import { decodePlace, decodeStationStatus, formatRelative, projectBali, summarizeFuel, type FuelSummary, type Place, type StationStatus } from "@wenten/core";
 import { getPlacesPayload, getStatusPayload } from "@/lib/backend/server";
 import { SITE_URL } from "@/lib/env";
 
@@ -40,6 +40,14 @@ const TEXT = {
     area: "PER WILAYAH",
     foot: "Laporan warga langsung. Cek sebelum berangkat, lalu bantu laporkan.",
     stations: (n: number, t: number) => `${n} dari ${t} SPBU`,
+    stKicker: (t: string) => `STATUS SPBU · ${t} WITA`,
+    stNone: "Belum ada laporan",
+    stBeFirst: "Jadilah yang pertama melapor.",
+    stLast: (rel: string) => `Laporan terakhir ${rel}`,
+    st3h: (n: number) => `${n} laporan dalam 3 jam`,
+    stQueue: { none: "Tidak antre", short: "Antre pendek", medium: "Antre sedang", long: "Antre panjang" } as Record<string, string>,
+    stFuel: { available: "Ada", limited: "Terbatas", empty: "Habis", unknown: "Belum ada kabar" } as Record<string, string>,
+    stFoot: "Laporan warga, bukan data resmi. Periksa di lokasi.",
   },
   en: {
     kicker: (t: string) => `FUEL IN BALI RIGHT NOW · ${t} WITA`,
@@ -56,6 +64,14 @@ const TEXT = {
     area: "BY AREA",
     foot: "Live reports from residents. Check before you go, then help report.",
     stations: (n: number, t: number) => `${n} of ${t} stations`,
+    stKicker: (t: string) => `STATION STATUS · ${t} WITA`,
+    stNone: "No reports yet",
+    stBeFirst: "Be the first to report.",
+    stLast: (rel: string) => `Last report ${rel}`,
+    st3h: (n: number) => `${n} reports in 3 h`,
+    stQueue: { none: "No queue", short: "Short queue", medium: "Medium queue", long: "Long queue" } as Record<string, string>,
+    stFuel: { available: "Available", limited: "Limited", empty: "Sold out", unknown: "No news" } as Record<string, string>,
+    stFoot: "Resident reports, not official data. Check on site.",
   },
 } as const;
 
@@ -84,7 +100,7 @@ function Brand({ size }: { size: number }) {
 }
 
 /** Peta titik SPBU: gumpalan abu-abu sebagai latar pulau, lalu titik berwarna menurut status. */
-function DotMap({ places, statuses, w, h, dot }: { places: Place[]; statuses: Map<string, StationStatus>; w: number; h: number; dot: number }) {
+function DotMap({ places, statuses, w, h, dot, highlight }: { places: Place[]; statuses: Map<string, StationStatus>; w: number; h: number; dot: number; highlight?: string }) {
   // Pulau Bali berbanding kira-kira 3:2, muat ke kotak w x h di tengah
   const aspect = 1.5;
   const mw = w / h > aspect ? h * aspect : w;
@@ -102,14 +118,22 @@ function DotMap({ places, statuses, w, h, dot }: { places: Place[]; statuses: Ma
     })
     .sort((a, b) => order[a.s] - order[b.s]);
   const blob = dot * 4.2;
+  const hi = highlight ? pts.find((p) => p.id === highlight) : undefined;
+  const small = hi ? dot * 0.78 : dot;
   return (
     <div style={{ display: "flex", position: "relative", width: w, height: h }}>
       {pts.map((p) => (
         <div key={`b${p.id}`} style={{ position: "absolute", left: p.x - blob / 2, top: p.y - blob / 2, width: blob, height: blob, borderRadius: 9999, background: C.blob }} />
       ))}
       {pts.map((p) => (
-        <div key={`d${p.id}`} style={{ position: "absolute", left: p.x - dot / 2, top: p.y - dot / 2, width: dot, height: dot, borderRadius: 9999, background: color[p.s], border: "2px solid #ffffff" }} />
+        <div key={`d${p.id}`} style={{ position: "absolute", left: p.x - small / 2, top: p.y - small / 2, width: small, height: small, borderRadius: 9999, background: color[p.s], border: "2px solid #ffffff" }} />
       ))}
+      {hi && (
+        <div style={{ display: "flex", position: "absolute", left: hi.x - dot * 3.4, top: hi.y - dot * 3.4, width: dot * 6.8, height: dot * 6.8, borderRadius: 9999, background: "rgba(37,99,235,0.16)" }} />
+      )}
+      {hi && (
+        <div style={{ display: "flex", position: "absolute", left: hi.x - dot * 1.25, top: hi.y - dot * 1.25, width: dot * 2.5, height: dot * 2.5, borderRadius: 9999, background: color[hi.s], border: `${Math.max(3, dot * 0.3)}px solid #ffffff`, boxShadow: "0 0 0 3px #1e3a8a" }} />
+      )}
     </div>
   );
 }
@@ -168,18 +192,164 @@ function Areas({ s, t }: { s: FuelSummary; t: Dict }) {
   );
 }
 
+type FuelRow = { name: string; status: "available" | "limited" | "empty" | "unknown" };
+const STATUS_COLOR = { available: C.green, limited: C.amber, empty: C.red, unknown: C.gray } as const;
+const STATUS_LABEL = {
+  id: { available: "Tersedia", limited: "Terbatas", empty: "Habis", unknown: "Belum ada laporan" },
+  en: { available: "Available", limited: "Limited", empty: "Sold out", unknown: "No reports yet" },
+} as const;
+
+interface StationData {
+  place: Place;
+  status: StationStatus | undefined;
+  fuels: FuelRow[];
+  lang: "id" | "en";
+  time: string;
+  host: string;
+}
+
+function FuelList({ d, t, size, max }: { d: StationData; t: Dict; size: number; max: number }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+      {d.fuels.slice(0, max).map((f) => (
+        <div key={f.name} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: size * 0.5 }}>
+          <div style={{ display: "flex", fontSize: size, fontWeight: 700, color: C.ink }}>{f.name}</div>
+          <div style={{ display: "flex", alignItems: "center", gap: size * 0.35, fontSize: size * 0.9, color: C.ink }}>
+            <div style={{ display: "flex", width: size * 0.62, height: size * 0.62, borderRadius: 9999, background: STATUS_COLOR[f.status] }} />
+            {t.stFuel[f.status]}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function StationInfo({ d, t, size }: { d: StationData; t: Dict; size: number }) {
+  const st = d.status;
+  const lines: string[] = [];
+  if (st?.lastReportAt) lines.push(t.stLast(formatRelative(st.lastReportAt, d.lang)));
+  else lines.push(t.stBeFirst);
+  if (st?.reports3h) lines.push(t.st3h(st.reports3h));
+  if (st?.queue) lines.push(t.stQueue[st.queue] ?? "");
+  return (
+    <div style={{ display: "flex", flexDirection: "column", fontSize: size, color: C.muted }}>
+      {lines.filter(Boolean).map((l) => (
+        <div key={l} style={{ display: "flex", marginBottom: size * 0.25 }}>{l}</div>
+      ))}
+    </div>
+  );
+}
+
+const clip = (v: string, n: number) => (v.length > n ? v.slice(0, n - 1) + "…" : v);
+
+function StationImage({ f, d, t, places, statuses, width, height }: { f: Format; d: StationData; t: Dict; places: Place[]; statuses: Map<string, StationStatus>; width: number; height: number }) {
+  const overall = d.status?.overall ?? "unknown";
+  const label = STATUS_LABEL[d.lang][overall];
+  const color = STATUS_COLOR[overall];
+  const name = clip(d.place.name, 46);
+  const url = `${d.host}/spbu/${d.place.slug}`;
+
+  if (f === "story") {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", width, height, background: C.bg }}>
+        <div style={{ display: "flex", flexDirection: "column", flex: 1, padding: "64px 56px 0" }}>
+          <div style={{ display: "flex", justifyContent: "center" }}><Brand size={72} /></div>
+          <div style={{ display: "flex", justifyContent: "center", marginTop: 40, fontSize: 25, fontWeight: 700, color: C.muted, letterSpacing: 1.5 }}>{t.stKicker(d.time)}</div>
+          <div style={{ display: "flex", justifyContent: "center", textAlign: "center", marginTop: 20, fontSize: 68, fontWeight: 800, color: C.ink, letterSpacing: -2, lineHeight: 1.1 }}>{name}</div>
+          <div style={{ display: "flex", justifyContent: "center", marginTop: 10, fontSize: 30, color: C.muted }}>{clip(d.place.address ?? "", 60)}</div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 24, marginTop: 36 }}>
+            <div style={{ display: "flex", width: 56, height: 56, borderRadius: 9999, background: color }} />
+            <div style={{ display: "flex", fontSize: 92, fontWeight: 800, color, letterSpacing: -2 }}>{label}</div>
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", marginTop: 14 }}>
+            <StationInfo d={d} t={t} size={30} />
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", marginTop: 20 }}>
+            <DotMap places={places} statuses={statuses} w={968} h={470} dot={17} highlight={d.place.id} />
+          </div>
+          {d.fuels.length > 0 && (
+            <div style={{ display: "flex", marginTop: 20, padding: "26px 34px 8px", background: "#ffffff", borderRadius: 28, border: "2px solid #e7e5df" }}>
+              <FuelList d={d} t={t} size={36} max={6} />
+            </div>
+          )}
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", background: C.dark, padding: "30px 56px 36px" }}>
+          <div style={{ display: "flex", fontSize: 44, fontWeight: 800, color: "#ffffff" }}>{url}</div>
+          <div style={{ display: "flex", marginTop: 8, fontSize: 24, color: "#cbd5e1" }}>{t.stFoot}</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (f === "post") {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", width, height, background: C.bg, padding: "44px 48px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Brand size={56} />
+          <div style={{ display: "flex", fontSize: 26, fontWeight: 800, color: C.green }}>{clip(url, 34)}</div>
+        </div>
+        <div style={{ display: "flex", marginTop: 28, fontSize: 24, fontWeight: 700, color: C.muted, letterSpacing: 1.5 }}>{t.stKicker(d.time)}</div>
+        <div style={{ display: "flex", marginTop: 10, fontSize: 60, fontWeight: 800, color: C.ink, letterSpacing: -2, lineHeight: 1.1 }}>{name}</div>
+        <div style={{ display: "flex", marginTop: 6, fontSize: 28, color: C.muted }}>{clip(d.place.address ?? "", 56)}</div>
+        <div style={{ display: "flex", flex: 1, marginTop: 24 }}>
+          <div style={{ display: "flex", flexDirection: "column", width: 470 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+              <div style={{ display: "flex", width: 44, height: 44, borderRadius: 9999, background: color }} />
+              <div style={{ display: "flex", fontSize: 66, fontWeight: 800, color, letterSpacing: -2 }}>{label}</div>
+            </div>
+            <div style={{ display: "flex", marginTop: 12 }}><StationInfo d={d} t={t} size={26} /></div>
+            <div style={{ display: "flex", marginTop: 18 }}><FuelList d={d} t={t} size={30} max={6} /></div>
+          </div>
+          <div style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <DotMap places={places} statuses={statuses} w={500} h={640} dot={14} highlight={d.place.id} />
+          </div>
+        </div>
+        <div style={{ display: "flex", marginTop: 6, fontSize: 22, color: C.muted }}>{t.stFoot}</div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", width, height, background: C.bg }}>
+      <div style={{ display: "flex", flex: 1, padding: "34px 48px 0" }}>
+        <div style={{ display: "flex", flexDirection: "column", width: 640 }}>
+          <Brand size={48} />
+          <div style={{ display: "flex", marginTop: 22, fontSize: 19, fontWeight: 700, color: C.muted, letterSpacing: 1.2 }}>{t.stKicker(d.time)}</div>
+          <div style={{ display: "flex", marginTop: 8, fontSize: 46, fontWeight: 800, color: C.ink, letterSpacing: -1.5, lineHeight: 1.1 }}>{clip(d.place.name, 36)}</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 14 }}>
+            <div style={{ display: "flex", width: 34, height: 34, borderRadius: 9999, background: color }} />
+            <div style={{ display: "flex", fontSize: 54, fontWeight: 800, color, letterSpacing: -1.5 }}>{label}</div>
+          </div>
+          <div style={{ display: "flex", marginTop: 10 }}><StationInfo d={d} t={t} size={22} /></div>
+          <div style={{ display: "flex", marginTop: 10 }}><FuelList d={d} t={t} size={22} max={4} /></div>
+        </div>
+        <div style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "center" }}>
+          <DotMap places={places} statuses={statuses} w={460} h={400} dot={11} highlight={d.place.id} />
+        </div>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: C.dark, padding: "0 48px", height: 70 }}>
+        <div style={{ display: "flex", fontSize: 26, fontWeight: 800, color: "#ffffff" }}>{clip(url, 42)}</div>
+        <div style={{ display: "flex", fontSize: 19, color: "#cbd5e1" }}>{t.stFoot}</div>
+      </div>
+    </div>
+  );
+}
+
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const f = (["story", "post", "message"].includes(url.searchParams.get("f") ?? "") ? url.searchParams.get("f") : "story") as Format;
   const lang = url.searchParams.get("lang") === "en" ? "en" : "id";
   const t: Dict = TEXT[lang];
 
+  const spbuSlug = url.searchParams.get("spbu");
+  let fuelNames = new Map<number, string>();
   let places: Place[] = [];
   let statuses = new Map<string, StationStatus>();
   let reports24 = 0;
   try {
     const [pp, ss] = await Promise.all([getPlacesPayload(), getStatusPayload()]);
     places = pp.places.map(decodePlace);
+    fuelNames = new Map(pp.fuel_types.map((x) => [x[0], x[2]]));
     statuses = new Map(ss.stations.map((x) => [x[0], decodeStationStatus(x)]));
     reports24 = ss.reports_24h ?? 0;
   } catch (err) {
@@ -190,6 +360,22 @@ export async function GET(req: Request) {
   const host = SITE_URL.replace(/^https?:\/\//, "").replace(/\/$/, "");
   const { width, height } = SIZES[f];
   const sub = s.reported === 0 ? t.noneSub : reports24 > 0 ? t.reports(reports24) : t.live;
+
+  // Gambar untuk satu SPBU (?spbu=slug)
+  const target = spbuSlug ? places.find((p) => p.slug === spbuSlug) : undefined;
+  if (target) {
+    const st = statuses.get(target.id);
+    const fuels: FuelRow[] = target.fuelIds
+      .slice()
+      .sort((a, b) => a - b)
+      .map((id) => ({ name: fuelNames.get(id) ?? `#${id}`, status: st?.fuels.find((x) => x.fuelTypeId === id)?.status ?? "unknown" }));
+    const data: StationData = { place: target, status: st, fuels, lang, time: now, host };
+    return new ImageResponse(<StationImage f={f} d={data} t={t} places={places} statuses={statuses} width={width} height={height} />, {
+      width,
+      height,
+      headers: { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" },
+    });
+  }
 
   let body: React.ReactElement;
   if (f === "story") {

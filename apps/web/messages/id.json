@@ -258,7 +258,8 @@
     "copiedShort": "Tersalin",
     "viaApp": "Bagikan lewat…",
     "downloadQr": "Unduh QR",
-    "poster": "Poster cetak"
+    "poster": "Poster cetak",
+    "asImage": "Bagikan sebagai gambar"
   },
   "footer": {
     "disclaimer": "Laporan warga, bukan aplikasi resmi.",
@@ -489,10 +490,26 @@
     "hint": "Atur kertas ke A4. Poster ini tidak perlu login atau aplikasi."
   },
   "snap": {
+    "title": "Bagikan Wenten BBM",
+    "close": "Tutup",
+    "tab_story": "Cerita",
+    "tab_post": "Postingan",
+    "tab_message": "Pesan",
+    "cap_story": "Gambar vertikal untuk cerita Instagram, WhatsApp, atau TikTok",
+    "cap_post": "Gambar persegi untuk postingan Instagram atau Facebook",
+    "cap_message": "Gambar dan teks dengan angka terkini, untuk WhatsApp, Telegram, atau SMS",
+    "btn_story": "Bagikan cerita",
+    "btn_post": "Bagikan postingan",
+    "btn_message": "Bagikan pesan",
     "preparing": "Menyiapkan…",
+    "alt": "Ringkasan kondisi BBM di Bali dari laporan warga",
+    "downloaded": "Gambar diunduh. Unggah dari galeri.",
     "failed": "Gagal menyiapkan gambar. Coba lagi.",
+    "copied": "Teks disalin.",
+    "copyText": "Salin teks dan tautan",
     "msgText": "BBM di Bali sekarang: {n} dari {total} SPBU ada BBM, dari laporan warga langsung. Cek sebelum berangkat, dan laporkan yang kamu lihat:",
     "msgNoData": "Peta BBM Bali dari laporan warga langsung. Cek SPBU yang ada BBM sebelum berangkat, dan laporkan yang kamu lihat:",
-    "downloadedCopied": "Gambar diunduh dan teks disalin. Unggah dari galeri, lalu tempel teksnya."
+    "titleStation": "Bagikan SPBU",
+    "qrLink": "Kode QR dan poster"
   }
 }

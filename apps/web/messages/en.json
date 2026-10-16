@@ -258,7 +258,8 @@
     "copiedShort": "Copied",
     "viaApp": "Share via…",
     "downloadQr": "Download QR",
-    "poster": "Printable poster"
+    "poster": "Printable poster",
+    "asImage": "Share as image"
   },
   "footer": {
     "disclaimer": "Community reports, not an official app.",
@@ -489,10 +490,26 @@
     "hint": "Set paper to A4. No login or app needed."
   },
   "snap": {
+    "title": "Share Wenten BBM",
+    "close": "Close",
+    "tab_story": "Story",
+    "tab_post": "Post",
+    "tab_message": "Message",
+    "cap_story": "Tall image for an Instagram, WhatsApp or TikTok story",
+    "cap_post": "Square image for an Instagram or Facebook post",
+    "cap_message": "An image and text with the latest numbers, for WhatsApp, Telegram or SMS",
+    "btn_story": "Share story",
+    "btn_post": "Share post",
+    "btn_message": "Share message",
     "preparing": "Preparing…",
+    "alt": "Summary of fuel availability in Bali from resident reports",
+    "downloaded": "Image downloaded. Upload it from your gallery.",
     "failed": "Could not prepare the image. Try again.",
+    "copied": "Text copied.",
+    "copyText": "Copy text and link",
     "msgText": "Fuel in Bali right now: {n} of {total} stations have fuel, by live reports from residents. Check before you go, and report what you see:",
     "msgNoData": "Bali fuel map from live resident reports. Check which stations have fuel before you go, and report what you see:",
-    "downloadedCopied": "Image downloaded and text copied. Upload it from your gallery and paste the text."
+    "titleStation": "Share station",
+    "qrLink": "QR code and poster"
   }
 }
