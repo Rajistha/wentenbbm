@@ -1,495 +1,352 @@
 # DESIGN.md: Wenten BBM
 
-Dokumen ini adalah sumber acuan visual dan interaksi untuk `apps/web` dan `apps/admin`. Token di sini diimplementasikan di `packages/ui/tokens.css` dan preset Tailwind di `packages/config/tailwind`.
+Sumber acuan visual dan interaksi untuk `apps/web`, termasuk halaman admin (`/admin`). Token diimplementasikan di `packages/ui/tokens.css`, gaya komponen di `apps/web/app/globals.css`. Dokumen ini sudah diselaraskan dengan implementasi per 16 Oktober 2026; perubahan besar dari rancangan awal dicatat di bagian 16.
 
 ---
 
 ## 1. Prinsip desain
 
-1. **Tenang, bukan alarm.** Ini alat bantu saat krisis. Tampilan harus menenangkan dan informatif, bukan memicu panik. Tidak ada merah menyala, tidak ada huruf kapital berteriak, tidak ada animasi berkedip.
-2. **Satu jawaban dalam satu lirikan.** Dari layar utama, pengguna harus langsung tahu SPBU terdekat mana yang ada BBM, seberapa jauh, dan seberapa baru informasinya.
-3. **Waktu selalu terlihat.** Setiap status selalu disertai umur laporannya. Status tanpa waktu dianggap bug.
-4. **Status tidak bergantung pada warna.** Setiap status punya bentuk simbol dan label teks sendiri, sehingga tetap terbaca oleh pengguna buta warna, di bawah terik matahari, atau di layar murah.
-5. **Ibu jari dulu.** Semua aksi utama berada di separuh bawah layar dan bisa dijangkau satu tangan, karena banyak pengguna membuka situs sambil duduk di atas motor.
-6. **Jujur soal sumber.** Label "Laporan warga, bukan data resmi" selalu ada di detail SPBU.
+1. **Satu jawaban dalam satu lirikan.** Dari layar utama, pengguna langsung tahu SPBU mana yang ada BBM, seberapa jauh, dan seberapa baru kabarnya.
+2. **Waktu selalu terlihat.** Setiap status disertai umur laporannya. Status tanpa waktu dianggap bug.
+3. **Status tidak bergantung pada warna.** Setiap status punya warna, bentuk simbol, dan label teks, sehingga terbaca oleh pengguna buta warna dan di bawah terik matahari.
+4. **Ibu jari dulu.** Aksi utama ada di separuh bawah layar dan terjangkau satu tangan, karena banyak pengguna membuka situs di atas motor. Melapor harus berupa ketukan, bukan mengetik.
+5. **Cerah dan jelas.** Peta dan antarmuka berwarna terang dengan status berwarna lazim (hijau, kuning, merah). Warna dipakai untuk kecepatan baca; simbol dan label tetap membedakan.
+6. **Jujur soal sumber.** Label "Laporan warga, bukan data resmi" selalu ada di detail SPBU. Angka tidak pernah dibuat-buat: bila datanya kosong, tampilan berubah menjadi ajakan melapor, bukan menampilkan nol besar.
+7. **Tidak mengganggu.** Tidak ada animasi berkedip, tidak ada huruf kapital berteriak. Penanda berubah dengan transisi halus.
 
 ## 2. Warna
 
-Skema **monokromatik teal** dengan netral yang sedikit diwarnai teal. Status dibedakan lewat tingkat gelap terang, bentuk, dan label, bukan lewat warna yang berlawanan (hijau, kuning, merah).
+Satu tema terang. Tidak ada mode gelap dan tidak ada pengalih tema (dihapus agar peta dan penanda konsisten di semua perangkat).
 
-### 2.1 Palet dasar
+## 3. Sistem status dan penanda peta
 
-| Token | Hex | Kegunaan |
+| Status | Penanda SPBU (lingkaran, ikon pompa putih) | Label | Teks pendek |
+|---|---|---|---|
+| Tersedia | Lingkaran hijau, garis putih 2 px | Tersedia | Ada |
+| Terbatas | Lingkaran kuning, lencana setengah terisi di sudut | Terbatas | Terbatas |
+| Habis | Lingkaran merah, lencana silang di sudut | Habis | Habis |
+| Belum ada laporan | Cincin abu-abu putus-putus, pompa abu-abu, isi putih | Belum ada laporan | ? |
+
+Jenis tempat dibedakan dari **bentuk**, status dari warna dan lencana:
+
+| Jenis | Bentuk | Catatan |
 |---|---|---|
-| `--teal-50` | `#EEF7F6` | Latar bagian terpilih, latar chip aktif ringan |
-| `--teal-100` | `#D4ECE9` | Latar banner, hover |
-| `--teal-200` | `#A9D8D3` | Garis fokus sekunder, isian "Terbatas" mode gelap |
-| `--teal-300` | `#74BDB5` | Ikon sekunder mode gelap |
-| `--teal-400` | `#439F96` | Isian penanda "Terbatas" |
-| `--teal-500` | `#23827A` | Aksen, cincin fokus |
-| `--teal-600` | `#176861` | Isian penanda "Tersedia", tombol utama |
-| `--teal-700` | `#12524D` | Teks aksen di atas latar terang |
-| `--teal-800` | `#0E3F3B` | Teks judul, penanda "Habis" |
-| `--teal-900` | `#0A2D2A` | Teks utama |
-| `--ink-0` | `#FFFFFF` | Permukaan |
-| `--ink-50` | `#F5F8F8` | Latar halaman |
-| `--ink-100` | `#E6ECEB` | Garis pemisah |
-| `--ink-300` | `#B4C0BE` | Garis putus "Belum ada laporan" |
-| `--ink-500` | `#6B7B79` | Teks sekunder |
-| `--ink-700` | `#3A4847` | Teks badan alternatif |
+| SPBU | Lingkaran | |
+| Pertashop dan pengecer (Pertamini) | Kotak membulat berisi ikon pompa | Bisa dimatikan lewat panel Lapisan |
+| Terminal BBM (TBBM) | Belah ketupat gelap berisi tangki, dengan label nama | Referensi, tidak bisa dilapori |
+| Dikonfirmasi warga | Cincin luar kedua `--confirm-ring` 2 px | Minimal 2 pelapor berbeda sepakat dalam 30 menit |
+| Lokasi pengguna | Titik biru dengan halo akurasi | |
 
-Teks badan memakai `--teal-900` di atas `--ink-0` (kontras sekitar 14:1). Teks sekunder `--ink-500` di atas putih memenuhi AA untuk teks 16 px. `--teal-400` hanya untuk objek grafis (kontras di atas 3:1), tidak untuk teks.
+Aturan:
 
-### 2.2 Token semantik
-
-```css
-:root {
-  --bg: var(--ink-50);
-  --surface: var(--ink-0);
-  --surface-raised: var(--ink-0);
-  --border: var(--ink-100);
-  --text: var(--teal-900);
-  --text-muted: var(--ink-500);
-  --accent: var(--teal-600);
-  --accent-text: var(--ink-0);
-  --focus: var(--teal-500);
-
-  --status-available: var(--teal-600);
-  --status-limited: var(--teal-400);
-  --status-empty: var(--teal-800);
-  --status-unknown: var(--ink-300);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #071D1B;
-    --surface: #0C2724;
-    --surface-raised: #11322E;
-    --border: #1B4540;
-    --text: #E4F1EF;
-    --text-muted: #9FB5B2;
-    --accent: var(--teal-300);
-    --accent-text: #071D1B;
-    --focus: var(--teal-200);
-
-    --status-available: var(--teal-300);
-    --status-limited: var(--teal-200);
-    --status-empty: #E4F1EF;
-    --status-unknown: #4E6563;
-  }
-}
-:root[data-theme="dark"] { /* nilai sama dengan blok di atas */ }
-```
-
-### 2.3 Peta
-
-Gaya dasar peta memakai **Positron** dari OpenFreeMap (abu-abu terang, minim warna) agar penanda status menonjol. Mode gelap memakai varian gelap dengan penyesuaian warna air dan jalan ke rentang teal gelap. Label jalan tetap tampil karena dibutuhkan untuk orientasi.
-
-## 3. Sistem status
-
-| Status | Simbol | Penanda peta | Label | Teks pendek (chip) |
-|---|---|---|---|---|
-| Tersedia | `●` | Lingkaran penuh `--status-available`, garis putih 2 px | Tersedia | Ada |
-| Terbatas | `◐` | Lingkaran setengah terisi `--status-limited`, garis `--status-available` | Terbatas, antre | Terbatas |
-| Habis | `○` | Cincin `--status-empty` 3 px dengan `×` di tengah, isi putih | Habis | Habis |
-| Belum ada laporan | `◌` | Cincin putus-putus `--status-unknown`, isi putih | Belum ada laporan | ? |
-
-Penanda tambahan:
-
-| Jenis | Penanda | Catatan |
-|---|---|---|
-| Dikonfirmasi warga | Cincin luar kedua `--teal-900` 2 px mengelilingi penanda status | Minimal 2 pelapor berbeda sepakat dalam 30 menit |
-| Pengecer (P1) | Persegi kecil 12 px `■` dengan warna status, tanpa cincin | Bisa dimatikan lewat tombol lapisan |
-| Pengecer belum diverifikasi (P1) | Persegi kosong `□` putus-putus | Hanya terlihat oleh penambahnya |
-| Terminal BBM / TBBM (P1) | Belah ketupat `◆` `--ink-700` dengan label nama | Referensi, tidak bisa diketuk untuk melapor |
-| Lokasi pengguna | Titik `--teal-500` dengan halo akurasi transparan | |
-
-Aturan tambahan:
-
-- **Kesegaran**: jika laporan terbaru berumur 91 sampai 120 menit, penanda dan chip memakai opasitas 55% dan label waktu berbunyi "Mungkin sudah berubah".
-- **Ukuran penanda**: 24 px di zoom kota, 32 px saat terpilih, area sentuh 44 px.
-- **Urutan tumpukan**: Tersedia di atas, lalu Terbatas, Habis, Belum ada laporan, agar SPBU yang berguna tidak tertutup.
-- **Klaster**: di zoom di bawah 11, penanda dikelompokkan. Klaster menampilkan jumlah SPBU dan cincin tipis yang proporsinya menunjukkan berapa yang Tersedia.
-- Penanda digambar sebagai ikon SVG lewat `map.addImage` dan symbol layer MapLibre, bukan elemen DOM, agar ringan untuk ratusan titik.
+- **Tanpa klaster.** Semua titik ditampilkan satu per satu (klaster berangka membingungkan warga dan dihapus). Ratusan titik tetap ringan karena penanda adalah ikon SVG lewat `map.addImage` dan symbol layer, bukan elemen DOM.
+- **Kesegaran**: laporan berumur 91 sampai 120 menit membuat penanda memudar (opasitas 55%) dan labelnya berbunyi "Mungkin sudah berubah"; lewat itu status kembali ke Belum ada laporan.
+- **Urutan tumpukan**: Tersedia di atas, lalu Terbatas, Habis, Belum ada laporan.
+- Ukuran penanda 32 px (digambar 2x), area sentuh 44 px; SPBU terpilih diperbesar.
+- Titik "Langsung" di kartu identitas berdenyut pelan; cincin denyut diberi ruang agar tidak terpotong, dan animasi dimatikan saat `prefers-reduced-motion`.
 
 ## 4. Tipografi
 
-Huruf: **Plus Jakarta Sans** (Google Fonts, dirancang di Indonesia), cadangan `system-ui, sans-serif`. Angka memakai `font-variant-numeric: tabular-nums` untuk jarak dan waktu agar tidak bergoyang saat berubah.
+Huruf **Plus Jakarta Sans** (Google Fonts), cadangan `system-ui`. Angka memakai `tabular-nums` untuk jarak, waktu, dan statistik agar tidak bergoyang.
 
 | Token | Ukuran / tinggi baris | Bobot | Kegunaan |
 |---|---|---|---|
-| `display` | 24 / 32 | 700 | Judul halaman Tentang |
+| `display` | 24 / 32 (judul halaman Tentang 28+) | 700 | Judul halaman |
 | `title` | 20 / 28 | 700 | Nama SPBU di detail |
-| `heading` | 17 / 24 | 600 | Judul bagian, nama SPBU di daftar |
-| `body` | 16 / 24 | 400 | Teks utama (minimum di HP) |
-| `label` | 14 / 20 | 600 | Chip, tombol sekunder |
-| `caption` | 13 / 18 | 400 | Waktu, jarak, keterangan |
+| `heading` | 17 / 24 | 600 | Judul bagian, nama di daftar |
+| `body` | 16 / 24 | 400 | Teks utama. **Kolom isian selalu 16 px** supaya Safari iOS tidak memperbesar layar saat diketuk |
+| `label` | 14 / 20 | 600 | Chip, tombol |
+| `caption` | 13 / 18 (12 untuk keterangan kecil) | 400 | Waktu, jarak, keterangan |
 
 ## 5. Spasi, sudut, bayangan
 
-- Skala spasi 4 px: `4, 8, 12, 16, 20, 24, 32, 48`.
-- Gutter samping halaman: 16 px di HP, 24 px di desktop.
-- Radius: `--r-sm 8px` (chip), `--r-md 12px` (kartu, tombol), `--r-lg 20px` (sudut atas bottom sheet), `--r-full` (FAB, penanda).
-- Bayangan hanya dua tingkat: `--shadow-1` untuk kartu di atas peta, `--shadow-2` untuk bottom sheet. Di mode gelap bayangan diganti garis `--border`.
+- Skala spasi 4 px: 4, 8, 12, 16, 20, 24, 32, 48. Gutter samping 16 px di HP, 24 px di desktop.
+- Radius: `--r-sm 8px` (chip kecil, kolom isian), `--r-md 12px` (kartu, tombol), `--r-lg 20px` (sudut atas bottom sheet, kartu besar), `--r-full` (FAB, penanda).
+- Dua tingkat bayangan: `--shadow-1` untuk kartu di atas peta, `--shadow-2` untuk bottom sheet.
+- Gerak (durasi, kurva, reduced motion) ada di bagian 10.
 
-## 6. Ikon
+## 6. Ikon dan logo
 
-Ikon memakai simbol Unicode monokrom yang dirender sebagai teks dengan warna teks, bukan emoji berwarna. Karakter yang punya bentuk emoji wajib diberi `U+FE0E`. Ikon dekoratif diberi `aria-hidden="true"`, dan tombol yang hanya berisi ikon wajib punya `aria-label`.
-
-| Fungsi | Simbol | Catatan |
-|---|---|---|
-| Lokasi saya | `◎` | |
-| Arahkan | `↗︎` | `U+2197 U+FE0E` |
-| Lapor stok | `✎` | |
-| Cari | `⌕` | |
-| Filter | `≡` | |
-| Bagikan | `⤴︎` | `U+2934 U+FE0E` |
-| Tutup | `×` | |
-| Kembali | `←` | |
-| Muat ulang | `↻` | |
-| Waktu | `◷` | |
-| Antrean | `⋯` | Jumlah titik menunjukkan panjang antrean (lihat 7.8) |
-| 24 jam | `◴` | |
-| Info | `ⓘ` | |
-| Pengumuman | `❖` | |
-| Dekorasi brand | `✦` | Di logo teks "✦ Wenten BBM" |
+- **Ikon**: garis monokrom dari **lucide-react** lewat satu komponen `Icon` (`strokeWidth 2`, mengikuti warna teks). Tanpa emoji. Ikon dekoratif `aria-hidden`; tombol yang hanya berisi ikon wajib punya `aria-label`.
+- Ikon merek tidak ada di lucide, jadi **logo Instagram** digambar sendiri (`InstagramIcon`, SVG garis).
+- **Logo**: tetesan BBM putih dengan titik lokasi di dalamnya, di kotak biru membulat bergradasi (`#3b82f6` ke `#1d4ed8`), diikuti kata "Wenten **BBM**" (BBM berwarna biru, bobot lebih ringan). Dipakai di kartu identitas, halaman Tentang, login admin, poster, dan gambar bagikan.
+- Tagline: "Wenten BBM - semeton bantu semeton cek BBM Bali".
 
 ## 7. Tata letak dan komponen
 
-### 7.1 Konsep layout: peta penuh layar dengan kontrol mengambang
+### 7.1 Konsep: peta penuh layar dengan kontrol mengambang
 
-Peta selalu mengisi 100% viewport di semua ukuran layar. Semua kontrol adalah **kartu mengambang** di atas peta dengan latar `--surface` 96% opasitas, `backdrop-filter: blur(8px)`, radius `--r-md`, dan `--shadow-1`. Struktur dasarnya terinspirasi pola "kartu atas, dock bawah" yang umum di aplikasi peta krisis, tetapi dibedakan dengan cara berikut:
-
-| Aspek | Pola umum di aplikasi sejenis | Wenten BBM |
-|---|---|---|
-| Kartu atas | Satu kartu di tengah berisi semua hal | Dipecah dua: **kartu identitas** di kiri (merek, status langsung, angka) dan **kartu kontrol** di kanan (jenis BBM, bahasa, bantuan) |
-| Ringkasan | Pil berisi angka per status | **Strip status** dengan bar proporsi tersegmen dan angka, sekaligus berfungsi sebagai filter cepat (ketuk segmen untuk menampilkan status itu saja) |
-| Warna status | Hijau, oranye, merah | Monokromatik teal, dibedakan bentuk (`●` `◐` `○` `◌`) |
-| Tanda konfirmasi | Cincin hitam | Cincin ganda tipis |
-| Daftar | Tidak ada atau terpisah | Laci kanan (desktop) atau bottom sheet (HP) di atas peta, peta tetap terlihat |
-| Aksi | Deretan tombol setara | Satu tombol utama "Terdekat yang ada BBM" yang dominan, aksi lain sekunder |
-| Lapor | Tombol "Add" umum | Tombol "Lapor" kontekstual yang menyala saat pengguna berada di SPBU |
+Peta mengisi 100% layar. Semua kontrol adalah **kartu mengambang** (`.float-card`): latar `--surface-glass`, radius `--r-md`, `--shadow-1`. Panel yang lebih besar (daftar, detail, lapor) adalah **bottom sheet** di HP dan **laci kanan** 400 px di desktop, sehingga peta tetap terlihat.
 
 ### 7.2 Layar utama di HP (360 sampai 430 px)
 
 ```
 ┌─────────────────────────────────┐
 │ ┌─────────────────────────────┐ │
-│ │ ✦ Wenten BBM   ● 20 dtk ⓘ │ │  Kartu identitas ringkas (status langsung)
-│ │ [Pertalite][Pertamax][Solar]│ │  Tab jenis BBM, geser horizontal
+│ │ [logo] Wenten BBM ● Langsung ⓘ│ │  Kartu identitas
+│ │ 135 online · 0 laporan · 135 pengunjung │  Baris angka (lihat 7.9)
 │ └─────────────────────────────┘ │
 │ ┌─────────────────────────────┐ │
-│ │ ███████▒▒░░░░░░             │ │  Strip status: bar proporsi
-│ │ ● 97  ◐ 12  ○ 77  ◌ 122     │ │  Ketuk segmen = filter cepat
+│ │ ⌕ Cari SPBU, Pertamini, atau tempat │  Bilah cari
 │ └─────────────────────────────┘ │
-│ ❖ Kapal BBM tiba 16 Okt ...  ×  │  Banner pengumuman (opsional)
+│ [Semua][Pertalite][Pertamax][Solar]…  Tab jenis BBM, geser horizontal
+│ ┌─ kartu antre (bila mengantre) ┐│  Lihat 7.7
 │                                 │
 │          PETA PENUH             │
-│     ●        ◐                  │
-│          ◉ (Anda)     ○         │
-│   ◌            ⦿                │  ⦿ = dikonfirmasi warga
+│   (semua titik, tanpa klaster)  │
 │                            [◎]  │  Lokasi saya
 │ ┌─────────────────────────────┐ │
-│ │ Anda di SPBU Kapal?    [✎] │ │  Ajakan kontekstual (hanya dalam 300 m)
+│ │ Belum ada laporan hari ini  │ │  Strip status / keadaan kosong
+│ │ [Lihat SPBU terdekat]       │ │
 │ └─────────────────────────────┘ │
-│ ┌─────────────────────────────┐ │
-│ │  ◎  Terdekat yang ada BBM   │ │  Tombol utama, lebar penuh, 52 px
-│ └─────────────────────────────┘ │
-│  [≡ Daftar] [◇ Lapisan] [⤴︎ Bagi] │  Aksi sekunder
+│ [◎ Terdekat yang ada BBM][Daftar]│  Dock: aksi utama + Daftar
+│  [Lapisan] [Tambah] [Bagikan]   │  Aksi sekunder
 └─────────────────────────────────┘
 ```
 
-- Tombol `ⓘ` membuka menu: Bantuan, Legenda, Data (`/data`), Tentang, pilihan bahasa ID / EN.
-- **Daftar** membuka bottom sheet dengan dua titik henti: **half** (55% layar) dan **full** (92% layar). Di posisi full muncul tombol mengambang "Lihat peta".
-- **Lapisan** (`◇`) membuka panel kecil berisi toggle: Pengecer, Terminal BBM, Hanya yang dikonfirmasi warga.
-- Zoom memakai gestur cubit, tombol `+` `−` disembunyikan di HP.
-- Saat detail SPBU terbuka, dock bawah disembunyikan dan digantikan bottom sheet detail.
+- Tombol `ⓘ` membuka menu: bantuan, legenda, data (`/data`), tentang, bahasa ID/EN, serta pintasan Lapisan, Tambah, Bagikan di HP.
+- **Bilah cari** bergaya Google Maps: mengenali nama SPBU, nomor SPBU, jalan, kecamatan, tempat, dan alias populer ("gatsu", "SPBU dekat Kuta"), toleran salah ketik. Kolom isian 16 px.
+- **Strip status**: bar proporsi tersegmen dan angka per status, sekaligus filter cepat. Bila belum ada satu pun laporan, strip berubah menjadi ajakan "Belum ada laporan hari ini" dengan tombol, bukan deretan nol.
+- Saat sheet terbuka di HP, dock dan kartu kontrol disembunyikan.
+- Zoom memakai cubit; tombol `+` `−` hanya di desktop.
 
 ### 7.3 Layar utama desktop (≥ 1024 px)
 
-```
-┌────────────────────────────────────────────────────────────────────────────┐
-│ ┌──────────────────────────────┐            ┌──────────────────────────────┐│
-│ │ ✦ Wenten BBM                │            │ [Pertalite][Pertamax][Solar] ││
-│ │ ● Langsung · diperbarui 20 dtk│            │ [Pertamax Turbo][Lainnya ▾]  ││
-│ │ 1.204 online · 8.310 laporan │            │           ID | EN    ⓘ Bantuan││
-│ │ Lihat data →                 │            └──────────────────────────────┘│
-│ └──────────────────────────────┘                                            │
-│                                                                             │
-│                          PETA PENUH LAYAR                                   │
-│                                                                             │
-│                ●         ┌──────────────────┐                               │
-│                          │ Popup SPBU       │                               │
-│                          └──────────────────┘                        [+]    │
-│ ┌──────────────┐                                                     [−]    │
-│ │ Legenda    ▾ │   ┌──────────────────────────────────────────┐      [◎]    │
-│ │ ● Tersedia   │   │ ███████▒▒░░░░░░░  ● 97  ◐ 12  ○ 77  ◌ 122 │             │
-│ │ ◐ Terbatas   │   └──────────────────────────────────────────┘             │
-│ │ ○ Habis      │   [ ◎ Terdekat yang ada BBM ] [≡ Daftar] [◇] [⤴︎ Bagikan]   │
-│ │ ◌ Belum ada  │                                                            │
-│ │ ⦿ Dikonfirmasi│                                                           │
-│ └──────────────┘                    Laporan warga, bukan aplikasi resmi.    │
-└────────────────────────────────────────────────────────────────────────────┘
-```
+Kartu identitas di kiri atas (logo, status langsung, waktu pembaruan, baris angka, tautan "Lihat data"), kartu kontrol di kanan atas (tab jenis BBM, ID/EN, bantuan), strip status dan dock di tengah bawah, legenda di kiri bawah, zoom dan lokasi di kanan bawah. **Daftar** dan **detail** membuka laci kanan 400 px. Popup SPBU menempel pada penanda (360 px) dengan tombol "Buka detail". Tablet (640 sampai 1023 px) memakai layout HP dengan lebar maksimal 560 px.
 
-- Kartu identitas di kiri atas, kartu kontrol di kanan atas, strip status dan dock di tengah bawah, legenda di kiri bawah, zoom dan lokasi di kanan bawah.
-- **Daftar** membuka laci kanan 400 px yang menimpa sebagian peta, kartu kontrol bergeser ke kiri laci.
-- Popup SPBU menempel pada penanda (lebar 360 px), tombol "Buka detail" membuka laci kanan pada tab detail.
-- Atribusi peta dan penafian berada di pojok kanan bawah dengan ukuran `caption`.
+### 7.4 Daftar SPBU
 
-Tablet (640 sampai 1023 px) memakai layout HP dengan kartu atas maksimal 560 px rata tengah dan sheet maksimal 560 px.
+Bottom sheet dua titik henti (half 55%, full 92%), bisa digeser ke bawah untuk menutup dari gagang, header, maupun isi.
 
-### 7.4 Item daftar SPBU
+- **Header**: judul, jumlah, kolom cari, chip urutan (Terdekat, Laporan terbaru, Tersedia dulu), chip **Favorit** dan **Hanya yang tersedia**.
+- **Kartu misi** (bila ada wilayah dengan ≥3 SPBU tanpa kabar segar): "Buleleng butuh laporan, 56 dari 56 SPBU belum ada kabar" dengan tombol Lihat.
+- **Rekomendasi terbaik**: tiga SPBU teratas menurut jarak, antrean, dan kebaruan, lalu judul "Semua tempat". Hanya tampil saat tidak sedang mencari atau memfilter.
+- **Kartu SPBU** (`.sc`):
 
 ```
 ┌─────────────────────────────────────────┐
-│ ●  SPBU Kapal 54.803.xx          1,2 km │
-│    Jl. Raya Kapal, Mengwi               │
-│    Ada Pertalite · Habis Pertamax       │
-│    ◷ 12 mnt lalu · ⋯⋯ antre sedang      │
-│                            [↗︎ Arahkan]  │
+│ [foto 76px]  SPBU Panjer                │
+│              54.803.xx                  │
+│              1,2 km · Jl. Raya Panjer   │
+│              ◷ Buka · tutup 22.00       │  Jam buka (bila tercatat) / 24 jam
+│              ⏱ 4 orang sedang antre     │  Pelacak antrean
+│ ● Tersedia  ✓ Terkonfirmasi  ⛟ Antre sedang │  Pil status
+│ Laporan terakhir 12 mnt lalu · 7 laporan dalam 3 jam terakhir │
+│ [Pertalite · Ada] [Pertamax · Habis] …  │  Maks. 4 chip BBM
+│ [✓ Ada] [✕ Habis] [↗] [⤴]               │  Aksi cepat
 └─────────────────────────────────────────┘
 ```
 
-- Tinggi minimum 96 px, seluruh kartu bisa diketuk untuk membuka detail.
-- Baris status BBM menampilkan maksimal tiga jenis, jenis yang sedang difilter selalu tampil pertama.
-- Urutan bawaan: jarak terdekat. Pilihan lain: laporan terbaru, status (Tersedia dulu).
-- SPBU berstatus Belum ada laporan tetap tampil tetapi diletakkan setelah SPBU berstatus, dengan ajakan "Jadilah yang pertama melapor".
+  - Foto: dari Mapillary (foto jalan yang menghadap SPBU, dipilih otomatis) atau ikon pompa bila tidak ada.
+  - Peringatan kuning "Baru 1 laporan, bisa meleset" muncul bila laporan 3 jam kurang dari 3.
+  - SPBU tanpa laporan tetap tampil, setelah yang berstatus, dengan ajakan "Jadilah yang pertama melapor".
+  - Tombol aksi cepat redup bila pengguna di luar radius (kecuali syarat radius dimatikan admin).
 
-### 7.5 Detail SPBU (popup)
+### 7.5 Detail SPBU
 
-Di HP tampil sebagai bottom sheet posisi half yang bisa ditarik ke full. Di desktop tampil sebagai kartu popup 360 px yang menempel pada penanda, dengan tombol "Buka detail" ke laci kanan. Bagian "Perkiraan waktu antre" dan "Kabar antrean" (P1) disisipkan di bawah baris Antrean.
+Bottom sheet half yang bisa ditarik ke full (HP), laci kanan (desktop).
 
 ```
 ┌─────────────────────────────────────────┐
-│ ← SPBU Kapal                         ×  │
-│   Pertamina · 54.803.xx · ◴ 24 jam      │
-│   Jl. Raya Kapal, Mengwi · 1,2 km       │
-│                                         │
-│   ●  Tersedia                           │  Status keseluruhan, ukuran title
-│   ◷ Laporan terakhir 12 menit lalu      │
-│                                         │
-│   Pertalite       ● Ada       12 mnt    │
-│   Pertamax        ○ Habis     12 mnt    │
-│   Pertamax Turbo  ◌ ?          -        │
-│   Dexlite         ◐ Terbatas  48 mnt    │
-│   Antrean         ⋯⋯ Sedang             │
-│                                         │
-│ [ ↗︎ Arahkan             ] [⤴︎] [✎]     │  Arahkan = tombol utama penuh
-│                                         │
-│   Laporan terbaru                       │
-│   ┌───────────────────────────────────┐ │
-│   │ 19.02 · Pertalite Ada, Pertamax   │ │
-│   │ Habis · antre sedang              │ │
-│   │ "Pertamax habis sejak siang"      │ │
-│   │ [Masih benar · 3] [Tidak benar·0] │ │
-│   └───────────────────────────────────┘ │
-│   ...hingga 5 laporan                   │
-│                                         │
-│   ⓘ Laporan warga, bukan data resmi     │
-│     SPBU. Selalu periksa di lokasi.     │
+│ ← SPBU Panjer                  ♡   ×    │  Favorit dan tutup
+│   Pertamina · 54.803.xx                 │
+│   ◷ Buka · tutup 22.00                  │
+│   ⏱ 4 orang sedang antre                │
+│   Jl. Raya Panjer · 1,2 km              │
+│ [ foto banner ]                         │
+│ ● Tersedia  ✓ Terkonfirmasi             │
+│ ◷ Laporan terakhir 12 mnt lalu · 7 laporan dalam 3 jam │
+│ Pertalite      ● Ada       12 mnt       │
+│   Rp 10.000 · harga resmi               │  Harga warga, atau harga resmi sebagai acuan
+│ Pertamax       ○ Habis     12 mnt       │
+│ Antrean        ⛟⛟ Sedang                │
+│ Perkiraan tunggu 15–30 menit            │
+│ Lalu lintas depan SPBU: lancar          │  TomTom
+│ [ ⏱ Saya di antrean ini ]               │
+│ [ ↗ Arahkan             ] [⤴]           │
+│ ┌ Bantu warga lain ────────────────────┐│
+│ │ [✓ Ada BBM] [✕ Habis]   Terbatas?    ││
+│ └──────────────────────────────────────┘│
+│ [Isi harga] [Usulkan koreksi]           │
+│ Laporan terbaru … [Masih benar] [Tidak benar] │
+│ ⓘ Laporan warga, bukan data resmi.      │
 └─────────────────────────────────────────┘
 ```
 
-Aturan tombol:
+- **Arahkan** selalu aktif dan membuka Google Maps berbasis **nama SPBU** (supaya Google memilih tempat yang tepat, bukan hanya koordinat). Menu kecil: aplikasi peta lain dan salin koordinat.
+- **Harga**: median laporan warga 7 hari terakhir; bila belum ada, **harga resmi Pertamina** ditampilkan redup dengan label "harga resmi" (hanya untuk SPBU dan Pertashop, tidak untuk Pertamini).
+- **Isi harga** dan **Usulkan koreksi** membuka dialog kecil (lihat 7.7).
+- Tombol lapor aktif hanya dalam radius 300 m (kecuali dimatikan admin); bila tidak, ketukan menjelaskan alasannya.
 
-- **Arahkan** selalu aktif, membuka Google Maps. Menu kecil di sampingnya: "Aplikasi peta lain" dan "Salin koordinat".
-- **Lapor** (`✎`) aktif hanya dalam radius 300 m. Jika tidak, ketukan menampilkan penjelasan: "Lapor hanya bisa dilakukan saat Anda berada di SPBU ini (maksimal 300 m), supaya laporan tetap akurat."
-- **Masih benar / Tidak benar** mengikuti aturan radius yang sama, tidak tampil pada laporan milik sendiri.
+### 7.6 Form lapor: wizard ketuk-ketuk
 
-### 7.6 Form laporan
-
-Ditampilkan sebagai bottom sheet full. Tujuan: selesai dalam 3 ketukan untuk kasus umum.
-
-```
-┌─────────────────────────────────────────┐
-│ ← Lapor stok · SPBU Kapal               │
-│   Lokasi Anda terverifikasi · 40 m      │
-│                                         │
-│   Pertalite                             │
-│   [ Ada ][ Terbatas ][ Habis ][ ? ]     │  Kontrol segmen, bawaan "?"
-│   Pertamax                              │
-│   [ Ada ][ Terbatas ][ Habis ][ ? ]     │
-│   ...hanya BBM yang dijual SPBU ini     │
-│                                         │
-│   Antrean                               │
-│   [ Tidak ada ][ Pendek ][ Sedang ][ Panjang ] │
-│                                         │
-│   Catatan (opsional)            0/140   │
-│   [                                   ] │
-│                                         │
-│ [            Kirim laporan            ] │  Nonaktif sampai minimal 1 BBM diisi
-└─────────────────────────────────────────┘
-```
-
-- Kontrol segmen minimal tinggi 44 px, label teks lengkap, simbol status di kiri label.
-- Pintasan "Semua ada" dan "Semua habis" tampil di atas daftar untuk mempercepat.
-- Setelah sukses: sheet tertutup, toast "Terima kasih, laporan Anda membantu warga lain.", penanda SPBU beranimasi skala halus satu kali (200 ms).
-- Pesan galat ditampilkan inline di atas tombol Kirim, bahasa sederhana, selalu dengan saran tindakan.
-
-### 7.7 Mode "Saya di antrean ini" dan kabar antrean (P1)
+Satu pertanyaan per layar, pilihan besar, hampir semua langkah maju otomatis setelah satu ketukan. Selesai dalam 3 ketukan untuk kasus umum.
 
 ```
-┌─────────────────────────────────────────┐
-│ SPBU Kapal · Pertalite                  │
-│ ● 5 orang memantau antrean ini          │
-│ ┌─────────────────────────────────────┐ │
-│ │ Perkiraan waktu tunggu Anda         │ │  Kartu latar --teal-50, garis --teal-200
-│ │ Sekitar 25 sampai 35 menit          │ │  ukuran display
-│ │ Antrean sekitar 300 m dari pompa    │ │
-│ └─────────────────────────────────────┘ │
-│ ◆ Jepun 21                       4 mnt  │  Kabar antrean, simbol pembeda
-│   Dapat BBM setelah 32 menit            │  per nama samaran (◆ ▲ ■ ●)
-│ ▲ Cempaka 07                     9 mnt  │  dalam satu warna teks
-│   Tangki baru datang, mulai jalan lagi  │
-│ ■ Kamboja 66                    12 mnt  │
-│   Maksimal Rp50 ribu per pengisian      │
-│ [ Tulis kabar antrean...      ] [ → ]   │
-│ [  Sudah dapat BBM  ] [ Keluar antrean ]│
-└─────────────────────────────────────────┘
+Langkah:  1 Ada atau tidak?  →  2 BBM apa? (jika ada)  →  3 Antrean?  →  4 Berapa lama? (opsional)
+Header:   ← kembali   Langkah 2 dari 4   × tutup   (garis kemajuan)   📍 nama SPBU
+Footer:   [Lewati] [Kirim]        Lewati = ke pertanyaan berikut, Kirim = kirim sekarang
 ```
 
-- Nama samaran dibuat dari hash ID perangkat: kata flora atau tempat khas Bali ditambah dua digit. Pembeda antarpengirim memakai **simbol**, bukan warna berbeda, agar tetap dalam satu skema warna.
-- Saat mode aktif, bar kecil menempel di atas dock: "Anda di antrean SPBU Kapal · 12 menit" dengan tombol "Selesai".
+- Pintasan dari detail (`Ada BBM` / `Habis`) melewati langkah 1.
+- "Habis" melewati pemilihan BBM (semua jenis dianggap habis).
+- Tombol **Lewati** dan **Kirim** selalu dua tombol berbeda dengan arti berbeda; Kirim aktif begitu ada jawaban.
+- Setelah sukses: sheet tertutup, toast terima kasih, penanda SPBU beranimasi satu kali.
+- Pesan galat inline di atas footer, bahasa sederhana, selalu dengan saran tindakan. Laporan offline masuk antrean dan dikirim saat daring.
+
+### 7.7 Pelacak antrean, favorit, dan dialog kecil
+
+**Pelacak antrean**
+- Tombol "Saya di antrean ini" di detail (aktif dalam radius). Dialog kecil memilih jenis BBM lalu "Mulai ukur antrean".
+- Selama mengantre, **kartu antre** (`.queue-bar`, garis kiri biru) tampil di bawah kartu identitas di semua layar: "Antre 12 menit · nama SPBU" dengan tiga tombol: **Dapat BBM** (utama), **Habis atau tutup**, **Pergi**.
+- Hasil Dapat BBM atau Habis otomatis menjadi laporan; waktu tunggu masuk estimasi. Sesi tanpa denyut lokasi 20 menit berakhir sendiri.
+- Di kartu dan detail muncul "N orang sedang antre"; di kartu identitas muncul kolom "antre" bila ada.
+
+**Favorit**: ikon hati di header detail (maks. 12, tersimpan di perangkat) dan chip Favorit di daftar. Saat aplikasi dibuka dan status favorit berubah menjadi Tersedia atau Habis, muncul toast; tidak ada push saat aplikasi tertutup.
+
+**Dialog kecil** (`.modal`, tengah layar, latar redup): dipakai untuk mulai antre, isi harga (kolom Rp per jenis BBM, 3.000 sampai 60.000), dan usulan koreksi (lokasi salah, sudah tutup, BBM tidak sesuai, data ganda, lainnya, plus catatan 280 huruf).
 
 ### 7.8 Komponen inti
 
-| Komponen | Props utama | Catatan |
-|---|---|---|
-| `StatusGlyph` | `status`, `size`, `stale` | Simbol + `aria-label` teks status |
-| `StatusChip` | `fuel`, `status`, `ageMinutes` | "Ada Pertalite" |
-| `QueueIndicator` | `level` | `none` → "Tidak antre", `short` → `⋯`, `medium` → `⋯⋯`, `long` → `⋯⋯⋯` plus label |
-| `RelativeTime` | `at` | "12 mnt lalu", ketuk untuk jam WITA, diperbarui tiap 30 detik |
-| `FuelFilterBar` | `selected`, `onChange` | Chip geser horizontal, chip aktif isi `--accent` |
-| `StationMap` | `stations`, `selectedId`, `fuelFilter` | MapLibre, symbol layer, klaster |
-| `StationListItem` | `station`, `distanceM` | |
-| `StationSheet` | `stationId` | Detail SPBU |
-| `ReportSheet` | `station`, `userPosition` | Form laporan |
-| `NearbyPrompt` | `station` | Ajakan kontekstual |
-| `AnnouncementBanner` | `announcement` | Bisa ditutup, tersimpan per perangkat |
-| `OfflineBanner` | `lastUpdatedAt` | |
-| `BottomSheet` | `snapPoints`, `initial` | Dukungan gestur dan keyboard |
-| `NavigateButton` | `lat`, `lng`, `name` | Menghasilkan tautan Google Maps |
-| `IdentityCard` | `liveAt`, `onlineNow`, `reportsTotal` | Kartu kiri atas, titik "Langsung" berdenyut pelan (dimatikan bila reduced motion) |
-| `ControlCard` | `fuel`, `locale` | Tab jenis BBM, ID/EN, bantuan |
-| `StatusStrip` | `counts`, `activeStatus`, `onSelect` | Bar proporsi tersegmen + angka, segmen bisa diketuk sebagai filter |
-| `ActionDock` | `onNearest`, `onList`, `onLayers`, `onShare` | Dock bawah, tombol utama "Terdekat yang ada BBM" |
-| `MapLegend` | `collapsed` | Kiri bawah di desktop, di menu `ⓘ` di HP |
-| `LayerPanel` | `layers` | Toggle pengecer, TBBM, hanya dikonfirmasi |
-| `QueueMode` (P1) | `stationId` | Mode antre, estimasi, kabar antrean |
+| Komponen | Catatan |
+|---|---|
+| `IdentityCard`, `ControlCard`, `StatusStrip`, `ActionDock`, `MapFabs`, `MapLegend`, `LayerPanel` | Kontrol mengambang di atas peta |
+| `SearchBar`, `SearchPanel` | Pencarian ala Google Maps |
+| `StationMap` | MapLibre, symbol layer, tanpa klaster |
+| `StationList`, `StationDetail`, `StationPopup`, `StationPhoto`, `TrafficRow`, `RecentReports` | Daftar dan detail |
+| `StationNotes` (`OpeningNote`, `QueuingNote`, `ReportCountNote`) | Jam buka, antrean, jumlah laporan 3 jam dan peringatan |
+| `ReportSheet` | Wizard lapor |
+| `QueueBar`, `QueueJoin` | Pelacak antrean |
+| `FavoriteButton` | Favorit |
+| `StationActions` | Isi harga, usulan koreksi |
+| `AddPlacePicker`, `AddPlaceSheet` | Tambah tempat |
+| `BottomSheet` | Dua titik henti, gestur geser tutup, kunci fokus saat penuh |
+| `Modal` | Dialog tengah layar |
+| `ShareModal`, `SnapshotShare` | Bagikan SPBU (QR) dan bagikan ringkasan (gambar) |
+| `StatusGlyph`, `QueueIndicator`, `RelativeTime` | Simbol status, titik antrean, waktu relatif (diperbarui tiap 30 detik, ketuk untuk jam WITA) |
+| `Logo`, `LogoMark`, `Icon`, `InstagramIcon` | Identitas dan ikon |
+
+### 7.9 Kartu identitas dan baris angka
+
+Kartu kiri atas: logo, titik "Langsung" (hijau, berdenyut) dengan label, tombol info; di bawahnya **baris angka satu baris**: **N online · N laporan · N pengunjung**, dengan angka tebal `--text`, label abu-abu, dipisah titik tengah (spasi 8 px). Tampil di HP dan desktop. Kolom "antre" menyelip di antara online dan laporan bila ada yang mengantre.
+
+- **online** = perangkat unik yang aktif 1 jam terakhir (tooltip menjelaskan). Dihitung dari denyut perangkat tiap 15 menit.
+- **laporan** = total laporan aktif, selalu tampil termasuk 0.
+- **pengunjung** = jumlah perangkat unik per hari, dijumlahkan sejak peluncuran.
+
+### 7.10 Tambah Tempat
+
+Warga menambah Pertamini atau Pertashop yang belum ada: tombol **Tambah** di dock, lalu alur dua langkah (geser penanda di peta, isi formulir: jenis, nama, BBM yang dijual). Tempat baru terlihat langsung oleh penambahnya dengan label "Menunggu verifikasi"; yang mencurigakan (jauh dari SPBU dikenal, melewati batas harian) masuk karantina untuk admin. Tempat yang sudah disetujui bertanda **Ditambahkan warga**.
 
 ## 8. Status layar khusus
 
 | Situasi | Tampilan |
 |---|---|
-| Memuat pertama kali | Peta dasar tampil lebih dulu, kartu atas dan strip status berupa skeleton sampai snapshot tiba |
-| Izin lokasi ditolak | Peta di Denpasar, kartu: "Aktifkan lokasi untuk melihat SPBU terdekat, atau cari wilayah Anda." dengan tombol "Cari wilayah" |
-| GPS tidak akurat | Lingkaran akurasi tampil di peta, tombol lapor menjelaskan "Sinyal GPS kurang akurat, coba di area terbuka." |
-| Offline | Banner tetap di atas: "Anda sedang offline. Menampilkan data pukul 19.02 WITA." |
-| Tidak ada SPBU tersedia di sekitar | "Belum ada laporan SPBU tersedia dalam 5 km. Perluas area atau periksa lagi beberapa saat." Tombol "Perluas ke 15 km" |
-| Mode baca-saja (darurat) | Tombol lapor nonaktif, banner: "Pelaporan sementara dihentikan untuk pemeliharaan." |
-| Galat server | "Gagal memuat data terbaru. Menampilkan data terakhir." dengan tombol `↻` |
+| Memuat pertama kali | Peta tampil lebih dulu; kartu atas dan strip berupa skeleton. Data dari cache perangkat langsung dipakai |
+| Belum ada laporan | Strip berubah jadi ajakan melapor; baris angka tetap tampil (laporan = 0) |
+| Izin lokasi ditolak | Peta di Denpasar, kartu penjelasan dengan tombol "Cari wilayah" |
+| GPS tidak akurat | Pesan "Sinyal GPS kurang akurat, coba di area terbuka." |
+| Offline | Banner: "Anda sedang offline. Menampilkan data pukul …" |
+| Tidak ada SPBU tersedia terdekat | Pesan dengan saran memperluas area atau memeriksa lagi |
+| Mode baca-saja (admin mematikan pelaporan) | Tombol lapor nonaktif, banner pemeliharaan |
+| Galat server | "Gagal memuat data terbaru. Menampilkan data terakhir." |
+| Angka belum tersedia dari server (migrasi belum dijalankan) | Bagian terkait disembunyikan, tidak menampilkan nol palsu |
 
 ## 9. Pedoman bahasa
 
-- Bahasa Indonesia sehari-hari yang sopan, kalimat pendek. Antarmuka bahasa Inggris tersedia sejak MVP dengan nada yang sama.
-- Gunakan "Habis", bukan "KOSONG", "LANGKA", atau tanda seru.
-- Gunakan "dilaporkan" untuk menunjukkan sumber: "Dilaporkan tersedia 12 menit lalu".
-- Hindari angka yang memancing kepanikan seperti "90% SPBU habis". Ringkasan selalu dibingkai positif dan berguna: "8 SPBU tersedia dalam 5 km".
-- Selalu beri arah tindakan pada pesan galat.
-- Waktu absolut memakai format 24 jam dan zona WITA: "19.02 WITA".
-- Jarak: di bawah 1 km dalam meter dibulatkan ke 50 m ("650 m"), di atas 1 km satu desimal ("1,2 km").
+- **Bahasa Indonesia adalah bawaan** saat situs dibuka; Inggris tersedia lewat pengalih ID/EN (nada sama, tanpa deteksi bahasa peramban).
+- Kalimat pendek dan sehari-hari. Gunakan "Habis", bukan "KOSONG" atau tanda seru.
+- "Dilaporkan" menandai sumber: "Dilaporkan tersedia 12 menit lalu".
+- Hindari angka yang memancing panik; ringkasan dibingkai berguna ("8 SPBU tersedia dalam 5 km").
+- Pesan galat selalu memberi arah tindakan.
+- Waktu absolut 24 jam, zona WITA ("19.02 WITA"). Jarak: di bawah 1 km dalam meter dibulatkan 50 m, di atas itu satu desimal ("1,2 km"). Harga: "Rp 10.000".
+- Nama proyek "Wenten BBM" ("wenten" = ada dalam bahasa Bali) dengan penafian bahwa situs ini bukan afiliasi Pertamina.
 
 ## 10. Gerak
 
-- Durasi standar 200 ms, bottom sheet 280 ms, kurva `cubic-bezier(0.2, 0, 0, 1)`.
-- Perubahan status penanda via realtime: transisi isi warna 300 ms, tanpa kedip.
+- Durasi standar 200 ms, bottom sheet 280 ms, kurva `cubic-bezier(0.2, 0, 0, 1)` (token `--dur`, `--dur-sheet`, `--ease`).
+- Perubahan status penanda lewat realtime: transisi halus 300 ms, tanpa kedip. Penanda yang baru dilapori beranimasi skala satu kali.
+- Titik "Langsung" berdenyut pelan; cincin denyut diberi ruang agar tidak terpotong.
 - Hormati `prefers-reduced-motion`: semua animasi diganti perubahan instan.
 
 ## 11. Aksesibilitas
 
 - Kontras teks minimal 4,5:1, objek grafis minimal 3:1.
-- Status selalu punya label teks dan `aria-label` pada penanda, misalnya "SPBU Kapal, tersedia, dilaporkan 12 menit lalu, 1,2 kilometer".
+- Status selalu punya label teks dan `aria-label` pada penanda dan kartu, misalnya "SPBU Panjer, Tersedia, 1,2 km".
 - Peta punya alternatif penuh lewat daftar, sehingga pengguna pembaca layar tidak perlu berinteraksi dengan peta.
-- Fokus keyboard terlihat jelas (cincin 2 px `--focus` dengan jarak 2 px).
-- Bottom sheet bisa dioperasikan dengan keyboard dan mengunci fokus saat posisi full.
-- Simbol dekoratif `aria-hidden="true"`, teks bahasa diatur dengan `lang="id"`.
+- Fokus keyboard terlihat jelas (cincin 2 px `--focus`, jarak 2 px). Esc menutup sheet dan dialog.
+- Bottom sheet dan dialog bisa dioperasikan dengan keyboard dan mengunci fokus saat posisi penuh.
+- Toggle admin memakai `role="switch"` dengan `aria-checked`; tab memakai `aria-current`; filter memakai `role="tab"`.
+- Kolom isian 16 px agar layar tidak diperbesar otomatis di iOS. Area sentuh minimal 44 px untuk aksi utama.
+- Bahasa halaman diatur lewat `lang`; ikon dekoratif `aria-hidden="true"`.
 
 ## 12. Halaman data publik (`/data`)
 
-Halaman transparansi yang menunjukkan skala krisis dan keandalan layanan. Memakai tema yang sama dengan peta (mengikuti mode terang atau gelap perangkat), lebar konten maksimal 1040 px, rata tengah.
+### 12.1 Isi
 
-### 12.1 Wireframe
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│ Data Wenten BBM                                  [← Kembali ke peta] │
-│ ● Langsung · diperbarui 20.22 · semua waktu dalam WITA            │
-│                                                                  │
-│ ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐      │
-│ │ Pengunjung │ │ Laporan    │ │ SPBU dengan│ │ Ketersediaan│     │
-│ │ unik       │ │ diterima   │ │ laporan    │ │ layanan     │     │
-│ │ 443.994    │ │ 32.626     │ │ segar      │ │ 99,2%       │     │
-│ │ sejak 09.37│ │ dari 19.991│ │ 186 / 308  │ │ sejak rilis │     │
-│ │            │ │ pelapor    │ │            │ │             │     │
-│ └────────────┘ └────────────┘ └────────────┘ └────────────┘      │
-│                                                                  │
-│ Kondisi sekarang per wilayah            [Pertalite ▾]            │
-│ Denpasar   ███████▒▒▒░░░░  ● 21 ◐ 4 ○ 9 ◌ 6                      │
-│ Badung     █████▒▒░░░░░░░  ● 18 ◐ 3 ○ 14 ◌ 9                     │
-│ ...9 kabupaten/kota, urut jumlah SPBU                            │
-│                                                                  │
-│ Laporan per jam (48 jam terakhir)                                │
-│ ● Ada  ◐ Terbatas  ○ Habis · spam tidak dihitung                 │
-│  ▁▂▃▅▆█▇▅▄▃▄▆█▇▆▅                                                │
-│ Tampilkan sebagai tabel                                          │
-│                                                                  │
-│ Perkiraan waktu antre rata-rata (P1)                             │
-│  garis median + pita rentang                                     │
-│                                                                  │
-│ Ketersediaan layanan sejak rilis                                 │
-│ ████████▒███████░██████████████████████████████████              │
-│ 08.54        16.00        23.05        06.11        20.22        │
-│ ■ Berjalan penuh  ▒ Sebagian  ░ Tidak bisa diakses               │
-│ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐               │
-│ │ 34 j 33 mnt  │ │ 36 mnt       │ │ 18 mnt       │               │
-│ │ berjalan penuh│ │ sebagian     │ │ tidak bisa   │               │
-│ └──────────────┘ └──────────────┘ └──────────────┘               │
-│ Catatan gangguan                                                 │
-│ 14.59–15.11  [◆ SPAM]     Penjelasan singkat...                  │
-│ 15.40–16.16  [◐ SEBAGIAN] Penjelasan singkat...                  │
-│                                                                  │
-│ Perlindungan spam                                                │
-│ Ditolak 24 jam terakhir: di luar radius 812 · terlalu sering     │
-│ 245 · laporan dikarantina 3.410 · tempat dikarantina 1.106       │
-│                                                                  │
-│ Cara kerja dan privasi                                           │
-│ Penjelasan metodologi status, apa yang disimpan, berapa lama.    │
-│ [Unduh data agregat CSV] (P1) · Lisensi CC BY 4.0                │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-Angka di wireframe hanya contoh tata letak.
+Halaman transparansi dengan tema terang yang sama, lebar maksimal 1040 px. Isi: kartu statistik (pengunjung, laporan, SPBU dengan laporan segar, ketersediaan layanan), kondisi sekarang per wilayah (bar sama dengan strip status, bisa dipilih per jenis BBM), laporan per jam 48 jam terakhir, estimasi tunggu, ketersediaan layanan sejak rilis, catatan gangguan, perlindungan spam, dan penjelasan metodologi serta privasi.
 
 ### 12.2 Aturan visual
 
-- **Kartu statistik**: angka ukuran 32 / 40 bobot 700 `tabular-nums`, label `caption` `--text-muted` di atas, keterangan `caption` di bawah. Empat kolom di desktop, dua kolom di HP.
-- **Grafik laporan per jam**: bar bertumpuk satu warna dengan tingkat berbeda: Ada `--teal-600`, Terbatas `--teal-300`, Habis `--teal-900`. Di mode gelap: `--teal-300`, `--teal-200`, `#E4F1EF`. Habis diberi pola garis miring tipis agar tetap terbedakan saat dicetak hitam putih. Sumbu Y dimulai dari 0.
-- **Bar ketersediaan layanan**: berjalan penuh `--teal-600` padat, sebagian `--teal-300` dengan pola garis, tidak bisa diakses `--teal-900` dengan pola titik. Kartu durasi memakai garis kiri 4 px dengan tingkat warna dan pola yang sama.
-- **Lencana gangguan**: teks huruf kapital kecil di dalam kotak bergaris, dibedakan simbol: `◆ SPAM`, `◐ SEBAGIAN`, `○ TIDAK BISA DIAKSES`, `◇ PEMELIHARAAN`.
-- **Bar per wilayah**: sama dengan strip status di peta, bisa dipilih per jenis BBM.
-- Setiap grafik punya tautan "Tampilkan sebagai tabel" untuk aksesibilitas, dan `aria-describedby` berisi ringkasan teks (misalnya "Puncak laporan pukul 10.00 WITA, 1.760 laporan").
-- Tooltip grafik muncul saat diarahkan atau diketuk, berisi jam dan angka per status.
-- Grafik digambar dengan **uPlot** (ringan) dan dirender di klien, angka kartu dirender di server agar langsung terlihat.
+- Kartu statistik: angka 32/40 bobot 700 `tabular-nums`, label `caption` abu-abu; empat kolom di desktop, dua di HP.
+- Grafik laporan per jam: bar bertumpuk memakai `--chart-available`, `--chart-limited`, `--chart-empty`; Habis diberi pola garis miring agar terbedakan saat dicetak hitam putih. Sumbu Y mulai dari 0.
+- Lencana gangguan dibedakan simbol: `◆ SPAM`, `◐ SEBAGIAN`, `○ TIDAK BISA DIAKSES`, `◇ PEMELIHARAAN`.
+- Setiap grafik punya tautan "Tampilkan sebagai tabel" dan ringkasan teks `aria-describedby`. Grafik digambar dengan **uPlot** di klien; angka kartu dirender di server.
 
-## 13. Panel admin
+## 13. Panel admin (`/admin`)
 
-Memakai token yang sama, layout tabel padat untuk desktop.
+Bagian dari aplikasi yang sama (bukan aplikasi terpisah), memakai token yang sama, tidak diindeks. Teks hanya bahasa Indonesia.
 
-- **Antrean moderasi**: tabel laporan dengan kolom waktu, SPBU, isi, konfirmasi, bantahan, jarak pelapor, aksi (Sembunyikan, Blokir pelapor).
-- **SPBU**: tabel dengan pencarian, formulir ubah dengan peta mini untuk menggeser titik lokasi.
-- **Pengumuman**: daftar, formulir dengan pratinjau banner.
-- **Pengaturan**: nilai parameter status dari `app_settings` dengan penjelasan dan batas aman, plus sakelar mode baca-saja darurat.
-- **Gangguan**: formulir mencatat gangguan layanan (jenis, waktu mulai dan selesai, penjelasan publik) yang tampil di halaman `/data`.
-- **Karantina**: daftar laporan dan tempat yang dikarantina otomatis, dengan aksi massal Lepaskan atau Hapus.
-- **Log audit**: daftar tindakan admin.
+**Masuk**: kartu di tengah layar di atas latar hijau-biru lembut. Isi: logo, judul "Masuk admin", keterangan, kolom email dan kata sandi (tinggi 46 px, huruf 16 px, tombol **Tampilkan** di dalam kolom sandi), kotak galat merah muda dengan ikon, tombol Masuk selebar kartu, dan catatan "Dilindungi captcha. Akses dicatat." Galat captcha menampilkan kode (mis. 110200 = domain belum terdaftar di widget Turnstile).
+
+**Kerangka**: header lengket (logo, lencana "Admin", tombol Keluar); di bawahnya **tab bergulir** dengan garis biru pada tab aktif dan **lencana merah** jumlah yang perlu ditangani (Laporan, Tempat, Koreksi). Pemberitahuan hasil aksi tampil sebagai toast di bawah; aksi merusak meminta konfirmasi.
+
+| Tab | Isi |
+|---|---|
+| **Ringkasan** | "Perlu perhatian" (kartu merah muda yang bisa diketuk menuju tabnya: laporan ditandai, dikarantina, tempat menunggu, koreksi menunggu), "Aktivitas" (laporan 24 jam, usulan warga, pelanggaran, perangkat diblokir), dan **Kontrol** berupa **toggle ON/OFF**: *Pelaporan warga* (OFF = mode baca-saja) dan *Syarat radius 300 m* (OFF = melapor dari mana saja) |
+| **Laporan** | Filter (Ditandai warga, Dikarantina, Disembunyikan, 24 jam). Kartu per laporan: SPBU, lencana status laporan, chip BBM berwarna (Tersedia hijau, Terbatas kuning, Habis merah), antrean, catatan, info pelapor. Aksi: Sembunyikan atau Pulihkan, **Hapus laporan** (permanen), Blokir pelapor, **Hapus semua dari pelapor ini** |
+| **Tempat** | Filter (Menunggu tinjauan, Semua usulan warga, Disembunyikan). Aksi: Setujui, Ubah nama, Tolak; tautan "Lihat di peta" |
+| **Koreksi** | Kartu usulan dengan koordinat saat ini dan usulan (jarak geser). Setujui koreksi lokasi memindahkan titik; "sudah tutup" menyembunyikan tempat |
+| **Pengumuman** | Formulir (judul, isi, tingkat, jam tayang, wilayah) dan riwayat dengan lencana Tayang atau Selesai |
+| **Pengaturan** | Formulir **Harga resmi Pertamina** (tanggal berlaku dan harga per BBM) dan daftar pengaturan lanjutan (angka bisa diubah; nilai boolean berupa toggle) |
+
+Aturan komponen admin: kartu `.adm-item` dengan kepala (nama dan lencana), baris meta kecil, dan barisan tombol di bawah; tombol berbahaya berwarna merah garis; lencana berwarna (hijau, kuning, merah, biru, abu-abu); keadaan kosong bergaris putus-putus; **toggle** `.adm-switch` 48×28 dengan tulisan ON (hijau) atau OFF (abu-abu) di sampingnya.
+
+## 14. Bagikan
+
+Tombol **Bagikan** (dock dan menu info) membuka modal **"Bagikan Wenten BBM"** dengan tiga tab, gaya mengikuti kontrol segmen:
+
+| Tab | Gambar | Isi |
+|---|---|---|
+| **Cerita** | 1080×1920 | Logo, "KONDISI BBM DI BALI SAAT INI · jam WITA", judul besar **N dari 308 SPBU ada BBM** (angka hijau), peta titik, legenda, jumlah laporan 24 jam, batang per wilayah (4 teratas), pita gelap berisi alamat situs |
+| **Postingan** | 1080×1080 | Logo dan alamat di atas, judul, peta besar, legenda |
+| **Pesan** | 1200×630 | Pratinjau dua kolom dan teks siap kirim dengan angka terkini |
+
+- Latar `#f7f5f0`; peta digambar sebagai titik berwarna status di atas gumpalan abu-abu lembut yang membentuk pulau. Gambar dibuat server (`/api/share/image`, simpan 5 menit) dari data terkini, dalam bahasa yang dipilih.
+- Bila belum ada laporan, judul menjadi "Belum ada laporan hari ini" dengan ajakan melapor; tidak pernah menampilkan "0 dari 308".
+- Tombol utama membuka menu bagikan perangkat dengan gambar terlampir; di perangkat tanpa dukungan berbagi berkas gambar diunduh. Tab Pesan punya tombol tambahan "Salin teks dan tautan".
+- Bagikan **satu SPBU** tetap memakai modal QR: kode QR, salin tautan, WhatsApp, bagikan lewat aplikasi, unduh QR, dan tautan ke **poster cetak**.
+
+## 15. Halaman lain
+
+- **Tentang** (`/tentang`): hero dengan tagline dan satu paragraf pengantar, tiga kartu "Cara kerja", kotak keselamatan, kartu Privasi dan Penafian, chip wilayah, tautan **Cetak poster QR** dan **Data dan statistik**, lalu kartu **"Ikuti kami di Instagram"** (ikon Instagram bergradasi, tombol biru `@wentenbbm`), dan kredit data (OpenStreetMap ODbL, Esri, Mapillary).
+- **Poster** (`/poster`, `/poster?spbu=slug`): kartu A4 siap cetak berisi logo, judul, kode QR besar, alamat, tiga langkah, dan tagline. Bagian alat (tombol Cetak) disembunyikan saat dicetak. Tidak diindeks mesin pencari.
+- **Halaman SPBU** (`/spbu/[slug]`) dan **wilayah** (`/wilayah/[slug]`): halaman statis yang ramah mesin pencari, dengan data terstruktur dan gambar OG per SPBU. Isi mengikuti detail, dengan tautan kembali ke peta.
+- **Data** (`/data`): lihat bagian 12.
+
+## 16. Perubahan dari rancangan awal
+
+| Aspek | Rancangan awal | Sekarang |
+|---|---|---|
+| Palet | Monokromatik teal, status dibedakan gelap terang | Cerah: hijau, kuning, merah, aksen biru; simbol dan label tetap ada |
+| Tema | Terang dan gelap | Terang saja |
+| Basemap | Positron (abu-abu minim) | Esri World Topo (berwarna) |
+| Penanda | Simbol Unicode, klaster berangka | Ikon pompa SVG dalam lingkaran, semua titik tanpa klaster |
+| Ikon | Unicode monokrom | lucide-react garis |
+| Form lapor | Daftar segmen semua BBM dalam satu layar | Wizard satu pertanyaan per layar |
+| Pelacak antrean | Mode lengkap dengan kabar antrean dan chat | Pelacak waktu (mulai, hasil, estimasi); chat antrean belum dibuat |
+| Daftar | Item teks | Kartu bergambar dengan aksi cepat, rekomendasi, misi, favorit |
+| Bahasa bawaan | Mengikuti peramban | Indonesia |
+| Bagikan | Tautan dan QR | QR per SPBU; gambar ringkasan (cerita, postingan, pesan) untuk bagikan umum |
+| Admin | Aplikasi terpisah `apps/admin`, tabel padat | Halaman `/admin` di aplikasi yang sama, tab dan kartu, toggle |
+| Halaman baru | n/a | Poster QR, Tentang yang didesain ulang, halaman SPBU dan wilayah untuk SEO |

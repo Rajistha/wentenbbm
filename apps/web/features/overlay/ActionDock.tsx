@@ -6,13 +6,13 @@ import { useEffect } from "react";
 import { startLocation } from "@/lib/geolocation";
 import { useApp } from "@/lib/store";
 import { mapApi } from "../map/mapApi";
-import { useShare } from "../stations/hooks";
+import { useQuickShare } from "../share/useQuickShare";
 
 /** Dock bawah: tombol utama "Terdekat yang ada BBM" + aksi sekunder (DESIGN.md 7.2). */
 export function ActionDock() {
   const t = useTranslations();
   const locale = useLocale() as Locale;
-  const share = useShare();
+  const quickShare = useQuickShare();
   const user = useApp((s) => s.user);
   const geoState = useApp((s) => s.geoState);
   const pending = useApp((s) => s.pendingNearest);
@@ -75,7 +75,7 @@ export function ActionDock() {
         <button
           type="button"
           className="btn"
-          onClick={() => share("/", t("share.text"))}
+          onClick={quickShare}
         >
           <Icon name="share" /> {t("dock.share")}
         </button>

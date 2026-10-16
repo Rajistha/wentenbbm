@@ -330,7 +330,9 @@
     "regionsTitle": "Cek per wilayah",
     "dataLink": "Data dan statistik",
     "credits": "Peta: Esri. Data lokasi: © OpenStreetMap contributors (ODbL). Foto jalan, bila tampil: Mapillary (CC BY-SA).",
-    "posterLink": "Cetak poster QR"
+    "posterLink": "Cetak poster QR",
+    "followTitle": "Ikuti kami di Instagram",
+    "followBody": "Kabar terbaru, ringkasan kondisi BBM, dan cara ikut membantu."
   },
   "search": {
     "placeholder": "Cari SPBU, Pertamini, atau tempat",
@@ -485,5 +487,27 @@
     "step3": "Ketuk Ada BBM atau Habis. Selesai.",
     "print": "Cetak poster",
     "hint": "Atur kertas ke A4. Poster ini tidak perlu login atau aplikasi."
+  },
+  "snap": {
+    "title": "Bagikan Wenten BBM",
+    "close": "Tutup",
+    "tab_story": "Cerita",
+    "tab_post": "Postingan",
+    "tab_message": "Pesan",
+    "cap_story": "Gambar vertikal untuk cerita Instagram, WhatsApp, atau TikTok",
+    "cap_post": "Gambar persegi untuk postingan Instagram atau Facebook",
+    "cap_message": "Gambar dan teks dengan angka terkini, untuk WhatsApp, Telegram, atau SMS",
+    "btn_story": "Bagikan cerita",
+    "btn_post": "Bagikan postingan",
+    "btn_message": "Bagikan pesan",
+    "preparing": "Menyiapkan…",
+    "alt": "Ringkasan kondisi BBM di Bali dari laporan warga",
+    "downloaded": "Gambar diunduh. Unggah dari galeri.",
+    "failed": "Gagal menyiapkan gambar. Coba lagi.",
+    "copied": "Teks disalin.",
+    "copyText": "Salin teks dan tautan",
+    "msgText": "BBM di Bali sekarang: {n} dari {total} SPBU ada BBM, dari laporan warga langsung. Cek sebelum berangkat, dan laporkan yang kamu lihat:",
+    "msgNoData": "Peta BBM Bali dari laporan warga langsung. Cek SPBU yang ada BBM sebelum berangkat, dan laporkan yang kamu lihat:",
+    "chooseFormat": "Pilih format gambar bagikan"
   }
 }

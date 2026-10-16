@@ -2,6 +2,7 @@ import { REGIONS } from "@wenten/core";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Icon, type IconName } from "@/features/common/Icon";
+import { InstagramIcon } from "@/features/common/InstagramIcon";
 import { Logo } from "@/features/common/Logo";
 import { Link } from "@/i18n/navigation";
 import { alternatesFor } from "@/lib/seo";
@@ -104,6 +105,19 @@ export default async function About({ params }: PageProps<"/[locale]/tentang">) 
             <Icon name="list" size={16} /> {t("dataLink")}
           </Link>
         </div>
+      </section>
+
+      <section className="about-follow" aria-labelledby="follow">
+        <span className="about-follow-ico">
+          <InstagramIcon size={28} />
+        </span>
+        <div className="about-follow-text">
+          <h2 id="follow">{t("followTitle")}</h2>
+          <p>{t("followBody")}</p>
+        </div>
+        <a className="btn btn-primary" href="https://www.instagram.com/wentenbbm/" target="_blank" rel="noopener noreferrer">
+          <InstagramIcon size={18} /> @wentenbbm
+        </a>
       </section>
 
       <footer className="about-foot">

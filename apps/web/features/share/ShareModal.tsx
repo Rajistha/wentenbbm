@@ -5,9 +5,18 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { useApp } from "@/lib/store";
 import { Icon } from "../common/Icon";
+import { SnapshotShare } from "./SnapshotShare";
 
-/** Modal bagikan: kode QR (bisa diunduh untuk dicetak), salin tautan, dan bagikan lewat aplikasi. */
+/** Bagikan umum (tanpa SPBU tertentu) memakai gambar ringkasan; bagikan satu SPBU memakai QR dan tautan. */
 export function ShareModal() {
+  const target = useApp((s) => s.shareTarget);
+  const close = useApp((s) => s.closeShare);
+  if (target && !target.slug) return <SnapshotShare onClose={close} />;
+  return <StationShareModal />;
+}
+
+/** Modal bagikan SPBU: kode QR (bisa diunduh untuk dicetak), salin tautan, dan bagikan lewat aplikasi. */
+function StationShareModal() {
   const t = useTranslations("share");
   const target = useApp((s) => s.shareTarget);
   const close = useApp((s) => s.closeShare);

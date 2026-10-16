@@ -330,7 +330,9 @@
     "regionsTitle": "Browse by regency",
     "dataLink": "Data and statistics",
     "credits": "Map: Esri. Location data: © OpenStreetMap contributors (ODbL). Street photos, when shown: Mapillary (CC BY-SA).",
-    "posterLink": "Print a QR poster"
+    "posterLink": "Print a QR poster",
+    "followTitle": "Follow us on Instagram",
+    "followBody": "Latest news, fuel summaries, and how to help."
   },
   "search": {
     "placeholder": "Search stations, Pertamini, or places",
@@ -485,5 +487,27 @@
     "step3": "Tap Fuel here or No fuel. Done.",
     "print": "Print poster",
     "hint": "Set paper to A4. No login or app needed."
+  },
+  "snap": {
+    "title": "Share Wenten BBM",
+    "close": "Close",
+    "tab_story": "Story",
+    "tab_post": "Post",
+    "tab_message": "Message",
+    "cap_story": "Tall image for an Instagram, WhatsApp or TikTok story",
+    "cap_post": "Square image for an Instagram or Facebook post",
+    "cap_message": "An image and text with the latest numbers, for WhatsApp, Telegram or SMS",
+    "btn_story": "Share story",
+    "btn_post": "Share post",
+    "btn_message": "Share message",
+    "preparing": "Preparing…",
+    "alt": "Summary of fuel availability in Bali from resident reports",
+    "downloaded": "Image downloaded. Upload it from your gallery.",
+    "failed": "Could not prepare the image. Try again.",
+    "copied": "Text copied.",
+    "copyText": "Copy text and link",
+    "msgText": "Fuel in Bali right now: {n} of {total} stations have fuel, by live reports from residents. Check before you go, and report what you see:",
+    "msgNoData": "Bali fuel map from live resident reports. Check which stations have fuel before you go, and report what you see:",
+    "chooseFormat": "Choose share image format"
   }
 }

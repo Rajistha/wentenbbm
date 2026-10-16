@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { useApp } from "@/lib/store";
-import { useShare } from "../stations/hooks";
+import { useOpenShareModal, useQuickShare } from "../share/useQuickShare";
 import { LegendList } from "./MapLegend";
 
 /** Tombol info: bantuan, legenda, data, tentang, bahasa, tema. */
@@ -15,9 +15,10 @@ export function InfoMenu() {
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const share = useShare();
+  const quickShare = useQuickShare();
+  const openShareModal = useOpenShareModal();
   const tDock = useTranslations("dock");
-  const tShare = useTranslations("share");
+  const tSnap = useTranslations("snap");
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
@@ -74,7 +75,7 @@ export function InfoMenu() {
               <button type="button" className="btn" onClick={() => { setOpen(false); useApp.getState().startAdd(); }}>
                 <Icon name="plus" /> {tDock("add")}
               </button>
-              <button type="button" className="btn" onClick={() => { setOpen(false); void share("/", tShare("text")); }}>
+              <button type="button" className="btn" onClick={() => { setOpen(false); quickShare(); }}>
                 <Icon name="share" /> {tDock("share")}
               </button>
             </div>
@@ -88,6 +89,9 @@ export function InfoMenu() {
               <div className="label">{t("legend")}</div>
               <LegendList />
             </div>
+            <button type="button" className="btn" onClick={() => { setOpen(false); openShareModal(); }}>
+              <Icon name="share" /> {tSnap("chooseFormat")}
+            </button>
             <Link href="/data" onClick={() => setOpen(false)} style={{ minHeight: 44, display: "flex", alignItems: "center" }}>
               {t("data")} <Icon name="next" size={16} />
             </Link>
