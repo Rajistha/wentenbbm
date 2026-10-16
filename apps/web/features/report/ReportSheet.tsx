@@ -3,8 +3,9 @@ import { formatDistance, type FuelAvailability, type Locale, type QueueLevel, ty
 import type { SubmitReportArgs } from "@wenten/db/rpc";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { callRpc, RpcError } from "@/lib/backend/client";
+import { startLocation } from "@/lib/geolocation";
 import { queueOfflineReport } from "@/lib/offline-queue";
 import { useApp } from "@/lib/store";
 import { refreshStatus } from "@/lib/sync";
@@ -12,7 +13,7 @@ import { BottomSheet } from "../common/BottomSheet";
 import { Icon } from "../common/Icon";
 import { StatusGlyph } from "../common/StatusGlyph";
 import { recentReportsKey } from "../stations/RecentReports";
-import { useGeofence } from "../stations/hooks";
+import { geoHint, useGeofence } from "../stations/hooks";
 
 type Step = "answer" | "fuels" | "queue" | "wait";
 const QUEUES: QueueLevel[] = ["none", "short", "medium", "long"];
@@ -56,6 +57,12 @@ export function ReportSheet() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Minta izin lokasi saat laporan dibuka bila belum ada (lokasi selalu wajib, juga saat syarat radius mati)
+  useEffect(() => {
+    const s = useApp.getState();
+    if (!s.user && s.geoState !== "denied" && s.geoState !== "unavailable") startLocation();
+  }, []);
+
   if (!place) return null;
   const fuels = fuelTypes.filter((f) => place.fuelIds.includes(f.id));
 
@@ -97,7 +104,8 @@ export function ReportSheet() {
       setError(answer ? t("report.needOne") : t("report.needAnswer"));
       return;
     }
-    if (!geo.user) return setError(t("detail.reportNeedNear"));
+    // Lokasi asli pengguna selalu wajib, juga saat syarat radius dimatikan (hanya batas jarak yang dilonggarkan)
+    if (!geo.ok || !geo.user) return setError(geoHint(t, geo.reason));
     const q = override && "queue" in override ? override.queue ?? null : queue;
     const w = override && "wait" in override ? override.wait ?? null : wait;
     const args: SubmitReportArgs = {

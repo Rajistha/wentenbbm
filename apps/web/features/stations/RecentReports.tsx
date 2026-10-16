@@ -8,7 +8,7 @@ import { callRpc, RpcError } from "@/lib/backend/client";
 import { useApp } from "@/lib/store";
 import { RelativeTime } from "../common/RelativeTime";
 import { StatusGlyph } from "../common/StatusGlyph";
-import { useFuelName, useGeofence } from "./hooks";
+import { geoHint, useFuelName, useGeofence } from "./hooks";
 
 export function recentReportsKey(stationId: string) {
   return ["recent-reports", stationId] as const;
@@ -33,7 +33,7 @@ export function RecentReports({ place }: { place: Place }) {
 
   const vote = async (r: RawRecentReport, v: VoteType) => {
     if (!geo.ok || !geo.user) {
-      setError(t("detail.voteNeedNear"));
+      setError(geoHint(t, geo.reason, "vote"));
       return;
     }
     setBusy(r.id);
@@ -95,7 +95,7 @@ export function RecentReports({ place }: { place: Place }) {
                   className="btn"
                   disabled={!canVote || busy === r.id}
                   aria-pressed={r.my_vote === "confirm"}
-                  title={!geo.ok ? t("detail.voteNeedNear") : undefined}
+                  title={!geo.ok ? geoHint(t, geo.reason, "vote") : undefined}
                   onClick={() => vote(r, "confirm")}
                 >
                   {t("detail.stillTrue")} · <span className="tnum">{r.confirms}</span>
@@ -105,7 +105,7 @@ export function RecentReports({ place }: { place: Place }) {
                   className="btn"
                   disabled={!canVote || busy === r.id}
                   aria-pressed={r.my_vote === "dispute"}
-                  title={!geo.ok ? t("detail.voteNeedNear") : undefined}
+                  title={!geo.ok ? geoHint(t, geo.reason, "vote") : undefined}
                   onClick={() => vote(r, "dispute")}
                 >
                   {t("detail.notTrue")} · <span className="tnum">{r.disputes}</span>

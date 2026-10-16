@@ -145,7 +145,8 @@
     "hereNo": "No fuel",
     "hereLimited": "Running low / limited",
     "searchNearby": "Wrong spot? Search in Google Maps",
-    "navCoords": "Directions to exact coordinates"
+    "navCoords": "Directions to exact coordinates",
+    "needLocation": "Allow location so your report can be sent. Only the team can see it, to prevent abuse."
   },
   "nearby": {
     "prompt": "At {name}? Help others, report the stock.",

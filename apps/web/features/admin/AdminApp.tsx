@@ -532,7 +532,7 @@ function Reports({ ctx }: { ctx: Ctx }) {
               {r.note && <p className="adm-quote">“{r.note}”</p>}
               <p className="adm-meta">
                 {r.pseudonym}
-                {r.is_blocked ? " (diblokir)" : ""} · {r.report_count} laporan, {r.disputed_count} disanggah · jarak {r.distance_m} m · akurasi {Math.round(r.accuracy_m)} m · setuju {r.confirms}, sanggah {r.disputes}
+                {r.is_blocked ? " (diblokir)" : ""} · {r.report_count} laporan, {r.disputed_count} disanggah · {r.distance_m < 0 ? "lokasi pelapor tidak diketahui" : `jarak ${r.distance_m} m · akurasi ${Math.round(r.accuracy_m)} m`} · setuju {r.confirms}, sanggah {r.disputes}
                 {r.quarantine_reason ? ` · alasan karantina: ${r.quarantine_reason}` : ""}
               </p>
               <div className="adm-origin">

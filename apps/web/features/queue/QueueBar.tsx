@@ -10,7 +10,7 @@ import { Icon } from "../common/Icon";
 import { Modal } from "../common/Modal";
 import { useNow } from "../common/RelativeTime";
 import { rpcErrorText } from "../common/errors";
-import { useGeofence } from "../stations/hooks";
+import { geoHint, useGeofence } from "../stations/hooks";
 
 const PING_MS = 60_000;
 
@@ -120,7 +120,7 @@ export function QueueJoin({ place }: { place: Place }) {
         className={`btn btn-block${canJoin ? "" : " off"}`}
         aria-disabled={!canJoin}
         onClick={() => {
-          if (!canJoin) return useApp.getState().showToast(readOnly ? t("banners.readOnly") : t("detail.reportNeedNear"));
+          if (!canJoin) return useApp.getState().showToast(readOnly ? t("banners.readOnly") : geoHint(t, geo.reason));
           setFuelId(defaultFuel());
           setOpen(true);
         }}

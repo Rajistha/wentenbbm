@@ -26,7 +26,7 @@ import { StatusGlyph } from "../common/StatusGlyph";
 import { NavigateButton } from "./NavigateButton";
 import { OpeningNote, QueuingNote, ReportCountNote } from "./StationNotes";
 import { StationPhoto } from "./StationPhoto";
-import { useFuelName, useGeofence, useShare } from "./hooks";
+import { geoHint, useFuelName, useGeofence, useShare } from "./hooks";
 import { useVisiblePlaces } from "./selectors";
 
 type Sort = "distance" | "recent" | "status";
@@ -222,7 +222,7 @@ function ListItem({ place, distance, locale, now, onOpen }: { place: Place; dist
   const report = (preset: "available" | "empty") => {
     const { showToast, select, startReport } = useApp.getState();
     if (readOnly) return showToast(t("banners.readOnly"));
-    if (!geo.ok) return showToast(geo.reason === "low_accuracy" ? t("location.lowAccuracy") : t("detail.reportNeedNear"));
+    if (!geo.ok) return showToast(geoHint(t, geo.reason));
     select(place.id, { fly: true });
     startReport(preset);
   };

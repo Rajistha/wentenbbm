@@ -17,7 +17,7 @@ import { OpeningNote, QueuingNote, ReportCountNote } from "./StationNotes";
 import { StationPhoto } from "./StationPhoto";
 import { TrafficRow } from "./TrafficRow";
 import { RecentReports } from "./RecentReports";
-import { useGeofence, useShare, useStationStatus } from "./hooks";
+import { geoHint, useGeofence, useShare, useStationStatus } from "./hooks";
 
 /** Detail SPBU (US-03): bottom sheet di HP, laci kanan di desktop. */
 export function StationDetail() {
@@ -50,7 +50,7 @@ export function StationDetail() {
   const onReport = (preset: "available" | "limited" | "empty") => {
     if (readOnly) return setHint(t("banners.readOnly"));
     if (geo.ok) return useApp.getState().startReport(preset);
-    setHint(geo.reason === "low_accuracy" ? t("location.lowAccuracy") : t("detail.reportNeedNear"));
+    setHint(geoHint(t, geo.reason));
   };
 
   const onShare = () =>
@@ -194,7 +194,7 @@ export function StationDetail() {
         <button type="button" className="link-btn" style={{ marginTop: 8 }} aria-disabled={!geo.ok || readOnly} onClick={() => onReport("limited")}>
           {t("detail.hereLimited")}
         </button>
-        {!geo.ok && <p className="caption muted" style={{ margin: "8px 0 0" }}>{t("detail.reportNeedNear")}</p>}
+        {!geo.ok && <p className="caption muted" style={{ margin: "8px 0 0" }}>{geoHint(t, geo.reason)}</p>}
       </section>
       <StationActions place={place} />
       {hint && (

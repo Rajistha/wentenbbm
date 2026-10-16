@@ -10,7 +10,7 @@ import { useApp } from "@/lib/store";
 import { Icon } from "../common/Icon";
 import { Modal } from "../common/Modal";
 import { rpcErrorText } from "../common/errors";
-import { useGeofence } from "./hooks";
+import { geoHint, useGeofence } from "./hooks";
 
 const pricesKey = (id: string) => ["station-prices", id] as const;
 
@@ -41,7 +41,7 @@ export function StationActions({ place }: { place: Place }) {
   const needNear = () => {
     const { showToast } = useApp.getState();
     if (readOnly) return showToast(t("banners.readOnly"));
-    showToast(geo.reason === "low_accuracy" ? t("location.lowAccuracy") : t("detail.reportNeedNear"));
+    showToast(geoHint(t, geo.reason));
   };
   const gated = (fn: () => void) => () => (geo.ok && !readOnly ? fn() : needNear());
 

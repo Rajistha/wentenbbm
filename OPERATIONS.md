@@ -59,6 +59,7 @@ Berkas ada di `packages/db/supabase/migrations/`. Jalankan berurutan di SQL Edit
 | 0022 | Status SPBU bertahan sampai 24 jam (jendela 1440, peluruhan 360, ambang 0,015); setel di /admin → Pengaturan |
 | 0023 | Admin melihat kunci IP (hash harian) dan mengambil koordinat pelapor (tercatat di log audit) |
 | 0024 | Peta lokasi pelapor di tab Laporan (tercatat di log audit) |
+| 0025 | Laporan tanpa koordinat bila syarat radius mati dan lokasi tidak ada (bukan koordinat SPBU); membersihkan laporan lama berkoordinat pengganti |
 
 ## 5. Syarat radius 300 m
 

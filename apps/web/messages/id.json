@@ -145,7 +145,8 @@
     "hereNo": "Tidak ada BBM",
     "hereLimited": "Tinggal sedikit / terbatas",
     "searchNearby": "Titik salah? Cari di Google Maps",
-    "navCoords": "Arahkan ke titik koordinat"
+    "navCoords": "Arahkan ke titik koordinat",
+    "needLocation": "Izinkan lokasi agar laporan bisa dikirim. Lokasi hanya dilihat pengelola untuk mencegah penyalahgunaan."
   },
   "nearby": {
     "prompt": "Anda di {name}? Bantu warga lain, laporkan stok.",
