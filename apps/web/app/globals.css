@@ -314,6 +314,7 @@ a {
 .identity {
   padding: 10px 12px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
 }
@@ -358,6 +359,14 @@ a {
 }
 .identity-extra {
   display: none;
+}
+/* Angka ringkas (online, laporan, pengunjung): baris tersendiri di bawah merek, juga di HP */
+.identity-stats {
+  display: block;
+  flex-basis: 100%;
+  margin-top: -2px;
+  font-size: 12px;
+  line-height: 16px;
 }
 .identity-time {
   display: none;
@@ -1241,10 +1250,12 @@ a {
   .dock-main {
     flex: 1;
   }
-  .identity-extra {
+  .identity-extra,
+  .identity-stats {
     display: block;
     font-size: 13px;
     line-height: 18px;
+    margin-top: 0;
   }
   .control {
     flex-direction: row;
