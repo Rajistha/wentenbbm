@@ -6,11 +6,11 @@ import { IS_DEMO } from "./env";
 import { lsGet, lsSet } from "./idb";
 
 const KEY = `wenten-visit-beat:${IS_DEMO ? "demo" : "db"}`;
-const BEAT_MS = 30 * 60_000;
+const BEAT_MS = 15 * 60_000;
 
 /**
- * Catat kunjungan (sekali per hari per perangkat di server) dan kirim denyut tiap 30 menit selama tab
- * terlihat, agar server bisa menghitung perangkat aktif dalam 4 jam terakhir. Ditunda agar tidak
+ * Catat kunjungan (sekali per hari per perangkat di server) dan kirim denyut tiap 15 menit selama tab
+ * terlihat, agar server bisa menghitung perangkat online (denyut dalam 1 jam terakhir). Ditunda agar tidak
  * bersaing dengan muat awal.
  */
 export function useRegisterVisit() {

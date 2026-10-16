@@ -12,8 +12,8 @@ import { useNow } from "../common/RelativeTime";
 export function IdentityCard({ children }: { children?: React.ReactNode }) {
   const t = useTranslations("identity");
   const locale = useLocale() as Locale;
-  const { liveVia, generatedAt, active4h, reports24h, reportsTotal, visitorsTotal, demo } = useApp(
-    useShallow((s) => ({ liveVia: s.liveVia, generatedAt: s.generatedAt, active4h: s.active4h, reports24h: s.reports24h, reportsTotal: s.reportsTotal, visitorsTotal: s.visitorsTotal, demo: s.demo })),
+  const { liveVia, generatedAt, onlineNow, reports24h, reportsTotal, visitorsTotal, demo } = useApp(
+    useShallow((s) => ({ liveVia: s.liveVia, generatedAt: s.generatedAt, onlineNow: s.onlineNow, reports24h: s.reports24h, reportsTotal: s.reportsTotal, visitorsTotal: s.visitorsTotal, demo: s.demo })),
   );
   useNow(10_000);
   const on = liveVia === "realtime" || liveVia === "polling";
@@ -41,9 +41,9 @@ export function IdentityCard({ children }: { children?: React.ReactNode }) {
       </span>
       {demo && <span className="demo-badge">{t("demo")}</span>}
       {children && <span className="identity-menu">{children}</span>}
-      <span className="identity-extra muted">
+      <span className="identity-extra muted" title={onlineNow > 0 ? t("onlineTitle") : undefined}>
         {[
-          active4h != null && active4h > 0 ? t("active4h", { n: formatNumber(active4h, locale) }) : null,
+          onlineNow > 0 ? t("online", { n: formatNumber(onlineNow, locale) }) : null,
           reports24h != null
             ? reports24h > 0
               ? t("reports24h", { n: formatNumber(reports24h, locale) })

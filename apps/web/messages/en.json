@@ -39,7 +39,7 @@
     "loading": "Loading…",
     "updated": "updated {time}",
     "online": "{n} online",
-    "active4h": "{n} active in the last 4 hours",
+    "onlineTitle": "People who used Wenten BBM in the last hour",
     "reports": "{n} reports",
     "reports24h": "{n} reports / 24 h",
     "seeData": "See data",

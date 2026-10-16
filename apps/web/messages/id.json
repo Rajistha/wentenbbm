@@ -39,7 +39,7 @@
     "loading": "Memuat…",
     "updated": "diperbarui {time}",
     "online": "{n} online",
-    "active4h": "{n} aktif 4 jam terakhir",
+    "onlineTitle": "Pengguna yang memakai Wenten BBM dalam 1 jam terakhir",
     "reports": "{n} laporan",
     "reports24h": "{n} laporan 24 jam",
     "seeData": "Lihat data",
