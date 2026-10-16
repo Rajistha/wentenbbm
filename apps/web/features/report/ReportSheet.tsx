@@ -1,4 +1,5 @@
 "use client";
+import { radiusLabel } from "@/lib/geofence";
 import { formatDistance, type FuelAvailability, type Locale, type QueueLevel, type RpcErrorCode } from "@wenten/core";
 import type { SubmitReportArgs } from "@wenten/db/rpc";
 import { useQueryClient } from "@tanstack/react-query";
@@ -123,7 +124,7 @@ export function ReportSheet() {
     try {
       const res = await callRpc("submit_report", args);
       if (!res.ok) {
-        setError(t(`errors.${res.code}`, { d: res.distance_m != null ? formatDistance(res.distance_m, locale) : "" }));
+        setError(t(`errors.${res.code}`, { m: radiusLabel(), d: res.distance_m != null ? formatDistance(res.distance_m, locale) : "" }));
         return;
       }
       showToast(t("report.success"));
@@ -138,7 +139,7 @@ export function ReportSheet() {
         openPanel("detail");
         return;
       }
-      setError(t(`errors.${code}`, { d: "" }));
+      setError(t(`errors.${code}`, { m: radiusLabel(), d: "" }));
     } finally {
       setSending(false);
     }

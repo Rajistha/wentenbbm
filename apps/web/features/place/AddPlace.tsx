@@ -1,4 +1,5 @@
 "use client";
+import { radiusLabel } from "@/lib/geofence";
 import { decodePlace, distanceM, formatDistance, type Locale, type RpcErrorCode } from "@wenten/core";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -108,7 +109,7 @@ export function AddPlaceSheet() {
       });
       if (!res.ok) {
         setError(
-          t(`errors.${res.code}`, {
+          t(`errors.${res.code}`, { m: radiusLabel(),
             name: res.near_name ?? "",
             d: res.distance_m != null ? formatDistance(res.distance_m, locale) : "",
           }),
@@ -123,7 +124,7 @@ export function AddPlaceSheet() {
       select(place.id, { fly: true, open: !window.matchMedia("(min-width: 1024px)").matches });
     } catch (err) {
       const code: RpcErrorCode = err instanceof RpcError ? err.code : "NETWORK";
-      setError(t(`errors.${code}`, { name: "", d: "" }));
+      setError(t(`errors.${code}`, { m: radiusLabel(), name: "", d: "" }));
     } finally {
       setSending(false);
     }

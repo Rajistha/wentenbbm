@@ -1,11 +1,15 @@
-import { REGIONS } from "@wenten/core";
+import { formatRadius, REGIONS, type Locale } from "@wenten/core";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Icon, type IconName } from "@/features/common/Icon";
 import { InstagramIcon } from "@/features/common/InstagramIcon";
 import { Logo } from "@/features/common/Logo";
 import { Link } from "@/i18n/navigation";
+import { getStatusPayload } from "@/lib/backend/server";
 import { alternatesFor } from "@/lib/seo";
+
+// Radius lapor mengikuti pengaturan admin, jadi halaman disegarkan berkala
+export const revalidate = 300;
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/tentang">): Promise<Metadata> {
   const { locale } = await params;
@@ -17,11 +21,12 @@ export default async function About({ params }: PageProps<"/[locale]/tentang">) 
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("about");
+  const radius = formatRadius((await getStatusPayload().catch(() => null))?.geofence_m ?? 300, locale as Locale);
   const d = await getTranslations("data");
   const m = await getTranslations("meta");
 
   const steps: { icon: IconName; title: string; text: string }[] = [
-    { icon: "pin", title: t("step1Title"), text: t("how1") },
+    { icon: "pin", title: t("step1Title"), text: t("how1", { m: radius }) },
     { icon: "verified", title: t("step2Title"), text: t("how2") },
     { icon: "clock", title: t("step3Title"), text: t("how3") },
   ];

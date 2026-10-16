@@ -3,7 +3,6 @@ import { Icon } from "@/features/common/Icon";
 import { distanceM } from "@wenten/core";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
-import { GEOFENCE_M, MAX_ACCURACY_M } from "@/lib/env";
 import { startLocation } from "@/lib/geolocation";
 import { useApp } from "@/lib/store";
 
@@ -17,12 +16,12 @@ export function NearbyPrompt() {
   const [dismissed, setDismissed] = useState<string | null>(null);
 
   const near = useMemo(() => {
-    if (!user || user.accuracy > MAX_ACCURACY_M) return null;
+    if (!user || user.accuracy > useApp.getState().maxAccuracyM) return null;
     let best: { id: string; name: string; d: number } | null = null;
     for (const p of places) {
       if (p.kind === "terminal") continue;
       const d = distanceM(user, p);
-      if (d <= GEOFENCE_M && (!best || d < best.d)) best = { id: p.id, name: p.name, d };
+      if (d <= useApp.getState().geofenceM && (!best || d < best.d)) best = { id: p.id, name: p.name, d };
     }
     return best;
   }, [user, places]);

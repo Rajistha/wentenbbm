@@ -37,6 +37,12 @@ export function ageMinutes(iso: string | null | undefined, now = Date.now()): nu
   return Math.max(0, (now - new Date(iso).getTime()) / 60000);
 }
 
+/** Radius dalam meter apa adanya: "300 m", "1 km", "1,5 km". Bukan pembulatan jarak seperti formatDistance. */
+export function formatRadius(meters: number, locale: Locale = "id"): string {
+  if (meters < 1000) return `${Math.round(meters)} m`;
+  return `${(meters / 1000).toLocaleString(locale === "id" ? "id-ID" : "en-GB", { maximumFractionDigits: 1 })} km`;
+}
+
 /** "12 mnt lalu" / "12 min ago". */
 export function formatRelative(iso: string, locale: Locale = "id", now = Date.now()): string {
   const min = Math.floor(ageMinutes(iso, now) ?? 0);

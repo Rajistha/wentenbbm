@@ -290,11 +290,14 @@ function Login({ sb, onDone }: { sb: SupabaseClient; onDone(): void }) {
 function Overview({ ctx, overview: d, go }: { ctx: Ctx; overview: Row | null; go(t: Tab): void }) {
   const { sb, notify, refresh } = ctx;
   const [geofence, setGeofence] = useState<boolean | null | undefined>(undefined);
+  const [radiusM, setRadiusM] = useState(300);
   useEffect(() => {
     adm(sb, "admin_list_settings")
       .then((s) => {
         const row = (s.rows as Row[]).find((x) => x.key === "geofence_enabled");
         setGeofence(row ? row.value === true : null);
+        const gm = (s.rows as Row[]).find((x) => x.key === "geofence_m");
+        if (typeof gm?.value === "number") setRadiusM(gm.value);
       })
       .catch(() => setGeofence(null));
   }, [sb]);
@@ -368,22 +371,22 @@ function Overview({ ctx, overview: d, go }: { ctx: Ctx; overview: Row | null; go
           </div>
           <div className="adm-switch-row">
             <div>
-              <strong>Syarat radius 300 m</strong>
+              <strong>Syarat radius {radiusM} m</strong>
               <p className="adm-hint">
                 {geofence === null
                   ? "Belum tersedia: jalankan migrasi 0018."
-                  : "ON: hanya yang berada dalam radius 300 m dari SPBU yang bisa melapor. OFF: bisa melapor dari mana saja (berguna di awal peluncuran, tetapi laporan lebih mudah dipalsukan)."}
+                  : `ON: hanya yang berada dalam radius ${radiusM} m dari SPBU yang bisa melapor. OFF: bisa melapor dari mana saja (berguna di awal peluncuran, tetapi laporan lebih mudah dipalsukan). Ubah jaraknya di Pengaturan (geofence_m).`}
               </p>
             </div>
             {geofence != null && (
               <Switch
                 on={geofence}
-                label="Syarat radius 300 meter"
+                label={`Syarat radius ${radiusM} meter`}
                 onChange={() =>
                   setSetting(
                     "geofence_enabled",
                     !geofence,
-                    geofence ? "Matikan syarat radius? Warga bisa melapor dari mana saja, sehingga laporan lebih mudah dipalsukan." : "Wajibkan pelapor berada dalam radius 300 m dari SPBU?",
+                    geofence ? "Matikan syarat radius? Warga bisa melapor dari mana saja, sehingga laporan lebih mudah dipalsukan." : `Wajibkan pelapor berada dalam radius ${radiusM} m dari SPBU?`,
                     geofence ? "Syarat radius dimatikan." : "Syarat radius diaktifkan.",
                   )
                 }

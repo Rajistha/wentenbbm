@@ -67,6 +67,9 @@ export interface StatusPayload {
   queuing_now?: number;
   /** false = syarat radius 300 m dimatikan admin (migrasi 0018); undefined dianggap aktif. */
   geofence_enabled?: boolean;
+  /** Jarak maksimal pelapor ke SPBU (meter) dan akurasi GPS terburuk yang diterima, dari pengaturan admin. */
+  geofence_m?: number;
+  max_accuracy_m?: number;
   /** Harga resmi Pertamina per kode BBM (migrasi 0019). */
   official_prices?: OfficialPrices | null;
   summary: Record<string, SummaryCounts>;

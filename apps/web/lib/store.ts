@@ -12,6 +12,7 @@ import {
   type StationStatusTuple,
 } from "@wenten/core";
 import { create } from "zustand";
+import { GEOFENCE_M, MAX_ACCURACY_M } from "./env";
 import { lsGet, lsSet } from "./idb";
 import type { AnnouncementRow, StatusResponse } from "./types";
 
@@ -52,6 +53,9 @@ interface AppState extends Prefs {
   queuingNow: number | null;
   /** Syarat radius ke SPBU untuk melapor. false bila admin mematikannya. */
   geofenceOn: boolean;
+  /** Jarak maksimal pelapor ke SPBU (m) dan akurasi GPS terburuk (m), dari pengaturan admin. */
+  geofenceM: number;
+  maxAccuracyM: number;
   /** Harga resmi Pertamina (acuan bila belum ada harga warga); null bila belum diatur. */
   officialPrices: OfficialPrices | null;
   /** null = server belum mengirim angka pengunjung (migrasi 0007 belum dijalankan). */
@@ -137,6 +141,8 @@ export const useApp = create<AppState>((set, get) => ({
   reports24h: null,
   queuingNow: null,
   geofenceOn: true,
+  geofenceM: GEOFENCE_M,
+  maxAccuracyM: MAX_ACCURACY_M,
   officialPrices: null,
   visitorsTotal: null,
   readOnly: false,
@@ -186,6 +192,8 @@ export const useApp = create<AppState>((set, get) => ({
       reports24h: s.reports_24h ?? get().reports24h,
       queuingNow: s.queuing_now ?? get().queuingNow,
       geofenceOn: s.geofence_enabled ?? true,
+      geofenceM: s.geofence_m ?? get().geofenceM,
+      maxAccuracyM: s.max_accuracy_m ?? get().maxAccuracyM,
       officialPrices: s.official_prices ?? get().officialPrices,
       visitorsTotal: s.visitors_total ?? get().visitorsTotal,
       readOnly: !!s.read_only,

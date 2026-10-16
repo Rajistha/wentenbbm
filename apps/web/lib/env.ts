@@ -14,6 +14,6 @@ export const SNAPSHOT_FALLBACK_URL =
 
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-/** Parameter yang juga dipakai klien untuk pengecekan awal (server tetap sumber kebenaran). */
+/** Nilai awal sebelum snapshot status tiba; nilai sebenarnya dari pengaturan admin (server tetap sumber kebenaran). */
 export const GEOFENCE_M = 300;
 export const MAX_ACCURACY_M = 100;

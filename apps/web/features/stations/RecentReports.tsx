@@ -1,4 +1,5 @@
 "use client";
+import { radiusLabel } from "@/lib/geofence";
 import type { Place, RpcErrorCode, VoteType } from "@wenten/core";
 import type { RawRecentReport } from "@wenten/db/rpc";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -50,10 +51,10 @@ export function RecentReports({ place }: { place: Place }) {
         showToast(t("detail.voted"));
         await qc.invalidateQueries({ queryKey: recentReportsKey(place.id) });
       } else {
-        setError(t(`errors.${res.code}`, { d: res.distance_m ? `${res.distance_m} m` : "" }));
+        setError(t(`errors.${res.code}`, { m: radiusLabel(), d: res.distance_m ? `${res.distance_m} m` : "" }));
       }
     } catch (err) {
-      setError(t(`errors.${(err instanceof RpcError ? err.code : "NETWORK") as RpcErrorCode}`, { d: "" }));
+      setError(t(`errors.${(err instanceof RpcError ? err.code : "NETWORK") as RpcErrorCode}`, { m: radiusLabel(), d: "" }));
     } finally {
       setBusy(null);
     }

@@ -8,6 +8,7 @@ import {
   nearestWithFuel,
   type Place,
   type StationStatus,
+  formatRadius,
 } from "./index";
 
 const place = (id: string, lat: number, lng: number): Place => ({
@@ -86,5 +87,15 @@ describe("nearestWithFuel", () => {
   });
   it("distanceM simetris", () => {
     expect(distanceM(places[0]!, places[1]!)).toBeCloseTo(distanceM(places[1]!, places[0]!));
+  });
+});
+
+describe("formatRadius", () => {
+  it("menulis radius apa adanya dalam m atau km", () => {
+    expect(formatRadius(300)).toBe("300 m");
+    expect(formatRadius(275)).toBe("275 m");
+    expect(formatRadius(1000)).toBe("1 km");
+    expect(formatRadius(1500)).toBe("1,5 km");
+    expect(formatRadius(1500, "en")).toBe("1.5 km");
   });
 });

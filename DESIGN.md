@@ -176,7 +176,7 @@ Bottom sheet half yang bisa ditarik ke full (HP), laci kanan (desktop).
 - **Arahkan** selalu aktif dan membuka Google Maps berbasis **nama SPBU** (supaya Google memilih tempat yang tepat, bukan hanya koordinat). Menu kecil: aplikasi peta lain dan salin koordinat.
 - **Harga**: median laporan warga 7 hari terakhir; bila belum ada, **harga resmi Pertamina** ditampilkan redup dengan label "harga resmi" (hanya untuk SPBU dan Pertashop, tidak untuk Pertamini).
 - **Isi harga** dan **Usulkan koreksi** membuka dialog kecil (lihat 7.7).
-- Tombol lapor aktif hanya dalam radius 300 m (kecuali dimatikan admin); bila tidak, ketukan menjelaskan alasannya.
+- Tombol lapor aktif hanya dalam radius lapor (bawaan 300 m, `geofence_m`; **semua angka radius di teks, pemeriksaan klien, dan panel admin mengikuti pengaturan itu**). Bila syarat radius dimatikan admin, batas jarak dan akurasi dilonggarkan tetapi **lokasi tetap wajib** dikirim. Di luar radius atau tanpa lokasi, ketukan menjelaskan alasannya.
 
 ### 7.6 Form lapor: wizard ketuk-ketuk
 
